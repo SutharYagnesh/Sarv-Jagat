@@ -1,0 +1,219 @@
+[
+  {
+    "id": "sj-rc-3hp",
+    "name": "SJ-RC-3HP Reciprocating Air Compressor",
+    "slug": "sj-rc-3hp-reciprocating-air-compressor",
+    "category": "reciprocating-compressors",
+    "capacity": "12 CFM",
+    "technology": "Single Stage",
+    "pressure": "145 PSI",
+    "power": "3 HP",
+    "image": "/industrial-air-compressor.png",
+    "price": "₹45,000",
+    "description": "Sarv Jagat's SJ-RC-3HP single-stage reciprocating air compressor designed for small to medium industrial applications with reliable performance and energy efficiency.",
+    "features": [
+      "Single stage compression",
+      "Cast iron construction",
+      "Automatic pressure switch",
+      "Safety valve included",
+      "Low maintenance design"
+    ],
+    "specifications": {
+      "Flow Rate": "12 CFM @ 145 PSI",
+      "Working Pressure": "145 PSI",
+      "Motor Power": "3 HP",
+      "Tank Capacity": "100 Liters",
+      "Dimensions": "120cm x 60cm x 90cm",
+      "Weight": "150 kg",
+      "Voltage": "415V, 3 Phase",
+      "Frequency": "50 Hz"
+    },
+    "industries": ["manufacturing", "automotive", "textile", "construction"]
+  },
+  {
+    "id": "sj-rc-5hp",
+    "name": "SJ-RC-5HP Reciprocating Air Compressor",
+    "slug": "sj-rc-5hp-reciprocating-air-compressor",
+    "category": "reciprocating-compressors",
+    "capacity": "18 CFM",
+    "technology": "Single Stage",
+    "pressure": "145 PSI",
+    "power": "5 HP",
+    "image": "/industrial-air-compressor.png",
+    "price": "₹65,000",
+    "description": "Heavy-duty SJ-RC-5HP reciprocating compressor ideal for medium-scale industrial operations requiring consistent compressed air supply.",
+    "features": [
+      "Enhanced cooling system",
+      "Robust cast iron cylinders",
+      "Automatic unloader valve",
+      "Pressure gauge included",
+      "Vibration dampeners"
+    ],
+    "specifications": {
+      "Flow Rate": "18 CFM @ 145 PSI",
+      "Working Pressure": "145 PSI",
+      "Motor Power": "5 HP",
+      "Tank Capacity": "200 Liters",
+      "Dimensions": "140cm x 70cm x 100cm",
+      "Weight": "220 kg",
+      "Voltage": "415V, 3 Phase",
+      "Frequency": "50 Hz"
+    },
+    "industries": ["manufacturing", "automotive", "textile", "construction"]
+  },
+  {
+    "id": "sj-rc-7.5hp",
+    "name": "SJ-RC-7.5HP Two Stage Reciprocating Compressor",
+    "slug": "sj-rc-7-5hp-two-stage-reciprocating-compressor",
+    "category": "reciprocating-compressors",
+    "capacity": "25 CFM",
+    "technology": "Two Stage",
+    "pressure": "175 PSI",
+    "power": "7.5 HP",
+    "image": "/industrial-air-compressor.png",
+    "price": "₹85,000",
+    "description": "High-efficiency SJ-RC-7.5HP two-stage reciprocating compressor delivering superior performance for demanding industrial applications.",
+    "features": [
+      "Two-stage compression",
+      "Intercooler for efficiency",
+      "Heavy-duty construction",
+      "Automatic drain valve",
+      "Thermal protection"
+    ],
+    "specifications": {
+      "Flow Rate": "25 CFM @ 175 PSI",
+      "Working Pressure": "175 PSI",
+      "Motor Power": "7.5 HP",
+      "Tank Capacity": "300 Liters",
+      "Dimensions": "160cm x 80cm x 110cm",
+      "Weight": "320 kg",
+      "Voltage": "415V, 3 Phase",
+      "Frequency": "50 Hz"
+    },
+    "industries": ["manufacturing", "automotive", "pharmaceutical", "food-beverage"]
+  },
+  {
+    "id": "sj-rc-10hp",
+    "name": "SJ-RC-10HP Two Stage Reciprocating Compressor",
+    "slug": "sj-rc-10hp-two-stage-reciprocating-compressor",
+    "category": "reciprocating-compressors",
+    "capacity": "35 CFM",
+    "technology": "Two Stage",
+    "pressure": "175 PSI",
+    "power": "10 HP",
+    "image": "/industrial-air-compressor.png",
+    "price": "₹1,15,000",
+    "description": "Industrial-grade SJ-RC-10HP two-stage compressor engineered for continuous operation in heavy-duty manufacturing environments.",
+    "features": [
+      "Continuous duty design",
+      "Advanced cooling system",
+      "Precision-balanced flywheel",
+      "Oil sight gauge",
+      "Emergency stop button"
+    ],
+    "specifications": {
+      "Flow Rate": "35 CFM @ 175 PSI",
+      "Working Pressure": "175 PSI",
+      "Motor Power": "10 HP",
+      "Tank Capacity": "500 Liters",
+      "Dimensions": "180cm x 90cm x 120cm",
+      "Weight": "450 kg",
+      "Voltage": "415V, 3 Phase",
+      "Frequency": "50 Hz"
+    },
+    "industries": ["manufacturing", "automotive", "pharmaceutical", "textile"]
+  },
+  {
+    "id": "sj-sc-15hp",
+    "name": "SJ-SC-15HP Rotary Screw Compressor",
+    "slug": "sj-sc-15hp-rotary-screw-compressor",
+    "category": "screw-compressors",
+    "capacity": "65 CFM",
+    "technology": "Rotary Screw",
+    "pressure": "125 PSI",
+    "power": "15 HP",
+    "image": "/industrial-air-compressor.png",
+    "price": "₹2,25,000",
+    "description": "Energy-efficient SJ-SC-15HP rotary screw compressor designed for continuous operation with minimal maintenance requirements.",
+    "features": [
+      "Oil-injected screw technology",
+      "Variable speed drive ready",
+      "Integrated air/oil separator",
+      "Microprocessor controller",
+      "Low noise operation"
+    ],
+    "specifications": {
+      "Flow Rate": "65 CFM @ 125 PSI",
+      "Working Pressure": "125 PSI",
+      "Motor Power": "15 HP",
+      "Tank Capacity": "300 Liters",
+      "Dimensions": "150cm x 80cm x 130cm",
+      "Weight": "380 kg",
+      "Voltage": "415V, 3 Phase",
+      "Frequency": "50 Hz"
+    },
+    "industries": ["manufacturing", "automotive", "textile", "pharmaceutical"]
+  },
+  {
+    "id": "sj-of-10hp",
+    "name": "SJ-OF-10HP Oil-Free Compressor",
+    "slug": "sj-of-10hp-oil-free-compressor",
+    "category": "oil-free-compressors",
+    "capacity": "40 CFM",
+    "technology": "Oil-Free Scroll",
+    "pressure": "145 PSI",
+    "power": "10 HP",
+    "image": "/industrial-air-compressor.png",
+    "price": "₹3,50,000",
+    "description": "Medical-grade SJ-OF-10HP oil-free compressor providing 100% clean air for pharmaceutical and food processing applications.",
+    "features": [
+      "100% oil-free air",
+      "Scroll compression technology",
+      "Medical grade certification",
+      "Ultra-quiet operation",
+      "Stainless steel components"
+    ],
+    "specifications": {
+      "Flow Rate": "40 CFM @ 145 PSI",
+      "Working Pressure": "145 PSI",
+      "Motor Power": "10 HP",
+      "Tank Capacity": "200 Liters",
+      "Dimensions": "140cm x 70cm x 110cm",
+      "Weight": "280 kg",
+      "Voltage": "415V, 3 Phase",
+      "Frequency": "50 Hz"
+    },
+    "industries": ["pharmaceutical", "food-beverage", "medical", "electronics"]
+  },
+  {
+    "id": "sj-vp-5hp",
+    "name": "SJ-VP-5HP Industrial Vacuum Pump",
+    "slug": "sj-vp-5hp-industrial-vacuum-pump",
+    "category": "vacuum-pumps",
+    "capacity": "150 CFM",
+    "technology": "Rotary Vane",
+    "pressure": "28 inHg",
+    "power": "5 HP",
+    "image": "/industrial-vacuum-pump.png",
+    "price": "₹1,85,000",
+    "description": "High-performance SJ-VP-5HP rotary vane vacuum pump designed for packaging, material handling, and industrial vacuum applications.",
+    "features": [
+      "Rotary vane technology",
+      "Oil-sealed design",
+      "Automatic oil circulation",
+      "Vacuum gauge included",
+      "Corrosion-resistant coating"
+    ],
+    "specifications": {
+      "Pumping Speed": "150 CFM",
+      "Ultimate Vacuum": "28 inHg",
+      "Motor Power": "5 HP",
+      "Oil Capacity": "2.5 Liters",
+      "Dimensions": "100cm x 60cm x 80cm",
+      "Weight": "120 kg",
+      "Voltage": "415V, 3 Phase",
+      "Frequency": "50 Hz"
+    },
+    "industries": ["packaging", "manufacturing", "automotive", "textile"]
+  }
+]
