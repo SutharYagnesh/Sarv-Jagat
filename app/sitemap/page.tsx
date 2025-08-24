@@ -3,6 +3,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Home, Package, Building2, Wrench, Users, FileText, Phone, Mail } from "lucide-react"
 
+export async function generateMetadata() {
+  return {
+    title: "Sitemap | Sarv Jagat",
+    description: "Navigate through all pages and sections of the Sarv Jagat Corporation website. Find exactly what you're looking for.",
+    keywords: ["sitemap", "website structure", "navigation", "Sarv Jagat pages"],
+    openGraph: {
+      title: "Sitemap | Sarv Jagat",
+      description: "Complete website structure and navigation for Sarv Jagat Corporation.",
+      url: "https://sarvjagat.com/sitemap",
+      siteName: "Sarv Jagat",
+      images: [
+        {
+          url: "/og-sitemap.jpg",
+          width: 1200,
+          height: 630,
+        },
+      ],
+      locale: "en_US",
+      type: "website",
+    },
+  }
+}
+
 export default function SitemapPage() {
   const siteStructure = [
     {

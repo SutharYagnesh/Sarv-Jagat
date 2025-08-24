@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -208,7 +208,7 @@ export default function CareersPage() {
     },
   ]
 
-  const handleApplicationSubmit = (e) => {
+  const handleApplicationSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     // Handle form submission logic here
     console.log("Application submitted:", applicationForm)
@@ -250,117 +250,12 @@ export default function CareersPage() {
       {/* Main Content */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Tabs defaultValue="openings" className="w-full">
+          <Tabs defaultValue="benefits" className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="openings">Current Openings</TabsTrigger>
               <TabsTrigger value="benefits">Benefits & Culture</TabsTrigger>
               <TabsTrigger value="apply">Apply Now</TabsTrigger>
-            </TabsList>
-
-            {/* Job Openings Tab */}
-            <TabsContent value="openings" className="space-y-8">
-              <div className="text-center mb-12">
-                <h3 className="text-3xl font-bold mb-4">Current Job Openings</h3>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Explore exciting career opportunities across various departments
-                </p>
-              </div>
-
-              <div className="grid lg:grid-cols-3 gap-8">
-                {/* Job List */}
-                <div className="lg:col-span-1 space-y-4">
-                  {jobOpenings.map((job) => (
-                    <Card
-                      key={job.id}
-                      className={`cursor-pointer transition-all hover:shadow-lg ${
-                        selectedJob?.id === job.id ? "ring-2 ring-blue-500 bg-blue-50" : ""
-                      }`}
-                      onClick={() => setSelectedJob(job)}
-                    >
-                      <CardHeader className="pb-3">
-                        <CardTitle className="text-lg">{job.title}</CardTitle>
-                        <CardDescription className="flex items-center gap-2">
-                          <Badge variant="secondary">{job.department}</Badge>
-                          <Badge variant="outline">{job.type}</Badge>
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <div className="space-y-2 text-sm text-gray-600">
-                          <div className="flex items-center gap-2">
-                            <MapPin className="h-4 w-4" />
-                            <span>{job.location}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Clock className="h-4 w-4" />
-                            <span>{job.experience}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Briefcase className="h-4 w-4" />
-                            <span>{job.salary}</span>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-
-                {/* Job Details */}
-                <div className="lg:col-span-2">
-                  {selectedJob ? (
-                    <Card className="h-fit">
-                      <CardHeader>
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <CardTitle className="text-2xl">{selectedJob.title}</CardTitle>
-                            <CardDescription className="text-lg mt-2">{selectedJob.description}</CardDescription>
-                          </div>
-                          <Button className="ml-4">Apply Now</Button>
-                        </div>
-                        <div className="flex flex-wrap gap-2 mt-4">
-                          <Badge variant="secondary">{selectedJob.department}</Badge>
-                          <Badge variant="outline">{selectedJob.type}</Badge>
-                          <Badge variant="outline">{selectedJob.location}</Badge>
-                          <Badge variant="outline">{selectedJob.experience}</Badge>
-                          <Badge variant="outline">{selectedJob.salary}</Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-6">
-                        <div>
-                          <h4 className="text-lg font-semibold mb-3">Key Responsibilities</h4>
-                          <ul className="space-y-2">
-                            {selectedJob.responsibilities.map((resp, index) => (
-                              <li key={index} className="flex items-start gap-2">
-                                <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                <span className="text-gray-700">{resp}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        <div>
-                          <h4 className="text-lg font-semibold mb-3">Requirements</h4>
-                          <ul className="space-y-2">
-                            {selectedJob.requirements.map((req, index) => (
-                              <li key={index} className="flex items-start gap-2">
-                                <CheckCircle className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                                <span className="text-gray-700">{req}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ) : (
-                    <Card className="h-96 flex items-center justify-center">
-                      <div className="text-center text-gray-500">
-                        <Briefcase className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                        <p className="text-lg">Select a job opening to view details</p>
-                      </div>
-                    </Card>
-                  )}
-                </div>
-              </div>
-            </TabsContent>
+            </TabsList> 
+            
 
             {/* Benefits Tab */}
             <TabsContent value="benefits" className="space-y-12">
@@ -559,11 +454,14 @@ export default function CareersPage() {
                         />
                       </div>
 
+                    </form>
                       <Button type="submit" size="lg" className="w-full">
                         <Send className="h-5 w-5 mr-2" />
+                        <a href="mailto:contact@sarvjagat.com" className="hover:underline">
                         Submit Application
+                
+                            </a>
                       </Button>
-                    </form>
                   </CardContent>
                 </Card>
               </div>

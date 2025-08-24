@@ -58,9 +58,7 @@ export function Header() {
               <a href="tel:+919157487233" className="hover:text-red-400">
                 📞 +91-9157487233
               </a>
-              <a href="tel:+919157770753" className="hover:text-red-400">
-                📞 +91-9157770753
-              </a>
+              
             </div>
             <div className="flex items-center gap-2">
               <a href="mailto:connect@sarvjagat.com" className="hover:text-red-400">

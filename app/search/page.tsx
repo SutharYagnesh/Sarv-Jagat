@@ -9,6 +9,29 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import ProductFilter from "@/components/search/product-filter"
 
+export async function generateMetadata() {
+  return {
+    title: "Search Products | Sarv Jagat",
+    description: "Search our comprehensive range of air compressors, dryers, and accessories. Find the perfect solution for your industrial needs.",
+    keywords: ["air compressor search", "industrial equipment", "compressor finder", "Sarv Jagat products"],
+    openGraph: {
+      title: "Search Products | Sarv Jagat",
+      description: "Search our comprehensive range of air compressors, dryers, and accessories.",
+      url: "https://sarvjagat.com/search",
+      siteName: "Sarv Jagat",
+      images: [
+        {
+          url: "/og-search.jpg",
+          width: 1200,
+          height: 630,
+        },
+      ],
+      locale: "en_US",
+      type: "website",
+    },
+  }
+}
+
 // Mock search results data
 const searchResults = [
   {
@@ -78,6 +101,7 @@ const searchResults = [
     image: "/air-compressor-accessories.png",
     description: "High-efficiency refrigerated air dryer for moisture removal.",
     specifications: {
+      power:"0",
       capacity: "100 CFM",
       dewPoint: "3°C",
       pressure: "16 Bar",
@@ -93,6 +117,7 @@ const searchResults = [
     image: "/air-compressor-accessories.png",
     description: "Vertical air receiver tank with safety valve and drain.",
     specifications: {
+      power : "0",
       volume: "500 Liters",
       pressure: "16 Bar",
       material: "Carbon Steel",
@@ -149,7 +174,7 @@ function SearchPageContent() {
               })
             case "powerRange":
               return values.some((value) => {
-                const power = Number.parseInt(item.specifications.power)
+                const power = Number.parseInt(item.specifications.power) || 0
                 switch (value) {
                   case "1-5":
                     return power >= 1 && power <= 5
@@ -184,15 +209,15 @@ function SearchPageContent() {
         break
       case "power-asc":
         results.sort((a, b) => {
-          const powerA = Number.parseInt(a.specifications.power) || 0
-          const powerB = Number.parseInt(b.specifications.power) || 0
+          const powerA = a.specifications?.power ? Number.parseInt(a.specifications.power) || 0 : 0
+          const powerB = b.specifications?.power ? Number.parseInt(b.specifications.power) || 0 : 0
           return powerA - powerB
         })
         break
       case "power-desc":
         results.sort((a, b) => {
-          const powerA = Number.parseInt(a.specifications.power) || 0
-          const powerB = Number.parseInt(b.specifications.power) || 0
+          const powerA = a.specifications?.power ? Number.parseInt(a.specifications.power) || 0 : 0
+          const powerB = b.specifications?.power ? Number.parseInt(b.specifications.power) || 0 : 0
           return powerB - powerA
         })
         break

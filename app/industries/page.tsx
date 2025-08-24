@@ -4,6 +4,21 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Factory, Shield, Building2, Settings, Wrench, Mountain, Zap, Package, Beaker } from "lucide-react"
 import Link from "next/link"
 
+export async function generateMetadata() {
+  return {
+    title: 'Industries - SarvJagat',
+    description: 'Explore how Sarv Jagat provides tailored compressed air solutions for various industries including Automotive, Pharmaceuticals, Food & Beverage, Textile, Metal & Fabrication, Construction, Mining, Electronics, Plastic & PET, and Chemical & Process.',
+    openGraph: {
+      title: 'Industries - SarvJagat',
+      description: 'Explore how Sarv Jagat provides tailored compressed air solutions for various industries including Automotive, Pharmaceuticals, Food & Beverage, Textile, Metal & Fabrication, Construction, Mining, Electronics, Plastic & PET, and Chemical & Process.',
+      url: 'https://www.sarvjagat.com/industries',
+      siteName: 'SarvJagat',
+      type: 'website',
+    },
+    keywords: ['industries', 'automotive', 'pharmaceuticals', 'food & beverage', 'textile', 'metal fabrication', 'construction', 'mining', 'electronics', 'plastic', 'chemical', 'compressed air solutions', 'SarvJagat'],
+  };
+}
+
 // Main industries page showcasing all sectors served by Sarv Jagat
 export default function IndustriesPage() {
   // Industries with detailed applications based on provided product descriptions
