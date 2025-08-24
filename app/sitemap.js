@@ -1,7 +1,7 @@
 import products from "@/data/products.json"
 import fs from "fs"
 import path from "path"
-import products from "../data/products.json"
+import products from "@/data/products.json"
 import industries from "../data/industries.json"
 
 async function getAllBlogPosts() {
