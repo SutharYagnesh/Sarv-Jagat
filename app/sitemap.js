@@ -1,4 +1,4 @@
-import products from "@/data/products.json"
+import allProducts from "@/data/products.json"
 import fs from "fs"
 import path from "path"
 import products from "@/data/products.json"
@@ -62,7 +62,7 @@ export default async function sitemap() {
   ]
 
   // Product pages
-  const productPages = products.map((product) => ({
+    const productPages = allProducts.map((product) => ({
     url: `${baseUrl}/products/${product.slug}`,
     lastModified: currentDate,
     changeFrequency: "monthly",
