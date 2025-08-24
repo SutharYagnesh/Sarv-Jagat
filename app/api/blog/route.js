@@ -1,6 +1,22 @@
 // In a real application, you would use a database for persistent storage.
-// For demonstration purposes, we'll use an in-memory array.
-let inMemoryBlogPosts = [];
+const BLOG_POSTS_FILE = path.join(process.cwd(), 'data', 'blog', 'posts.json');
+
+async function readBlogPosts() {
+  try {
+    const data = await fs.readFile(BLOG_POSTS_FILE, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      // File does not exist, return empty array
+      return [];
+    }
+    throw error;
+  }
+}
+
+async function writeBlogPosts(posts) {
+  await fs.writeFile(BLOG_POSTS_FILE, JSON.stringify(posts, null, 2));
+}
 
 import fs from 'fs/promises';
 import path from 'path';
@@ -40,9 +56,9 @@ export async function POST(request) {
     // In a real application, you would save this to a database.
     const newPost = { ...blogData, imageUrl, id: Date.now().toString() }; // Assign a unique ID
 
-    // In a real application, you would save newPost to a database.
-    // For now, we'll add it to our in-memory array.
-    inMemoryBlogPosts.push(newPost);
+    const posts = await readBlogPosts();
+    posts.push(newPost);
+    await writeBlogPosts(posts);
 
     return NextResponse.json({ success: true, post: newPost });
   } catch (error) {
@@ -53,9 +69,8 @@ export async function POST(request) {
 
 export async function GET() {
   try {
-    // In a real application, you would fetch posts from a database.
-    // For now, we'll return the in-memory array.
-    return NextResponse.json({ posts: inMemoryBlogPosts });
+    const posts = await readBlogPosts();
+    return NextResponse.json({ posts });
   } catch (error) {
     console.error('Error fetching blog posts:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });

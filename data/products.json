@@ -8,7 +8,7 @@
     "technology": "Single Stage",
     "pressure": "145 PSI",
     "power": "3 HP",
-    "image": "/industrial-air-compressor.png",
+    "image": "/placeholder.jpg",
     "price": "₹45,000",
     "description": "Sarv Jagat's SJ-RC-3HP single-stage reciprocating air compressor designed for small to medium industrial applications with reliable performance and energy efficiency.",
     "features": [
@@ -39,7 +39,7 @@
     "technology": "Single Stage",
     "pressure": "145 PSI",
     "power": "5 HP",
-    "image": "/industrial-air-compressor.png",
+    "image": "/placeholder.jpg",
     "price": "₹65,000",
     "description": "Heavy-duty SJ-RC-5HP reciprocating compressor ideal for medium-scale industrial operations requiring consistent compressed air supply.",
     "features": [
@@ -70,7 +70,7 @@
     "technology": "Two Stage",
     "pressure": "175 PSI",
     "power": "7.5 HP",
-    "image": "/industrial-air-compressor.png",
+    "image": "/placeholder.jpg",
     "price": "₹85,000",
     "description": "High-efficiency SJ-RC-7.5HP two-stage reciprocating compressor delivering superior performance for demanding industrial applications.",
     "features": [
@@ -101,7 +101,7 @@
     "technology": "Two Stage",
     "pressure": "175 PSI",
     "power": "10 HP",
-    "image": "/industrial-air-compressor.png",
+    "image": "/placeholder.jpg",
     "price": "₹1,15,000",
     "description": "Industrial-grade SJ-RC-10HP two-stage compressor engineered for continuous operation in heavy-duty manufacturing environments.",
     "features": [
@@ -132,7 +132,7 @@
     "technology": "Rotary Screw",
     "pressure": "125 PSI",
     "power": "15 HP",
-    "image": "/industrial-air-compressor.png",
+    "image": "/placeholder.jpg",
     "price": "₹2,25,000",
     "description": "Energy-efficient SJ-SC-15HP rotary screw compressor designed for continuous operation with minimal maintenance requirements.",
     "features": [
@@ -163,7 +163,7 @@
     "technology": "Oil-Free Scroll",
     "pressure": "145 PSI",
     "power": "10 HP",
-    "image": "/industrial-air-compressor.png",
+    "image": "/placeholder.jpg",
     "price": "₹3,50,000",
     "description": "Medical-grade SJ-OF-10HP oil-free compressor providing 100% clean air for pharmaceutical and food processing applications.",
     "features": [
@@ -194,7 +194,7 @@
     "technology": "Rotary Vane",
     "pressure": "28 inHg",
     "power": "5 HP",
-    "image": "/industrial-vacuum-pump.png",
+    "image": "/two-stage-piston-compressor.png",
     "price": "₹1,85,000",
     "description": "High-performance SJ-VP-5HP rotary vane vacuum pump designed for packaging, material handling, and industrial vacuum applications.",
     "features": [

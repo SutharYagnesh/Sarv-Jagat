@@ -1,3 +1,4 @@
+'use client';
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -14,29 +15,8 @@ import {
   Package,
 } from "lucide-react"
 import Link from "next/link"
-
-export async function generateMetadata() {
-  return {
-    title: "Services | Sarv Jagat",
-    description: "Explore Sarv Jagat's comprehensive services including installation, annual maintenance contracts (AMC), repair, technical support, and spare parts supply for air compressors.",
-    keywords: ["air compressor services", "compressor maintenance", "compressor repair", "technical support", "spare parts", "AMC", "Sarv Jagat services"],
-    openGraph: {
-      title: "Services | Sarv Jagat",
-      description: "Comprehensive services for air compressors: installation, maintenance, repair, and support.",
-      url: "https://sarvjagat.com/services",
-      siteName: "Sarv Jagat",
-      images: [
-        {
-          url: "/og-services.jpg",
-          width: 1200,
-          height: 630,
-        },
-      ],
-      locale: "en_US",
-      type: "website",
-    },
-  }
-}
+import { generateMetadata } from './metadata';
+// export { generateMetadata };
 
 // Main services page showcasing comprehensive support offerings
 export default function ServicesPage() {
@@ -219,6 +199,7 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-red-900 text-white py-20">
         <div className="container mx-auto px-4">

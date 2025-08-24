@@ -1,20 +1,7 @@
+'use client'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Shield, Eye, Lock, UserCheck, Mail, Phone } from "lucide-react"
-
-export async function generateMetadata() {
-  return {
-    title: 'Privacy Policy - SarvJagat',
-    description: 'Learn how Sarv Jagat Corporation collects, uses, and protects your personal information. Your privacy is important to us.',
-    openGraph: {
-      title: 'Privacy Policy - SarvJagat',
-      description: 'Learn how Sarv Jagat Corporation collects, uses, and protects your personal information. Your privacy is important to us.',
-      url: 'https://www.sarvjagat.com/privacy',
-      siteName: 'SarvJagat',
-      type: 'website',
-    },
-    keywords: ['privacy policy', 'data protection', 'data security', 'personal information', 'SarvJagat privacy'],
-  };
-}
+import { generateMetadata } from './metadata'
 
 export default function PrivacyPolicyPage() {
   return (

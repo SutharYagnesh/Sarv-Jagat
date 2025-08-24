@@ -64,7 +64,7 @@ export function HeroSection() {
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="/placeholder-ttai9.png"
+                src="/placeholder.jpg"
                 alt="Sarv Jagat Corporation - Modern Air Compressor Manufacturing Facility"
                 className="w-full h-auto"
               />

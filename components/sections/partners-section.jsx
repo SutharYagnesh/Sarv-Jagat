@@ -3,12 +3,12 @@
 import { motion } from "framer-motion"
 
 const partners = [
-  { name: "TechCorp", logo: "/abstract-tech-logo.png" },
-  { name: "ManufacturingPro", logo: "/manufacturing-company-logo.png" },
-  { name: "AutoIndustries", logo: "/automotive-company-logo.png" },
-  { name: "FoodTech", logo: "/food-company-logo.png" },
-  { name: "TextileCorp", logo: "/textile-company-logo.png" },
-  { name: "GlobalSolutions", logo: "/global-solutions-logo.png" },
+  { name: "TechCorp", logo: "/placeholder-logo.png" },
+  { name: "ManufacturingPro", logo: "/placeholder-logo.png" },
+  { name: "AutoIndustries", logo: "/placeholder-logo.png" },
+  { name: "FoodTech", logo: "/placeholder-logo.png" },
+  { name: "TextileCorp", logo: "/placeholder-logo.png" },
+  { name: "GlobalSolutions", logo: "/placeholder-logo.png" },
 ]
 
 export function PartnersSection() {

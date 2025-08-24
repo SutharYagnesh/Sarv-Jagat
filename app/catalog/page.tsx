@@ -1,3 +1,4 @@
+'use client';
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -6,21 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Download, FileText, Mail, Phone, Eye } from "lucide-react"
-
-export async function generateMetadata() {
-  return {
-    title: 'Product Catalogs - SarvJagat',
-    description: 'Download comprehensive product catalogs, technical specifications, and documentation for all Sarv Jagat air compressor solutions.',
-    openGraph: {
-      title: 'Product Catalogs - SarvJagat',
-      description: 'Download comprehensive product catalogs, technical specifications, and documentation for all Sarv Jagat air compressor solutions.',
-      url: 'https://www.sarvjagat.com/catalog',
-      siteName: 'SarvJagat',
-      type: 'website',
-    },
-    keywords: ['product catalogs', 'technical specifications', 'documentation', 'air compressor solutions', 'SarvJagat'],
-  };
-}
+import { generateMetadata } from './metadata';
 
 export default function CatalogPage() {
   const [downloadForm, setDownloadForm] = useState({

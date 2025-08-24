@@ -12,7 +12,7 @@ const testimonials = [
     content:
       "Sarv Jagat's reciprocating air compressors have transformed our textile production line. The SJ-RC series delivers consistent performance with excellent energy efficiency. Outstanding service support from the team.",
     rating: 5,
-    image: "/placeholder-x5i7p.png",
+    image: "/placeholder.jpg",
   },
   {
     name: "Priya Sharma",
@@ -21,7 +21,7 @@ const testimonials = [
     content:
       "We've been using SJ screw compressors for over 3 years now. The reliability and low maintenance requirements have significantly improved our automotive assembly line productivity. Highly recommended.",
     rating: 5,
-    image: "/indian-woman-manufacturing.png",
+    image: "/placeholder.jpg",
   },
   {
     name: "Amit Patel",
@@ -30,7 +30,7 @@ const testimonials = [
     content:
       "The oil-free compressors from Sarv Jagat ensure our pharmaceutical manufacturing meets the highest quality standards. Clean, reliable compressed air is critical for our processes.",
     rating: 5,
-    image: "/placeholder-1x8fp.png",
+    image: "/placeholder.jpg",
   },
 ]
 

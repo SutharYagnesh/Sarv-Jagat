@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -8,6 +9,8 @@ import Link from "next/link"
 import ProductFilter from "@/components/search/product-filter"
 import { TechnicalSpecs } from "@/components/sections/technical-specs"
 import { CompressorComparison } from "@/components/sections/compressor-comparison"
+
+import { metadata } from "./metadata"
 
 // Main products catalog page with comprehensive product categories
 export default function ProductsPage() {

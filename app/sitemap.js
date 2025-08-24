@@ -1,6 +1,8 @@
 import products from "@/data/products.json"
 import fs from "fs"
 import path from "path"
+import products from "../data/products.json"
+import industries from "../data/industries.json"
 
 async function getAllBlogPosts() {
   try {
@@ -22,7 +24,7 @@ async function getAllBlogPosts() {
 }
 
 export default async function sitemap() {
-  const baseUrl = "https://industrialcorp.com"
+  const baseUrl = "https://sarvjagat.com"
   const currentDate = new Date().toISOString()
 
   // Static pages
@@ -67,6 +69,14 @@ export default async function sitemap() {
     priority: 0.7,
   }))
 
+  // Industry pages
+  const industriesPages = industries.map((industry) => ({
+    url: `${baseUrl}/industries/${industry.slug}`,
+    lastModified: currentDate,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }))
+
   // Blog pages
   const blogPosts = await getAllBlogPosts()
   const blogPages = blogPosts.map((post) => ({
@@ -76,6 +86,106 @@ export default async function sitemap() {
     priority: 0.6,
   }))
 
-  return [...staticPages, ...productPages, ...blogPages]
+  // Dynamically generate solution pages
+  const solutionSlugs = [
+    "automotive",
+    "manufacturing",
+    "pharmaceutical",
+  ];
+  const solutionPages = solutionSlugs.map((slug) => ({
+    url: `${baseUrl}/solutions/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
 
+  // Dynamically generate service pages
+  const serviceSlugs = [
+    "installation",
+    "amc",
+    "technical-support",
+    "spare-parts",
+  ];
+  const servicePages = serviceSlugs.map((slug) => ({
+    url: `${baseUrl}/services/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+
+
+  return [
+    {
+      url: baseUrl,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 1,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/careers`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/products`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/industries`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/solutions`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/services`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    ...productPages,
+    ...industriesPages,
+    ...solutionPages,
+    ...servicePages,
+    ...blogPosts,
+  ];
 }

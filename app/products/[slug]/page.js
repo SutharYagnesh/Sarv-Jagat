@@ -24,12 +24,12 @@ export async function generateMetadata({ params }) {
     title: `${product.name} | Industrial Equipment`,
     description: product.description,
     alternates: {
-      canonical: `https://industrialcorp.com/products/${product.slug}`,
+      canonical: `https://sarvjagat.com/products/${product.slug}`,
     },
     openGraph: {
       title: product.name,
       description: product.description,
-      url: `https://industrialcorp.com/products/${product.slug}`,
+      url: `https://sarvjagat.com/products/${product.slug}`,
       images: [
         {
           url: product.image,

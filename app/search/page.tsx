@@ -1,3 +1,4 @@
+'use client'
 import { useState, useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { Search, Grid, List } from "lucide-react"
@@ -7,28 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import ProductFilter from "@/components/search/product-filter"
 
-export async function generateMetadata() {
-  return {
-    title: "Search Products | Sarv Jagat",
-    description: "Search our comprehensive range of air compressors, dryers, and accessories. Find the perfect solution for your industrial needs.",
-    keywords: ["air compressor search", "industrial equipment", "compressor finder", "Sarv Jagat products"],
-    openGraph: {
-      title: "Search Products | Sarv Jagat",
-      description: "Search our comprehensive range of air compressors, dryers, and accessories.",
-      url: "https://sarvjagat.com/search",
-      siteName: "Sarv Jagat",
-      images: [
-        {
-          url: "/og-search.jpg",
-          width: 1200,
-          height: 630,
-        },
-      ],
-      locale: "en_US",
-      type: "website",
-    },
-  }
-}
+
 
 // Mock search results data
 const searchResults = [
@@ -36,7 +16,7 @@ const searchResults = [
     id: "sj-fs-75",
     title: "SJ Fixed Speed Screw Compressor 75HP",
     category: "Screw Compressors",
-    image: "/sj-fixed-speed-screw-compressor.png",
+    image: "/placeholder.jpg",
     description: "High-efficiency fixed speed screw compressor with advanced cooling system and digital controls.",
     specifications: {
       power: "75 HP",
@@ -51,7 +31,7 @@ const searchResults = [
     id: "sj-vs-100",
     title: "SJ Variable Speed Screw Compressor 100HP",
     category: "Screw Compressors",
-    image: "/sj-variable-speed-screw-compressor.png",
+    image: "/placeholder.jpg",
     description: "Energy-efficient VSD compressor with automatic speed adjustment and remote monitoring.",
     specifications: {
       power: "100 HP",
@@ -66,7 +46,7 @@ const searchResults = [
     id: "sj-piston-25",
     title: "SJ Two Stage Piston Compressor 25HP",
     category: "Piston Compressors",
-    image: "/piston-compressor-range.png",
+    image: "/placeholder.jpg",
     description: "Robust two-stage piston compressor for high pressure applications.",
     specifications: {
       power: "25 HP",
@@ -81,7 +61,7 @@ const searchResults = [
     id: "sj-oilfree-50",
     title: "SJ Oil-Free Screw Compressor 50HP",
     category: "Oil-Free Compressors",
-    image: "/specialized-compressor-solutions.png",
+    image: "/placeholder.jpg",
     description: "Clean air solution for pharmaceutical and food processing applications.",
     specifications: {
       power: "50 HP",
@@ -96,7 +76,7 @@ const searchResults = [
     id: "sj-dryer-100",
     title: "SJ Refrigerated Air Dryer 100CFM",
     category: "Accessories",
-    image: "/air-compressor-accessories.png",
+    image: "/placeholder.jpg",
     description: "High-efficiency refrigerated air dryer for moisture removal.",
     specifications: {
       power:"0",
@@ -112,7 +92,7 @@ const searchResults = [
     id: "sj-tank-500",
     title: "SJ Air Receiver Tank 500L",
     category: "Accessories",
-    image: "/air-compressor-accessories.png",
+    image: "/placeholder.jpg",
     description: "Vertical air receiver tank with safety valve and drain.",
     specifications: {
       power : "0",
