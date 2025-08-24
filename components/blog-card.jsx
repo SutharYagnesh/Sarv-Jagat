@@ -18,7 +18,7 @@ export function BlogCard({ post }) {
         <Link href={`/blog/${post.slug}`}>
           <div className="relative overflow-hidden">
             <img
-              src={post.coverImage || "/placeholder.svg"}
+              src={post.imageUrl || "/placeholder.svg"}
               alt={post.title}
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
             />
@@ -62,16 +62,16 @@ export function BlogCard({ post }) {
                 </div>
                 <div className="flex items-center space-x-1">
                   <Clock className="h-4 w-4" />
-                  <span>{post.readTime} min read</span>
+                  <span>{post.readTime || 0} min read</span>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
                 <img
-                  src={post.author.avatar || "/placeholder.svg"}
-                  alt={post.author.name}
+                  src={post.author?.avatar || "/placeholder-user.jpg"}
+                  alt={post.author?.name || "Author"}
                   className="w-6 h-6 rounded-full object-cover"
                 />
-                <span className="text-xs">{post.author.name}</span>
+                <span className="text-xs">{post.author?.name || "Unknown Author"}</span>
               </div>
             </div>
           </div>

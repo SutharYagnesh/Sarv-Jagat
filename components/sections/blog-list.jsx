@@ -1,23 +1,21 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { BlogCard } from "@/components/blog-card"
+
 import { BlogFilters } from "@/components/blog-filters"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
 
-export function BlogList({ searchParams }) {
+export function BlogList({ search, tag, category }) {
   const [posts, setPosts] = useState([])
   const [filteredPosts, setFilteredPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [filters, setFilters] = useState({
-    search: searchParams?.search || "",
-    tag: searchParams?.tag || "all",
-    category: searchParams?.category || "all",
+    search: search || "",
+    tag: tag || "all",
+    category: category || "all",
   })
-
-  const postsPerPage = 6
 
   useEffect(() => {
     fetchPosts()
@@ -29,9 +27,10 @@ export function BlogList({ searchParams }) {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch("/api/blog")
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/blog`)
       const data = await response.json()
-      setPosts(data.posts || [])
+      const sortedPosts = (data.posts || []).sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+      setPosts(sortedPosts)
     } catch (error) {
       console.error("Failed to fetch posts:", error)
     } finally {
@@ -60,17 +59,11 @@ export function BlogList({ searchParams }) {
     }
 
     setFilteredPosts(filtered)
-    setCurrentPage(1)
   }
 
   const handleFilterChange = (newFilters) => {
     setFilters((prev) => ({ ...prev, ...newFilters }))
   }
-
-  // Pagination
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage)
-  const startIndex = (currentPage - 1) * postsPerPage
-  const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage)
 
   if (loading) {
     return (
@@ -123,34 +116,21 @@ export function BlogList({ searchParams }) {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                  {currentPosts.map((post) => (
-                    <BlogCard key={post.id} post={post} />
+                <div className="grid grid-cols-1 gap-8 mb-12">
+                  {filteredPosts.map((post) => (
+                    <div key={post.id} className="bg-card p-6 rounded-lg shadow-md">
+                      {post.imageUrl && (
+                        <img src={post.imageUrl} alt={post.title} className="w-full h-64 object-cover rounded-md mb-4" />
+                      )}
+                      <h3 className="text-3xl font-bold text-foreground mb-2">{post.title}</h3>
+                      <p className="text-muted-foreground text-sm mb-4">
+                        By {post.author?.name || "Unknown Author"} on {new Date(post.publishedAt).toLocaleDateString()}
+                        {post.readTime && ` • ${post.readTime} min read`}
+                      </p>
+                      <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: post.content }} />
+                    </div>
                   ))}
                 </div>
-
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <div className="flex justify-center items-center space-x-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                      disabled={currentPage === 1}
-                    >
-                      Previous
-                    </Button>
-                    <span className="px-4 py-2 text-sm text-muted-foreground">
-                      Page {currentPage} of {totalPages}
-                    </span>
-                    <Button
-                      variant="outline"
-                      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                      disabled={currentPage === totalPages}
-                    >
-                      Next
-                    </Button>
-                  </div>
-                )}
               </>
             )}
           </div>

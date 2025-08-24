@@ -21,6 +21,7 @@ export function BlogCreateForm() {
     authorEmail: "",
     authorCompany: "",
   })
+  const [image, setImage] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
 
@@ -50,34 +51,53 @@ export function BlogCreateForm() {
     }))
   }
 
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0])
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
 
     try {
-      // Convert tags string to array
-      const tagsArray = formData.tags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter((tag) => tag)
+      const data = new FormData()
+      for (const key in formData) {
+        if (key === "tags") {
+          formData.tags
+            .split(",")
+            .map((tag) => tag.trim())
+            .filter((tag) => tag)
+            .forEach((tag) => data.append("tags[]", tag))
+        } else {
+          data.append(key, formData[key])
+        }
+      }
+      if (image) {
+        data.append("image", image)
+      }
 
-      const blogData = {
-        ...formData,
-        tags: tagsArray,
-        status: "pending", // All user submissions start as pending for moderation
-        slug: formData.title
+      // Add other necessary fields
+      data.append("status", "pending") // All user submissions start as pending for moderation
+      data.append(
+        "slug",
+        formData.title
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
           .replace(/(^-|-$)/g, ""),
-        publishedAt: new Date().toISOString(),
-        author: {
+      )
+      data.append("publishedAt", new Date().toISOString())
+      data.append("readTime", Math.ceil(formData.content.split(" ").length / 200)) // Estimate read time based on 200 words per minute
+      data.append(
+        "author",
+        JSON.stringify({
           name: formData.authorName,
           email: formData.authorEmail,
           company: formData.authorCompany,
-        },
-      }
+          avatar: "/placeholder-user.jpg",
+        }),
+      )
 
-      const response = await apiClient.createBlogPost(blogData)
+      const response = await apiClient.createBlogPost(data)
 
       if (response.success || response.post) {
         toast({
@@ -190,59 +210,54 @@ export function BlogCreateForm() {
                 </SelectContent>
               </Select>
             </div>
+              <div className="space-y-2">
+                <Label htmlFor="tags">Tags</Label>
+                <Input
+                  id="tags"
+                  name="tags"
+                  type="text"
+                  value={formData.tags}
+                  onChange={handleChange}
+                  placeholder="Enter tags separated by commas"
+                />
+              </div>
+            </div>
+
             <div className="space-y-2">
-              <Label htmlFor="tags">Tags</Label>
-              <Input
-                id="tags"
-                name="tags"
-                type="text"
-                value={formData.tags}
+              <Label htmlFor="image">Featured Image</Label>
+              <Input id="image" name="image" type="file" onChange={handleImageChange} accept="image/*" />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="excerpt">Short Excerpt</Label>
+              <Textarea
+                id="excerpt"
+                name="excerpt"
+                value={formData.excerpt}
                 onChange={handleChange}
-                placeholder="Enter tags separated by commas"
+                placeholder="A brief summary of your article (max 160 characters)"
+                maxLength={160}
               />
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="excerpt">Brief Summary *</Label>
-            <Textarea
-              id="excerpt"
-              name="excerpt"
-              value={formData.excerpt}
-              onChange={handleChange}
-              required
-              rows={3}
-              placeholder="Write a brief summary of your article (2-3 sentences)"
-            />
-          </div>
+            <div className="space-y-2">
+              <Label htmlFor="content">Article Content *</Label>
+              <Textarea
+                id="content"
+                name="content"
+                value={formData.content}
+                onChange={handleChange}
+                required
+                placeholder="Write your full article here..."
+                rows={15}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="content">Article Content *</Label>
-            <Textarea
-              id="content"
-              name="content"
-              value={formData.content}
-              onChange={handleChange}
-              required
-              rows={12}
-              placeholder="Share your insights, experiences, and knowledge about industrial air compressors, applications, maintenance tips, or industry best practices..."
-            />
-          </div>
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Submit Blog Post"}
+            </Button>
 
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <h4 className="font-semibold text-blue-900 mb-2">Submission Guidelines</h4>
-            <ul className="text-sm text-blue-800 space-y-1">
-              <li>• All submissions are reviewed before publication</li>
-              <li>• Focus on industrial air compressors, compressed air applications, or manufacturing processes</li>
-              <li>• Share practical insights, case studies, or technical knowledge</li>
-              <li>• Use professional language and provide accurate information</li>
-              <li>• Include specific examples or data when possible</li>
-            </ul>
-          </div>
 
-          <Button type="submit" disabled={isSubmitting} className="w-full bg-red-600 hover:bg-red-700">
-            {isSubmitting ? "Submitting..." : "Submit Article for Review"}
-          </Button>
         </form>
       </CardContent>
     </Card>
