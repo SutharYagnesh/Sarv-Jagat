@@ -189,11 +189,11 @@ export default function DealersPage() {
       {/* Main Content */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Tabs defaultValue="locator" className="w-full">
+          <Tabs defaultValue="partnership" className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="locator">Dealer Locator</TabsTrigger>
-              <TabsTrigger value="network">Our Network</TabsTrigger>
               <TabsTrigger value="partnership">Become a Partner</TabsTrigger>
+              <TabsTrigger value="network">Our Network</TabsTrigger>
+              <TabsTrigger value="locator">Dealer Locator</TabsTrigger>
             </TabsList>
 
             {/* Dealer Locator Tab */}
@@ -712,12 +712,13 @@ export default function DealersPage() {
                           placeholder="Tell us about your business, target market, and why you want to partner with Sarv Jagat..."
                         ></textarea>
                       </div>
+                    </form>
                         <Link href={"https://wa.me/message/QNU3M3AGOL3NH1"} target="_blank" rel="noopener noreferrer">
                       <Button type="submit"  size="lg" className="w-full">
                         Submit Application
+                        
                       </Button>
                       </Link>
-                    </form>
                   </CardContent>
                 </Card>
               </div>
