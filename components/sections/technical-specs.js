@@ -32,7 +32,7 @@ export function TechnicalSpecs() {
     "ISO 14001:2015",
     "OHSAS 18001:2007",
     "CE Marking",
-    "ASME Certification",
+    "MSME Certification",
     "API Standards",
   ]
 
