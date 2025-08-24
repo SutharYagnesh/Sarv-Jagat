@@ -5,22 +5,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowRight, CheckCircle, Factory,Package, Wrench, Car, Paintbrush, Phone } from "lucide-react"
 import Link from "next/link"
 
-// Automotive industry specific page with detailed applications and solutions
+// Plastic industry specific page with detailed applications and solutions
 export default function PlasticPetPage() {
-  // Automotive applications based on product descriptions
+  // Plastic applications based on product descriptions
   const applications = [
     {
       title: "PET Bottle Blowing",
-      description: "Providing ultra-high pressure, oil-free air for the precise and efficient blowing of PET bottles.",
+      description: "Providing ultra-high pressure, oil-free Pet for the precise and efficient blowing of PET bottles.",
       requirements: [
         "Ultra-high pressure (up to 40 bar)",
-        "100% oil-free air (Class 0)",
+        "100% oil-free Pet (Class 0)",
         "Consistent flow and pressure stability",
       ],
       products: [
         "High Pressure PET Compressors",
         "Booster Compressors",
-        "High Pressure Air Dryers",
+        "High Pressure Pet Dryers",
       ],
       benefits: [
         "Flawless bottle quality",
@@ -32,15 +32,15 @@ export default function PlasticPetPage() {
     },
     {
       title: "Plastic Molding & Injection",
-      description: "Supplying clean, dry compressed air for injection molding machines, ensuring product integrity and machine longevity.",
+      description: "Supplying clean, dry compressed Pet for injection molding machines, ensuring product integrity and machine longevity.",
       requirements: [
-        "Clean, dry air",
+        "Clean, dry Pet",
         "Stable pressure",
         "Energy efficiency",
       ],
       products: [
         "Oil-Free Rotary Screw Compressors",
-        "Refrigerated Air Dryers",
+        "Refrigerated Pet Dryers",
         "Precision Filters",
       ],
       benefits: [
@@ -53,16 +53,16 @@ export default function PlasticPetPage() {
     },
     {
       title: "Pneumatic Conveying",
-      description: "Utilizing compressed air for efficient and contamination-free transport of plastic pellets and raw materials.",
+      description: "Utilizing compressed Pet for efficient and contamination-free transport of plastic pellets and raw materials.",
       requirements: [
-        "Reliable air supply",
+        "Reliable Pet supply",
         "Consistent pressure",
         "Minimal moisture content",
       ],
       products: [
         "Low Pressure Rotary Screw Compressors",
         "Blower Systems",
-        "Air Receivers",
+        "Pet Receivers",
       ],
       benefits: [
         "Efficient material handling",
@@ -74,7 +74,7 @@ export default function PlasticPetPage() {
     },
     {
       title: "Recycling & Reprocessing",
-      description: "Providing compressed air for sorting, cleaning, and shredding processes in plastic recycling facilities.",
+      description: "Providing compressed Pet for sorting, cleaning, and shredding processes in plastic recycling facilities.",
       requirements: [
         "Durable compressors",
         "Energy-efficient operation",
@@ -99,7 +99,7 @@ export default function PlasticPetPage() {
   const caseStudies = [
     {
       company: "BottleBlow Innovations",
-      challenge: "High energy consumption and inconsistent bottle quality due to outdated compressed air systems.",
+      challenge: "High energy consumption and inconsistent bottle quality due to outdated compressed Pet systems.",
       solution: "Implemented SJ's high-pressure PET compressors with energy recovery systems.",
       results: "Reduced energy costs by 35%, improved bottle consistency by 20%, and increased production speed.",
       savings: "₹2.0 Crore annually",
@@ -107,21 +107,21 @@ export default function PlasticPetPage() {
     },
     {
       company: "PolyMolding Solutions",
-      challenge: "Moisture and oil in compressed air causing defects in plastic molded products and frequent machine breakdowns.",
-      solution: "Installed SJ's oil-free rotary screw compressors with advanced air treatment systems.",
+      challenge: "Moisture and oil in compressed Pet causing defects in plastic molded products and frequent machine breakdowns.",
+      solution: "Installed SJ's oil-free rotary screw compressors with advanced Pet treatment systems.",
       results: "Achieved 99% reduction in product defects, extended mold lifespan by 25%, and reduced maintenance costs.",
       savings: "₹1.0 Crore annually",
       image: "/case-study-polymolding.jpg",
     },
   ]
 
-  // Recommended products for automotive industry
+  // Recommended products for Plastic industry
   const recommendedProducts = [
     {
       name: "High Pressure PET Compressors",
       features: [
         "Specifically designed for PET bottle blowing applications",
-        "Delivers ultra-high pressure oil-free air",
+        "Delivers ultra-high pressure oil-free Pet",
         "Energy-efficient and reliable for continuous operation",
         "Available in various capacities to match production needs",
       ],
@@ -132,7 +132,7 @@ export default function PlasticPetPage() {
     {
       name: "Oil-Free Rotary Screw Compressors",
       features: [
-        "Provides 100% oil-free air for sensitive plastic molding processes",
+        "Provides 100% oil-free Pet for sensitive plastic molding processes",
         "Ensures product purity and prevents contamination",
         "Low maintenance and environmentally friendly",
         "Energy-efficient operation for reduced costs",
@@ -142,28 +142,28 @@ export default function PlasticPetPage() {
       href: "/products/oil-free-rotary-screw-compressors",
     },
     {
-      name: "High Pressure Air Dryers",
+      name: "High Pressure Pet Dryers",
       features: [
-        "Removes moisture from high-pressure air for PET blowing",
+        "Removes moisture from high-pressure Pet for PET blowing",
         "Prevents condensation and ensures bottle clarity",
         "Designed for demanding industrial environments",
         "Available in various types including desiccant and refrigerated",
       ],
       powerRange: "10 CFM - 5000 CFM",
-      image: "/high-pressure-air-dryer.png",
-      href: "/products/high-pressure-air-dryers",
+      image: "/high-pressure-Pet-dryer.png",
+      href: "/products/high-pressure-Pet-dryers",
     },
     {
-      name: "Air Receivers",
+      name: "Pet Receivers",
       features: [
-        "Stores compressed air to meet peak demands",
+        "Stores compressed Pet to meet peak demands",
         "Stabilizes pressure for consistent production",
         "Reduces compressor cycling and extends lifespan",
         "Available in various sizes and pressure ratings",
       ],
       powerRange: "300 L - 10,000 L",
-      image: "/air-receiver.png",
-      href: "/products/air-receivers",
+      image: "/Pet-receiver.png",
+      href: "/products/Pet-receivers",
     },
   ]
 
@@ -172,25 +172,25 @@ export default function PlasticPetPage() {
     {
       title: "Energy Cost Reduction",
       value: "35%",
-      description: "Achieved by optimizing high-pressure air systems for PET blowing.",
+      description: "Achieved by optimizing high-pressure Pet systems for PET blowing.",
       icon: Wrench,
     },
     {
       title: "Bottle Quality Improvement",
       value: "20%",
-      description: "Through consistent and oil-free compressed air supply.",
+      description: "Through consistent and oil-free compressed Pet supply.",
       icon: CheckCircle,
     },
     {
       title: "Production Speed Increase",
       value: "15%",
-      description: "Due to reliable high-pressure air and reduced downtime.",
+      description: "Due to reliable high-pressure Pet and reduced downtime.",
       icon: Factory,
     },
     {
       title: "Maintenance Cost Savings",
       value: "25%",
-      description: "Resulting from extended equipment lifespan with clean, dry air.",
+      description: "Resulting from extended equipment lifespan with clean, dry Pet.",
       icon: Wrench,
     },
   ]
@@ -209,7 +209,7 @@ export default function PlasticPetPage() {
               Industries
             </Link>
             <span className="mx-2">/</span>
-            <span className="text-slate-900">Automotive</span>
+            <span className="text-slate-900">Plastic</span>
           </nav>
         </div>
       </div>
@@ -222,11 +222,11 @@ export default function PlasticPetPage() {
               <div className="space-y-4">
                 <Badge className="bg-primary text-primary-foreground">Industry Leader</Badge>
                 <h1 className="text-4xl lg:text-5xl font-bold heading-professional">
-                  Automotive Industry <span className="text-gradient">Air Solutions</span>
+                  Plastic Industry <span className="text-gradient">Pet Solutions</span>
                 </h1>
                 <p className="text-xl text-muted-foreground text-professional">
-                  Powering automotive manufacturing with reliable, efficient, and contamination-free compressed air
-                  systems. From paint booths to assembly lines, SJ delivers the precision and reliability automotive
+                  Powering plastic manufacturing with reliable, efficient, and contamination-free compressed pet
+                  systems. From paint booths to assembly lines, SJ delivers the precision and reliability Plastic
                   industry demands.
                 </p>
               </div>
@@ -234,7 +234,7 @@ export default function PlasticPetPage() {
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <div className="text-2xl font-bold text-primary">500+</div>
-                  <div className="text-sm text-muted-foreground">Automotive Companies</div>
+                  <div className="text-sm text-muted-foreground">Plastic Companies</div>
                 </div>
                 <div className="space-y-2">
                   <div className="text-2xl font-bold text-secondary">35%</div>
@@ -244,7 +244,7 @@ export default function PlasticPetPage() {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" className="btn-primary">
-                  Get Automotive Solution
+                  Get Plastic Solution
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button size="lg" variant="outline">
@@ -256,7 +256,7 @@ export default function PlasticPetPage() {
             <div className="relative">
               <img
                 src="/sj-ind-pet-water-bottle-production.jpg"
-                alt="Plastic & PET Bottle Manufacturing with SJ Air Compressors"
+                alt="Plastic & PET Bottle Manufacturing with SJ Pet Compressors"
                 className="rounded-lg shadow-2xl"
               />
               <div className="absolute -bottom-6 -right-6 bg-secondary text-secondary-foreground p-4 rounded-lg shadow-xl">
@@ -288,10 +288,10 @@ export default function PlasticPetPage() {
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl font-bold heading-professional">
-              Automotive <span className="text-gradient">Applications</span>
+              Plastic <span className="text-gradient">Applications</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-professional">
-              Comprehensive compressed air solutions for every aspect of automotive manufacturing and service
+              Comprehensive compressed Pet solutions for every aspect of Plastic manufacturing and service
               operations.
             </p>
           </div>
@@ -373,7 +373,7 @@ export default function PlasticPetPage() {
               Success <span className="text-gradient">Stories</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-professional">
-              Real results from automotive companies that chose SJ compressed air solutions.
+              Real results from Plastic companies that chose SJ compressed Pet solutions.
             </p>
           </div>
 
@@ -421,7 +421,7 @@ export default function PlasticPetPage() {
               Recommended <span className="text-gradient">Products</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-professional">
-              Specially selected SJ compressor systems optimized for automotive industry requirements.
+              Specially selected SJ compressor systems optimized for Plastic industry requirements.
             </p>
           </div>
 
@@ -461,15 +461,15 @@ export default function PlasticPetPage() {
       <section className="py-20 hero-gradient text-white">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto space-y-6">
-            <h2 className="text-3xl font-bold heading-professional">Ready to Optimize Your Automotive Operations?</h2>
+            <h2 className="text-3xl font-bold heading-professional">Ready to Optimize Your Plastic Operations?</h2>
             <p className="text-xl text-white/90 text-professional">
-              Get specialized consultation for your automotive compressed air requirements. Our experts will design the
+              Get specialized consultation for your Plastic compressed Pet requirements. Our experts will design the
               perfect solution for your specific applications.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="btn-secondary">
                 <Phone className="mr-2 h-5 w-5" />
-                Get Automotive Consultation
+                Get Plastic Consultation
               </Button>
               <Button
                 size="lg"

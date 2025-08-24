@@ -6,6 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowRight, Search, Filter, Settings, Zap, Shield, Wrench } from "lucide-react"
 import Link from "next/link"
 import ProductFilter from "@/components/search/product-filter"
+import { TechnicalSpecs } from "@/components/sections/technical-specs"
+import { CompressorComparison } from "@/components/sections/compressor-comparison"
 
 // Main products catalog page with comprehensive product categories
 export default function ProductsPage() {
@@ -13,6 +15,7 @@ export default function ProductsPage() {
   const productCategories = [
     {
       title: "Screw Air Compressors",
+      link:"products/screw",
       description: "High-efficiency rotary screw compressors for continuous industrial operations",
       image: "/sj-screw-assemble.png",
       powerRange: "10-200 HP",
@@ -31,6 +34,7 @@ export default function ProductsPage() {
     },
     {
       title: "Reciprocating Piston Compressors",
+      link:"products/piston",
       description: "Robust piston compressors for heavy-duty and intermittent applications",
       image: "/SJ_COM_MULTISTAGE_AIR-WATER COOLED_1.jpg",
       powerRange: "1-25 HP",
@@ -49,6 +53,7 @@ export default function ProductsPage() {
     },
     {
       title: "Specialized Compressors",
+      link:"products/specialized",
       description: "Custom-engineered solutions for specific industrial requirements",
       image: "/SJ_COM_BOOSTER_DO NOT KNOW.jpg",
       powerRange: "7.5-30 HP",
@@ -64,6 +69,7 @@ export default function ProductsPage() {
     },
     {
       title: "Accessories & Components",
+      link:"services/spare-parts",
       description: "Complete range of air treatment and storage accessories",
       image: "/sj-filter.png",
       powerRange: "All Sizes",
@@ -73,7 +79,7 @@ export default function ProductsPage() {
         { name: "Air Receiver Tanks", href: "/products/" },
         { name: "Refrigerated Air Dryers", href: "/products" },
         { name: "Air Filters & Carbon Towers", href: "/products" },
-        { name: "Spare Parts", href: "/products" },
+        { name: "Spare Parts", href: "/services/spare-parts" },
       ],
       icon: Shield,
       color: "bg-muted-foreground",
@@ -224,7 +230,7 @@ export default function ProductsPage() {
 
                       <Button asChild className="w-full btn-primary">
                         <Link
-                          href={`/products/${category.title.toLowerCase().replace(/\s+/g, "-").replace(/&/g, "and")}`}
+                          href={`/${category.link}`}
                         >
                           View All {category.title}
                           <ArrowRight className="ml-2 h-4 w-4" />
@@ -239,53 +245,11 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Key Features Section */}
-      <section className="py-16 industrial-section">
-        <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-12">
-            <h2 className="text-3xl font-bold heading-professional">
-              Why Choose <span className="text-gradient">SJBrand Products</span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-professional">
-              Every Sarv Jagat product is engineered with precision and manufactured to the highest quality standards.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {keyFeatures.map((feature, index) => (
-              <div key={index} className="flex items-center gap-3 p-4 bg-background rounded-lg">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
-                <span className="font-medium">{feature}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+       <TechnicalSpecs  />
+      <CompressorComparison />
 
       {/* CTA Section */}
-      <section className="py-16 hero-gradient text-white">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto space-y-6">
-            <h2 className="text-3xl font-bold heading-professional">Need Help Choosing the Right Compressor?</h2>
-            <p className="text-xl text-white/90 text-professional">
-              Our technical experts are ready to help you select the perfect air compressor solution for your specific
-              requirements.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="btn-secondary">
-                Get Technical Consultation
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-white border-white hover:bg-white hover:text-primary bg-transparent"
-              >
-                Download Product Catalog
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      
     </div>
   )
 }

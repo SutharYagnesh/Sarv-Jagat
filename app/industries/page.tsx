@@ -170,7 +170,7 @@ export default function IndustriesPage() {
     { number: "10+", label: "Industries Served", icon: Factory },
     { number: "3000+", label: "Companies Trust Us", icon: Shield },
     { number: "15,000+", label: "Installations", icon: Settings },
-    { number: "25+", label: "Years Experience", icon: Wrench },
+    { number: "18+", label: "Years Experience", icon: Wrench },
   ]
 
   return (

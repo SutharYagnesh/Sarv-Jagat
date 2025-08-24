@@ -178,7 +178,7 @@ export default function ContactPage() {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <form onSubmit={handleContactSubmit} className="space-y-6">
+                      <form  className="space-y-6">
                         <div className="grid md:grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor="name">Full Name *</Label>
@@ -269,12 +269,17 @@ export default function ContactPage() {
                           />
                         </div>
 
-                        <Link href={"https://wa.me/message/QNU3M3AGOL3NH1"} target="_blank" rel="noopener noreferrer">
+                        {/* <Link href={"https://wa.me/message/QNU3M3AGOL3NH1"} target="_blank" rel="noopener noreferrer">
+                        <Button type="submit"  size="lg" className="w-full bg-red-500">
+                        Submit Application
+                      </Button>
+                       </Link> */}
+                      </form>
+                      <Link href={"https://wa.me/message/QNU3M3AGOL3NH1"} target="_blank" rel="noopener noreferrer">
                         <Button type="submit"  size="lg" className="w-full bg-red-500">
                         Submit Application
                       </Button>
                        </Link>
-                      </form>
                     </CardContent>
                   </Card>
                 </div>
@@ -319,8 +324,8 @@ export default function ContactPage() {
                           <Phone className="h-5 w-5 text-red-200" />
                           <div>
                             <p className="font-semibold">24/7 Emergency Hotline</p>
-                            <a href="tel:+919157487233" className="hover:underline">
-                              +91-9157487233
+                            <a href="tel:+919157770753" className="hover:underline">
+                              +91-9157770753
                             </a>
                           </div>
                         </div>
@@ -465,9 +470,10 @@ export default function ContactPage() {
                         <li>• Maintenance scheduling</li>
                       </ul>
                     </div>
-                    <Button className="w-full">
+                    <Button className="w-full"><a href="tel:+919157770753" className="hover:underline">
                       <Phone className="h-4 w-4 mr-2" />
                       Call Technical Support
+                            </a>
                     </Button>
                   </CardContent>
                 </Card>
@@ -490,8 +496,11 @@ export default function ContactPage() {
                       </ul>
                     </div>
                     <Button className="w-full">
+                      <a href="mailto:contact@sarvjagat.com" className="hover:underline">
+                      
                       <Mail className="h-4 w-4 mr-2" />
                       Contact Sales Team
+                            </a>
                     </Button>
                   </CardContent>
                 </Card>
@@ -514,8 +523,10 @@ export default function ContactPage() {
                       </ul>
                     </div>
                     <Button className="w-full">
+                      <a href="tel:+919157770753" className="hover:underline">
                       <MessageSquare className="h-4 w-4 mr-2" />
-                      Schedule Service
+                             Schedule Service
+                            </a>
                     </Button>
                   </CardContent>
                 </Card>
@@ -542,7 +553,7 @@ export default function ContactPage() {
                       {
                         question: "What warranty do you offer on your products?",
                         answer:
-                          "We offer comprehensive warranty coverage: 2 years on screw compressors, 1 year on reciprocating compressors, and 6 months on accessories.",
+                          "We offer comprehensive warranty coverage: 1 years on screw compressors, 1 year on reciprocating compressors, and 6 months on accessories.",
                       },
                       {
                         question: "How can I schedule preventive maintenance?",

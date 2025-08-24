@@ -22,7 +22,7 @@ export default function ServicesPage() {
     {
       title: "Installation & Commissioning",
       description: "Professional installation and setup of air compressor systems by certified technicians",
-      image: "/installation-commissioning-service.png",
+      image: "/Installation & Commissioning.jpg",
       icon: Wrench,
       features: [
         "Site survey and planning",
@@ -46,7 +46,7 @@ export default function ServicesPage() {
     {
       title: "Annual Maintenance Contract",
       description: "Comprehensive maintenance plans to ensure optimal performance and maximum uptime",
-      image: "/annual-maintenance-contract.png",
+      image: "/sj-annual-management-contracts-obj.png",
       icon: Shield,
       features: [
         "Scheduled preventive maintenance",
@@ -65,7 +65,7 @@ export default function ServicesPage() {
     {
       title: "Repair & Service",
       description: "Expert repair services and emergency breakdown support for all SJ compressor systems",
-      image: "/repair-service-support.png",
+      image: "/sj-air-compressor-maintenance-service.jpg",
       icon: Settings,
       features: [
         "Emergency breakdown service",
@@ -76,15 +76,15 @@ export default function ServicesPage() {
         "Performance restoration",
       ],
       benefits: ["Minimal downtime", "Cost-effective repairs", "Restored performance", "Extended equipment life"],
-      coverage: "50+ Service Centers",
+      coverage: "All Over India",
       timeline: "Same day response",
-      href: "/services/repair",
+      href: "/services/",
       color: "bg-accent",
     },
     {
       title: "Technical Support",
       description: "24/7 technical assistance and troubleshooting support from certified engineers",
-      image: "/technical-support-service.png",
+      image: "/SJ-technical-support-center-customer-service.jpg",
       icon: Phone,
       features: [
         "24/7 helpline support",
@@ -103,7 +103,7 @@ export default function ServicesPage() {
     {
       title: "Spare Parts Supply",
       description: "Genuine spare parts and accessories for all SJ products with fast delivery",
-      image: "/spare-parts-supply.png",
+      image: "/SJ-Spare Parts Supply.jpg",
       icon: Package,
       features: [
         "Genuine SJ spare parts",
@@ -122,7 +122,7 @@ export default function ServicesPage() {
     {
       title: "Energy Audit",
       description: "Comprehensive energy assessment and optimization recommendations for compressed air systems",
-      image: "/energy-audit-service.png",
+      image: "/sj-energy-audit.jpg",
       icon: TrendingUp,
       features: [
         "System energy analysis",
@@ -135,14 +135,14 @@ export default function ServicesPage() {
       benefits: ["Reduced energy costs", "Improved efficiency", "Environmental benefits", "Quick ROI"],
       coverage: "Certified Auditors",
       timeline: "3-5 days",
-      href: "/services/energy-audit",
+      href: "/services/",
       color: "bg-secondary",
     },
   ]
 
   // Service statistics for credibility
   const serviceStats = [
-    { number: "50+", label: "Service Centers", icon: MapPin },
+    { number: "All Over India", label: "Service Available", icon: MapPin },
     { number: "24/7", label: "Technical Support", icon: Phone },
     { number: "99.5%", label: "Average Uptime", icon: Shield },
     { number: "2-4 hrs", label: "Response Time", icon: Clock },
@@ -159,7 +159,7 @@ export default function ServicesPage() {
         "Phone support during business hours",
         "Performance reports",
       ],
-      price: "Starting from ₹25,000/year",
+      price: "Starting from ₹50,000/year",
       suitable: "1-10 HP compressors",
     },
     {
@@ -173,7 +173,7 @@ export default function ServicesPage() {
         "Energy efficiency monitoring",
         "Detailed analytics reports",
       ],
-      price: "Starting from ₹75,000/year",
+      price: "Starting from ₹1,00,000/year",
       suitable: "10-100 HP compressors",
       popular: true,
     },
@@ -352,7 +352,7 @@ export default function ServicesPage() {
                       </div>
                     ))}
                   </div>
-                  <Button className={`w-full ${pkg.popular ? "btn-primary" : "btn-secondary"}`}>
+                  <Button className={`w-full ${pkg.popular ? "btn-primary" : "btn-primary"}`}>
                     Get Quote for {pkg.name}
                   </Button>
                 </CardContent>
@@ -440,7 +440,7 @@ export default function ServicesPage() {
               for your compressed air systems.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="btn-secondary text-lg px-8">
+              <Button size="lg" className="btn-secondary text-black text-lg px-8">
                 <Phone className="mr-2 h-5 w-5" />
                 Call Service Team
               </Button>

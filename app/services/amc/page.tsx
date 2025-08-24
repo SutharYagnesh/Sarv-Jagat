@@ -15,7 +15,7 @@ export default function AMCPage() {
     {
       name: "Basic AMC",
       description: "Essential maintenance for small compressor installations",
-      price: "₹25,000 - ₹50,000",
+      price: "₹75,000 - ₹1,00,000",
       duration: "12 months",
       visits: "Quarterly (4 visits/year)",
       suitable: "1-10 HP compressors",
@@ -35,7 +35,7 @@ export default function AMCPage() {
     {
       name: "Premium AMC",
       description: "Comprehensive maintenance for medium to large installations",
-      price: "₹75,000 - ₹1,50,000",
+      price: "₹1,50,000 - ₹2,50,000",
       duration: "12 months",
       visits: "Monthly (12 visits/year)",
       suitable: "10-100 HP compressors",
@@ -219,7 +219,7 @@ export default function AMCPage() {
 
             <div className="relative">
               <img
-                src="/amc-maintenance-service.png"
+                src="/sj-annual-management-contracts-obj.png"
                 alt="SJ Annual Maintenance Contract Service"
                 className="rounded-lg shadow-2xl"
               />
@@ -333,7 +333,7 @@ export default function AMCPage() {
                     </div>
                   </div>
 
-                  <Button className={`w-full ${pkg.popular ? "btn-primary" : "btn-secondary"}`}>
+                  <Button className={`w-full ${pkg.popular ? "btn-primary" : "border-t-cyan-600"}`}>
                     Get {pkg.name} Quote
                   </Button>
                 </CardContent>

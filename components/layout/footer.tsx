@@ -60,8 +60,11 @@ export function Footer() {
                 className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-400"
               />
               <Button className="bg-red-600 hover:bg-red-700 text-white px-6">
+                <a href="mailto:contact@sarvjagat.com" className="hover:underline">
                 Subscribe
                 <ArrowRight className="ml-2 h-4 w-4" />
+            
+                            </a>
               </Button>
             </div>
           </div>
@@ -107,7 +110,7 @@ export function Footer() {
               <div className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-red-400 mt-1" />
                 <span>
-                  Shade No-24, Vinayak Industrial Estate - 2<br />
+                  Vinayak Industrial Estate - 2<br />
                   Kathwada-GIDC, Ahmedabad-382430, Gujarat, India
                 </span>
               </div>

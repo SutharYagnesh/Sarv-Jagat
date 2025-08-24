@@ -39,7 +39,7 @@ export default function CatalogPage() {
       format: "PDF",
       category: "Screw Compressors",
       image: "/catalog-screw.png",
-      downloadUrl: "#",
+      downloadUrl: "https://drive.google.com/uc?export=download&id=1-_e_SCeR8ppQQ3bbThJkNeXHJS2U5mtt",
     },
     {
       id: 3,
@@ -50,7 +50,7 @@ export default function CatalogPage() {
       format: "PDF",
       category: "Piston Compressors",
       image: "/catalog-piston.png",
-      downloadUrl: "#",
+      downloadUrl: "https://drive.google.com/uc?export=download&id=1-_e_SCeR8ppQQ3bbThJkNeXHJS2U5mtt",
     },
     {
       id: 4,
@@ -61,7 +61,7 @@ export default function CatalogPage() {
       format: "PDF",
       category: "Oil-Free Systems",
       image: "/catalog-oilfree.png",
-      downloadUrl: "#",
+      downloadUrl: "https://drive.google.com/uc?export=download&id=1-_e_SCeR8ppQQ3bbThJkNeXHJS2U5mtt",
     },
     {
       id: 5,
@@ -72,7 +72,7 @@ export default function CatalogPage() {
       format: "PDF",
       category: "Service",
       image: "/catalog-service.png",
-      downloadUrl: "#",
+      downloadUrl: "https://drive.google.com/uc?export=download&id=1-_e_SCeR8ppQQ3bbThJkNeXHJS2U5mtt",
     },
     {
       id: 6,
@@ -83,11 +83,11 @@ export default function CatalogPage() {
       format: "PDF",
       category: "Spare Parts",
       image: "/catalog-parts.png",
-      downloadUrl: "#",
+      downloadUrl: "https://drive.google.com/uc?export=download&id=1-_e_SCeR8ppQQ3bbThJkNeXHJS2U5mtt",
     },
   ]
 
-  const handleDownloadSubmit = (e, catalogId) => {
+  const handleDownloadSubmit = (e: React.MouseEvent<HTMLButtonElement>, catalogId: number) => {
     e.preventDefault()
     const catalog = catalogs.find((c) => c.id === catalogId)
     if (catalog && catalog.downloadUrl !== "#") {

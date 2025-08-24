@@ -5,7 +5,7 @@ import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
 import { Toaster } from "@/components/ui/toaster"
-
+import {Analytics} from "@vercel/analytics/next"
 export const metadata = {
   title: "Sarv Jagat Corporation | Premium Industrial Air Compressor Solutions",
   description:
@@ -221,6 +221,7 @@ html {
       <body>
         <Header />
         <main>{children}</main>
+        <Analytics/>
         <Footer />
         <WhatsAppButton />
         <Toaster />

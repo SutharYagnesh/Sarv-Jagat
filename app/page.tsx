@@ -21,10 +21,10 @@ import WhatsAppButton from "@/components/whatsapp-button"
 export default function HomePage() {
   // Company statistics for credibility
   const stats = [
-    { number: "20+", label: "Years Experience", icon: Award },
-    { number: "10,000+", label: "Happy Customers", icon: Users },
-    { number: "50+", label: "Service Centers", icon: MapPin },
-    { number: "24/7", label: "Technical Support", icon: Phone },
+    { number: "18+", label: "Years Experience", icon: Award },
+    { number: "5000+", label: "Happy Customers", icon: Users },
+    { number: "25+", label: "Service Support", icon: MapPin },
+    { number: "24/7", label: "Technical Help", icon: Phone },
   ]
 
   // Featured product categories with descriptions from the provided data
@@ -173,7 +173,7 @@ export default function HomePage() {
                 className="rounded-lg shadow-2xl"
               />
               <div className="absolute -bottom-6 -left-6 bg-white text-slate-900 p-6 rounded-lg shadow-xl">
-                <div className="text-3xl font-bold text-red-600">20+</div>
+                <div className="text-3xl font-bold text-red-600">18+</div>
                 <div className="text-sm text-slate-600">Years of Excellence</div>
               </div>
             </div>
@@ -353,10 +353,10 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="bg-red-600 hover:bg-red-700 text-white text-lg px-8">
-                <Link href="/contact">
-                  Get Free Consultation
+                <a href="tel:+919157770753" className="hover:underline">
+                               Get Free Consultation
                   <Phone className="ml-2 h-5 w-5" />
-                </Link>
+                            </a>
               </Button>
               <Button
                 asChild
