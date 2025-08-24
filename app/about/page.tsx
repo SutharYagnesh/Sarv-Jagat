@@ -13,13 +13,13 @@ export default function AboutPage() {
 
   // Company milestones data
   const milestones = [
-    { year: "1995", event: "Sarv Jagat founded with vision to provide quality compressed air solutions" },
-    { year: "2000", event: "Launched first indigenous screw air compressor series" },
-    { year: "2005", event: "Expanded to serve 500+ industrial clients across India" },
-    { year: "2010", event: "Introduced oil-free compressor technology for pharmaceutical industry" },
-    { year: "2015", event: "Achieved ISO 9001:2015 certification for quality management" },
-    { year: "2020", event: "Launched energy-efficient VSD compressor range" },
-    { year: "2024", event: "Serving 2000+ clients with 50+ product variants" },
+    { year: "2008", event: "Sarv Jagat founded with vision to provide quality compressed air solutions" },
+    { year: "2011", event: "Launched first indigenous screw air compressor series" },
+    { year: "2014", event: "Expanded to serve 500+ industrial clients across India" },
+    { year: "2017", event: "Introduced oil-free compressor technology for pharmaceutical industry" },
+    { year: "2020", event: "Achieved ISO 9001:2015 certification for quality management" },
+    { year: "2022", event: "Launched energy-efficient VSD compressor range" },
+    { year: "2025", event: "Serving 2000+ clients with 50+ product variants" },
   ]
 
   // Leadership team data
@@ -79,7 +79,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap justify-center gap-6 text-lg">
               <div className="flex items-center gap-2">
                 <Calendar className="h-5 w-5 text-red-400" />
-                <span>Est. 1995</span>
+                <span>Est. 2008</span>
               </div>
               <div className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-red-400" />
