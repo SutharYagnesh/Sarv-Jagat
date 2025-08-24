@@ -188,7 +188,7 @@ export default function AboutPage() {
                     <div className="text-lg">Product Variants</div>
                   </div>
                   <div>
-                    <div className="text-4xl font-bold text-red-400 mb-2">25+</div>
+                    <div className="text-4xl font-bold text-red-400 mb-2">15+</div>
                     <div className="text-lg">Years Experience</div>
                   </div>
                   <div>
@@ -221,7 +221,7 @@ export default function AboutPage() {
                     {
                       icon: <CheckCircle className="h-8 w-8 text-blue-600" />,
                       title: "Proven Track Record",
-                      description: "25+ years of successful installations and satisfied customers",
+                      description: "15+ years of successful installations and satisfied customers",
                     },
                     {
                       icon: <Target className="h-8 w-8 text-blue-600" />,
