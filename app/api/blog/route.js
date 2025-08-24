@@ -1,3 +1,7 @@
+// In a real application, you would use a database for persistent storage.
+// For demonstration purposes, we'll use an in-memory array.
+let inMemoryBlogPosts = [];
+
 import fs from 'fs/promises';
 import path from 'path';
 import { NextResponse } from 'next/server';
@@ -37,22 +41,8 @@ export async function POST(request) {
     const newPost = { ...blogData, imageUrl, id: Date.now().toString() }; // Assign a unique ID
 
     // In a real application, you would save newPost to a database.
-    // For now, let's simulate saving by reading existing posts and adding the new one.
-    const blogPostsPath = path.join(process.cwd(), 'data', 'blog', 'posts.json');
-    let existingPosts = [];
-    try {
-      const data = await fs.readFile(blogPostsPath, 'utf8');
-      existingPosts = JSON.parse(data);
-    } catch (readError) {
-      if (readError.code === 'ENOENT') {
-        console.warn('posts.json not found, creating a new one.');
-      } else {
-        throw readError; // Re-throw other errors
-      }
-    }
-
-    existingPosts.push(newPost);
-    await fs.writeFile(blogPostsPath, JSON.stringify(existingPosts, null, 2));
+    // For now, we'll add it to our in-memory array.
+    inMemoryBlogPosts.push(newPost);
 
     return NextResponse.json({ success: true, post: newPost });
   } catch (error) {
@@ -63,19 +53,9 @@ export async function POST(request) {
 
 export async function GET() {
   try {
-    const blogPostsPath = path.join(process.cwd(), 'data', 'blog', 'posts.json');
-    let existingPosts = [];
-    try {
-      const data = await fs.readFile(blogPostsPath, 'utf8');
-      existingPosts = JSON.parse(data);
-    } catch (readError) {
-      if (readError.code === 'ENOENT') {
-        console.warn('posts.json not found, returning empty array.');
-      } else {
-        throw readError; // Re-throw other errors
-      }
-    }
-    return NextResponse.json({ posts: existingPosts });
+    // In a real application, you would fetch posts from a database.
+    // For now, we'll return the in-memory array.
+    return NextResponse.json({ posts: inMemoryBlogPosts });
   } catch (error) {
     console.error('Error fetching blog posts:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
