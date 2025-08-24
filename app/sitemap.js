@@ -1,7 +1,6 @@
 import products from "@/data/products.json"
 import fs from "fs"
 import path from "path"
-import products from "@/data/products.json"
 
 async function getAllBlogPosts() {
   try {
@@ -68,6 +67,15 @@ export default async function sitemap() {
     priority: 0.7,
   }))
 
-  return [...staticPages, ...productPages]
-}
+  // Blog pages
+  const blogPosts = await getAllBlogPosts()
+  const blogPages = blogPosts.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: post.updatedAt || post.publishedAt,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }))
 
+  return [...staticPages, ...productPages, ...blogPages]
+
+}
