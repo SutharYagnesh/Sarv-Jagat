@@ -1,25 +1,49 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { NextResponse } from 'next/server';
+import { kv } from '@vercel/kv';
 
-// Use file system for persistent storage
+// Check if running in Vercel production environment
+const isVercelProduction = process.env.VERCEL_ENV === 'production';
+
+// Use file system for local development, KV for production
 const BLOG_POSTS_FILE = path.join(process.cwd(), 'data', 'blog', 'posts.json');
+const KV_BLOG_KEY = 'blog_posts';
 
 async function readBlogPosts() {
   try {
-    const data = await fs.readFile(BLOG_POSTS_FILE, 'utf8');
-    return JSON.parse(data);
+    if (isVercelProduction) {
+      // Use Vercel KV in production
+      const posts = await kv.get(KV_BLOG_KEY);
+      return posts || [];
+    } else {
+      // Use file system in development
+      const data = await fs.readFile(BLOG_POSTS_FILE, 'utf8');
+      return JSON.parse(data);
+    }
   } catch (error) {
     if (error.code === 'ENOENT') {
       // File does not exist, return empty array
       return [];
     }
+    console.error('Error reading blog posts:', error);
     throw error;
   }
 }
 
 async function writeBlogPosts(posts) {
-  await fs.writeFile(BLOG_POSTS_FILE, JSON.stringify(posts, null, 2));
+  try {
+    if (isVercelProduction) {
+      // Use Vercel KV in production
+      await kv.set(KV_BLOG_KEY, posts);
+    } else {
+      // Use file system in development
+      await fs.writeFile(BLOG_POSTS_FILE, JSON.stringify(posts, null, 2));
+    }
+  } catch (error) {
+    console.error('Error writing blog posts:', error);
+    throw error;
+  }
 }
 
 // GET a specific blog post by ID
