@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
-import { inMemoryBlogPosts } from '../route.js';
-
-// Check if running in Vercel production environment
-const isVercelProduction = process.env.VERCEL_ENV === 'production';
+import { NextResponse } from 'next/server';
+import { dbConnect, BlogPost } from '../../../lib/dbConnect';
 
 // GET a specific blog post by ID
 export async function GET(request, { params }) {
+  await dbConnect();
   try {
-    const { postId } = await params;
-    const post = inMemoryBlogPosts.find(p => p.id === postId || p.slug === postId);
+    const { postId } = params;
+    const post = await BlogPost.findOne({ $or: [{ id: postId }, { slug: postId }] }).lean();
 
     if (!post) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
@@ -23,24 +22,33 @@ export async function GET(request, { params }) {
 
 // UPDATE a specific blog post
 export async function PUT(request, { params }) {
+  await dbConnect();
   try {
-    const { postId } = await params;
-    const postIndex = inMemoryBlogPosts.findIndex(p => p.id === postId);
+    const { postId } = params;
+    const updatedPostData = await request.json();
 
-    if (postIndex === -1) {
+    // Ensure author is an object if it's part of the update
+    if (updatedPostData.author && typeof updatedPostData.author === 'string') {
+      try {
+        updatedPostData.author = JSON.parse(updatedPostData.author);
+      } catch (e) {
+        console.error('Failed to parse author string during update:', e);
+        // Fallback or error handling
+        updatedPostData.author = { name: updatedPostData.author, email: '', company: '', avatar: '/placeholder-user.jpg' };
+      }
+    }
+
+    const post = await BlogPost.findOneAndUpdate(
+      { $or: [{ id: postId }, { slug: postId }] },
+      { ...updatedPostData, updatedAt: new Date().toISOString() },
+      { new: true }
+    ).lean();
+
+    if (!post) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    const updatedPostData = await request.json();
-    
-    // Update the post with new data
-    inMemoryBlogPosts[postIndex] = {
-      ...inMemoryBlogPosts[postIndex],
-      ...updatedPostData,
-      updatedAt: new Date().toISOString()
-    };
-
-    return NextResponse.json({ success: true, post: inMemoryBlogPosts[postIndex] });
+    return NextResponse.json({ success: true, post });
   } catch (error) {
     console.error('Error updating blog post:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -49,16 +57,14 @@ export async function PUT(request, { params }) {
 
 // DELETE a specific blog post
 export async function DELETE(request, { params }) {
+  await dbConnect();
   try {
-    const { postId } = await params;
-    const postIndex = inMemoryBlogPosts.findIndex(p => p.id === postId);
+    const { postId } = params;
+    const deletedPost = await BlogPost.findOneAndDelete({ $or: [{ id: postId }, { slug: postId }] }).lean();
 
-    if (postIndex === -1) {
+    if (!deletedPost) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
-
-    // Remove the post from the array
-    const deletedPost = inMemoryBlogPosts.splice(postIndex, 1)[0];
 
     return NextResponse.json({ success: true, deletedPost });
   } catch (error) {

@@ -1,57 +1,36 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { NextResponse } from 'next/server';
+import { dbConnect, BlogPost } from '../../../lib/dbConnect';
 
-// In-memory storage with 30-minute expiration
-export let inMemoryBlogPosts = [
-  {
-    id: "1",
-    title: "Understanding Industrial Air Compressors",
-    slug: "understanding-industrial-air-compressors",
-    excerpt: "A comprehensive guide to industrial air compressors and their applications.",
-    content: "<p>Industrial air compressors are essential equipment in many manufacturing processes...</p>",
-    author: "Sarv Jagat Team",
-    publishedAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    status: "published",
-    imageUrl: "/sj-blog.png",
-    tags: ["air compressors", "industrial", "manufacturing"],
-    category: "Equipment"
-  },
-  {
-    id: "2",
-    title: "Maintenance Tips for Air Compressors",
-    slug: "maintenance-tips-for-air-compressors",
-    excerpt: "Essential maintenance practices to extend the life of your air compressor.",
-    content: "<p>Regular maintenance is crucial for ensuring the longevity and efficiency of air compressors...</p>",
-    author: "Sarv Jagat Team",
-    publishedAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    status: "published",
-    imageUrl: "/sj-blog.png",
-    tags: ["maintenance", "efficiency", "best practices"],
-    category: "Maintenance"
-  }
-];
+// Check if running in Vercel production environment
+const isVercelProduction = process.env.VERCEL_ENV === 'production';
 
 // Cleanup function to remove posts older than 30 minutes
-function cleanupOldPosts() {
-  const thirtyMinutesAgo = Date.now() - 30 * 60 * 1000;
-  inMemoryBlogPosts = inMemoryBlogPosts.filter(post => {
-    // Skip cleanup for sample posts (id 1 and 2)
-    if (post.id === "1" || post.id === "2") return true;
-    
-    // For dynamically created posts, check timestamp
-    const postTimestamp = parseInt(post.id);
-    return isNaN(postTimestamp) || postTimestamp > thirtyMinutesAgo;
-  });
+async function cleanupOldPosts() {
+  await dbConnect();
+  const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+  try {
+    // Find posts that are not sample posts (id 1 and 2) and have expired
+    const expiredPosts = await BlogPost.find({
+      id: { $nin: ["1", "2"] },
+      expiresAt: { $lt: thirtyMinutesAgo }
+    });
+
+    if (expiredPosts.length > 0) {
+      const deletedCount = await BlogPost.deleteMany({
+        _id: { $in: expiredPosts.map(post => post._id) }
+      });
+      console.log(`Cleaned up ${deletedCount.deletedCount} expired posts.`);
+    }
+  } catch (error) {
+    console.error('Error during blog post cleanup:', error);
+  }
 }
 
 // Run cleanup every minute
 setInterval(cleanupOldPosts, 60 * 1000);
-
-// Check if running in Vercel production environment
-const isVercelProduction = process.env.VERCEL_ENV === 'production';
 
 export async function POST(request) {
   try {
@@ -90,10 +69,28 @@ export async function POST(request) {
       }
     
 
-    const newPost = { ...blogData, imageUrl, id: Date.now().toString() }; // Assign a unique ID
+    await dbConnect();
 
-    // Add to in-memory array
-    inMemoryBlogPosts.push(newPost);
+    const newPost = {
+      ...blogData,
+      imageUrl,
+      id: Date.now().toString(), // Assign a unique ID
+      publishedAt: new Date().toISOString(),
+      expiresAt: new Date(Date.now() + 30 * 60 * 1000) // Set expiration for 30 minutes from now
+    };
+
+    // Ensure author is an object
+    if (typeof newPost.author === 'string') {
+      try {
+        newPost.author = JSON.parse(newPost.author);
+      } catch (e) {
+        console.error('Failed to parse author string:', e);
+        // Fallback or error handling if author string is not valid JSON
+        newPost.author = { name: newPost.author, email: '', company: '', avatar: '/placeholder-user.jpg' };
+      }
+    }
+
+    await BlogPost.create(newPost);
 
     return NextResponse.json({ success: true, post: newPost });
   } catch (error) {
@@ -108,11 +105,14 @@ export async function GET(request) {
     const includeUnpublished = searchParams.get('includeUnpublished') === 'true';
     
     // Filter out unpublished posts if not explicitly requested
-    const filteredPosts = includeUnpublished 
-      ? inMemoryBlogPosts 
-      : inMemoryBlogPosts.filter(post => post.status === 'published');
-      
-    return NextResponse.json({ posts: filteredPosts });
+    await dbConnect();
+    let query = {};
+    if (!includeUnpublished) {
+      query.status = 'published';
+    }
+    const allPosts = await BlogPost.find(query).lean(); // .lean() for plain JavaScript objects
+
+    return NextResponse.json({ posts: allPosts });
   } catch (error) {
     console.error('Error fetching blog posts:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
