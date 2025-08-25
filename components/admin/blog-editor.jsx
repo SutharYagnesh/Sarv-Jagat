@@ -76,13 +76,18 @@ export function BlogEditor({ post, onSave, onCancel }) {
   }
 
   const handleImageUpload = (e) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]
     if (file) {
-      setFormData((prev) => ({
-        ...prev,
-        coverImage: URL.createObjectURL(file), // For preview
-        imageFile: file, // The actual file to be uploaded
-      }));
+      // In a real app, you'd upload to a server or cloud storage
+      // For now, we'll use a placeholder
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setFormData((prev) => ({
+          ...prev,
+          coverImage: e.target?.result || "",
+        }))
+      }
+      reader.readAsDataURL(file)
     }
   }
 
@@ -93,8 +98,6 @@ export function BlogEditor({ post, onSave, onCancel }) {
       id: post?.id || formData.slug,
       updatedAt: now,
       publishedAt: post?.publishedAt || now,
-      // Ensure imageFile is included if it exists
-      ...(formData.imageFile && { imageFile: formData.imageFile }),
     }
     onSave(postData)
   }

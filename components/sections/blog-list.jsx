@@ -27,7 +27,9 @@ export function BlogList({ search, tag, category }) {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/blog`)
+      // Use window.location.origin for client components
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin;
+      const response = await fetch(`${baseUrl}/api/blog`)
       const data = await response.json()
       const sortedPosts = (data.posts || []).sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
       setPosts(sortedPosts)
@@ -119,15 +121,18 @@ export function BlogList({ search, tag, category }) {
                 <div className="grid grid-cols-1 gap-8 mb-12">
                   {filteredPosts.map((post) => (
                     <div key={post.id} className="bg-card p-6 rounded-lg shadow-md">
-                      {post.imageUrl && (
-                        <img src={post.imageUrl} alt={post.title} className="w-full h-64 object-cover rounded-md mb-4" />
-                      )}
-                      <h3 className="text-3xl font-bold text-foreground mb-2">{post.title}</h3>
+                      <a href={`/blog/${post.slug || post.id}`} className="block">
+                        {post.imageUrl && (
+                          <img src={post.imageUrl} alt={post.title} className="w-full h-64 object-cover rounded-md mb-4" />
+                        )}
+                        <h3 className="text-3xl font-bold text-foreground mb-2 hover:text-primary transition-colors">{post.title}</h3>
+                      </a>
                       <p className="text-muted-foreground text-sm mb-4">
                         By {post.author?.name || "Unknown Author"} on {new Date(post.publishedAt).toLocaleDateString()}
                         {post.readTime && ` • ${post.readTime} min read`}
                       </p>
-                      <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: post.content }} />
+                      <p className="mb-4">{post.excerpt}</p>
+                      <a href={`/blog/${post.slug || post.id}`} className="text-primary font-medium hover:underline">Read more</a>
                     </div>
                   ))}
                 </div>

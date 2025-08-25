@@ -4,9 +4,14 @@ import { PageHero } from "@/components/page-hero"
 export async function generateMetadata() {
   let posts = [];
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/blog`);
-    const data = await response.json();
-    posts = data.posts || [];
+    // For server components, we need to use an absolute URL with the host
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    // Skip metadata fetching if no base URL is available in server component
+    if (baseUrl) {
+      const response = await fetch(`${baseUrl}/api/blog`);
+      const data = await response.json();
+      posts = data.posts || [];
+    }
   } catch (error) {
     console.error("Failed to fetch posts for metadata:", error);
   }

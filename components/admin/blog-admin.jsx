@@ -48,7 +48,6 @@ export function BlogAdmin() {
   const handleDeletePost = async (postId) => {
     if (!confirm("Are you sure you want to delete this post?")) return
 
-
     try {
       const response = await fetch(`/api/blog/${postId}`, {
         method: "DELETE",
@@ -75,7 +74,6 @@ export function BlogAdmin() {
   const handleToggleStatus = async (post) => {
     try {
       const newStatus = post.status === "published" ? "draft" : "published"
-
       const response = await fetch(`/api/blog/${post.id}`, {
         method: "PUT",
         headers: {
@@ -107,36 +105,17 @@ export function BlogAdmin() {
   }
 
   const handleSavePost = async (postData) => {
-
     try {
-      const isEditing = editingPost !== null;
-      const url = isEditing ? `/api/blog/${editingPost.id}` : "/api/blog";
-      const method = isEditing ? "PUT" : "POST";
-
-      let bodyContent;
-      let headers = {};
-
-      if (postData.imageFile) {
-        const formData = new FormData();
-        for (const key in postData) {
-          if (key === 'imageFile') {
-            formData.append('image', postData[key]);
-          } else if (Array.isArray(postData[key])) {
-            postData[key].forEach(item => formData.append(`${key}[]`, item));
-          } else {
-            formData.append(key, postData[key]);
-          }
-        }
-        bodyContent = formData;
-      } else {
-        headers['Content-Type'] = 'application/json';
-        bodyContent = JSON.stringify(postData);
-      }
+      const isEditing = editingPost !== null
+      const url = isEditing ? `/api/blog/${editingPost.id}` : "/api/blog"
+      const method = isEditing ? "PUT" : "POST"
 
       const response = await fetch(url, {
         method,
-        headers,
-        body: bodyContent,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
       })
 
       if (response.ok) {
