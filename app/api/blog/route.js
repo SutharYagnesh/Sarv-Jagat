@@ -1,10 +1,54 @@
-import fs from 'fs/promises';
-import path from 'path';
 import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 
-// In a real application, you would use a database for persistent storage.
-// For demonstration purposes, we'll use an in-memory array.
-export let inMemoryBlogPosts = [];
+// In-memory storage with 30-minute expiration
+export let inMemoryBlogPosts = [
+  {
+    id: "1",
+    title: "Understanding Industrial Air Compressors",
+    slug: "understanding-industrial-air-compressors",
+    excerpt: "A comprehensive guide to industrial air compressors and their applications.",
+    content: "<p>Industrial air compressors are essential equipment in many manufacturing processes...</p>",
+    author: "Sarv Jagat Team",
+    publishedAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    status: "published",
+    imageUrl: "/sj-blog.png",
+    tags: ["air compressors", "industrial", "manufacturing"],
+    category: "Equipment"
+  },
+  {
+    id: "2",
+    title: "Maintenance Tips for Air Compressors",
+    slug: "maintenance-tips-for-air-compressors",
+    excerpt: "Essential maintenance practices to extend the life of your air compressor.",
+    content: "<p>Regular maintenance is crucial for ensuring the longevity and efficiency of air compressors...</p>",
+    author: "Sarv Jagat Team",
+    publishedAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    status: "published",
+    imageUrl: "/sj-blog.png",
+    tags: ["maintenance", "efficiency", "best practices"],
+    category: "Maintenance"
+  }
+];
+
+// Cleanup function to remove posts older than 30 minutes
+function cleanupOldPosts() {
+  const thirtyMinutesAgo = Date.now() - 30 * 60 * 1000;
+  inMemoryBlogPosts = inMemoryBlogPosts.filter(post => {
+    // Skip cleanup for sample posts (id 1 and 2)
+    if (post.id === "1" || post.id === "2") return true;
+    
+    // For dynamically created posts, check timestamp
+    const postTimestamp = parseInt(post.id);
+    return isNaN(postTimestamp) || postTimestamp > thirtyMinutesAgo;
+  });
+}
+
+// Run cleanup every minute
+setInterval(cleanupOldPosts, 60 * 1000);
 
 // Check if running in Vercel production environment
 const isVercelProduction = process.env.VERCEL_ENV === 'production';
@@ -29,26 +73,22 @@ export async function POST(request) {
 
     let imageUrl = null;
     if (image && image.name) {
-      if (isVercelProduction) {
-        // Use Vercel Blob Storage in production
-        const { put } = await import('@vercel/blob');
-        const filename = `${Date.now()}-${image.name}`;
-        const blob = await put(filename, image, {
-          access: 'public',
-        });
-        imageUrl = blob.url;
-      } else {
-        // Use local file system in development
+      // Use local file system for image storage
         const buffer = Buffer.from(await image.arrayBuffer());
         const filename = `${Date.now()}-${image.name}`;
-        const imagePath = path.join(process.cwd(), 'public', 'uploads', 'blog', filename);
-
-        // Ensure the directory exists
-        await fs.mkdir(path.dirname(imagePath), { recursive: true });
-        await fs.writeFile(imagePath, buffer);
-        imageUrl = `/uploads/blog/${filename}`;
+        const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+        
+        // Create uploads directory if it doesn't exist
+        if (!fs.existsSync(uploadDir)) {
+          fs.mkdirSync(uploadDir, { recursive: true });
+        }
+        
+        // Save image to local filesystem
+        const imagePath = path.join(uploadDir, filename);
+        fs.writeFileSync(imagePath, buffer);
+        imageUrl = `/uploads/${filename}`;
       }
-    }
+    
 
     const newPost = { ...blogData, imageUrl, id: Date.now().toString() }; // Assign a unique ID
 
