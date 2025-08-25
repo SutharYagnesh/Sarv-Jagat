@@ -1,50 +1,13 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { NextResponse } from 'next/server';
-import { kv } from '@vercel/kv';
+
+// In a real application, you would use a database for persistent storage.
+// For demonstration purposes, we'll use an in-memory array.
+export let inMemoryBlogPosts = [];
 
 // Check if running in Vercel production environment
 const isVercelProduction = process.env.VERCEL_ENV === 'production';
-
-// Use file system for local development, KV for production
-const BLOG_POSTS_FILE = path.join(process.cwd(), 'data', 'blog', 'posts.json');
-const KV_BLOG_KEY = 'blog_posts';
-
-async function readBlogPosts() {
-  try {
-    if (isVercelProduction) {
-      // Use Vercel KV in production
-      const posts = await kv.get(KV_BLOG_KEY);
-      return posts || [];
-    } else {
-      // Use file system in development
-      const data = await fs.readFile(BLOG_POSTS_FILE, 'utf8');
-      return JSON.parse(data);
-    }
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      // File does not exist, return empty array
-      return [];
-    }
-    console.error('Error reading blog posts:', error);
-    throw error;
-  }
-}
-
-async function writeBlogPosts(posts) {
-  try {
-    if (isVercelProduction) {
-      // Use Vercel KV in production
-      await kv.set(KV_BLOG_KEY, posts);
-    } else {
-      // Use file system in development
-      await fs.writeFile(BLOG_POSTS_FILE, JSON.stringify(posts, null, 2));
-    }
-  } catch (error) {
-    console.error('Error writing blog posts:', error);
-    throw error;
-  }
-}
 
 export async function POST(request) {
   try {
@@ -89,10 +52,8 @@ export async function POST(request) {
 
     const newPost = { ...blogData, imageUrl, id: Date.now().toString() }; // Assign a unique ID
 
-    // Save to the JSON file
-    const posts = await readBlogPosts();
-    posts.push(newPost);
-    await writeBlogPosts(posts);
+    // Add to in-memory array
+    inMemoryBlogPosts.push(newPost);
 
     return NextResponse.json({ success: true, post: newPost });
   } catch (error) {
@@ -106,12 +67,10 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const includeUnpublished = searchParams.get('includeUnpublished') === 'true';
     
-    const posts = await readBlogPosts();
-    
     // Filter out unpublished posts if not explicitly requested
     const filteredPosts = includeUnpublished 
-      ? posts 
-      : posts.filter(post => post.status === 'published');
+      ? inMemoryBlogPosts 
+      : inMemoryBlogPosts.filter(post => post.status === 'published');
       
     return NextResponse.json({ posts: filteredPosts });
   } catch (error) {

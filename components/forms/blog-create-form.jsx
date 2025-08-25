@@ -77,7 +77,7 @@ export function BlogCreateForm() {
       }
 
       // Add other necessary fields
-      data.append("status", "pending") // All user submissions start as pending for moderation
+      data.append("status", "published") // Set default status to published
       data.append(
         "slug",
         formData.title
