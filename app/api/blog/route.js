@@ -1,23 +1,5 @@
 // In a real application, you would use a database for persistent storage.
-// In a real application, you would use a database for persistent storage.
-const BLOG_POSTS_FILE = path.join(process.cwd(), 'data', 'blog', 'posts.json');
 
-async function readBlogPosts() {
-  try {
-    const data = await fs.readFile(BLOG_POSTS_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      // File does not exist, return empty array
-      return [];
-    }
-    throw error;
-  }
-}
-
-async function writeBlogPosts(posts) {
-  await fs.writeFile(BLOG_POSTS_FILE, JSON.stringify(posts, null, 2));
-}
 
 import fs from 'fs/promises';
 import path from 'path';
@@ -56,27 +38,9 @@ export async function POST(request) {
 
     // For now, we'll just log the data and return a success message.
     // In a real application, you would save this to a database.
-    const newPost = { ...blogData, imageUrl, id: Date.now().toString(), status: 'published' }; // Assign a unique ID and default status
-
-
-    // Handle author data consistency
-    if (blogData.authorName || blogData.authorEmail || blogData.authorCompany) {
-      newPost.author = {
-        name: blogData.authorName || newPost.author?.name || "",
-        email: blogData.authorEmail || newPost.author?.email || "",
-        company: blogData.authorCompany || newPost.author?.company || "",
-        avatar: newPost.author?.avatar || "/placeholder-user.jpg" // Default avatar
-      };
-      delete newPost.authorName;
-      delete newPost.authorEmail;
-      delete newPost.authorCompany;
-    }
-
-    const posts = await readBlogPosts();
-    posts.push(newPost);
-    await writeBlogPosts(posts);
-
-    return NextResponse.json({ success: true, post: newPost });
+    // For now, we'll add it to our in-memory array. 
+    // inMemoryBlogPosts.push(newPost);
+    return NextResponse.json({ success: false, error: "Direct file system operations are not supported on Vercel's read-only file system. Please integrate a Headless CMS or a database for persistent storage." }, { status: 500 });
   } catch (error) {
     console.error('Error processing blog post:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
@@ -87,13 +51,7 @@ export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const includeUnpublished = searchParams.get('includeUnpublished') === 'true';
-    let posts = await readBlogPosts();
-
-    if (!includeUnpublished) {
-      posts = posts.filter(post => post.status === 'published');
-    }
-
-    return NextResponse.json({ posts });
+    return NextResponse.json({ success: false, error: "Direct file system operations are not supported on Vercel's read-only file system. Please integrate a Headless CMS or a database for persistent storage." }, { status: 500 });
   } catch (error) {
     console.error('Error fetching blog posts:', error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
