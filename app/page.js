@@ -1,11 +1,12 @@
-import { HeroSection } from "@/components/sections/hero-section"
-import { ProductCategoriesSection } from "@/components/sections/product-categories-section"
-import { IndustriesSection } from "@/components/sections/industries-section"
-import { StatsSection } from "@/components/sections/stats-section"
-import { TestimonialsSection } from "@/components/sections/testimonials-section"
-import { PartnersSection } from "@/components/sections/partners-section"
-import { CTASection } from "@/components/sections/cta-section"
-import { OrganizationSchema } from "@/components/structured-data"
+// import { HeroSection } from "@/components/sections/hero-section"
+// import { ProductCategoriesSection } from "@/components/sections/product-categories-section"
+// import { IndustriesSection } from "@/components/sections/industries-section"
+// import { StatsSection } from "@/components/sections/stats-section"
+// import { TestimonialsSection } from "@/components/sections/testimonials-section"
+// import { PartnersSection } from "@/components/sections/partners-section"
+// import { CTASection } from "@/components/sections/cta-section"
+// import { OrganizationSchema } from "@/components/structured-data"
+import HomePage from "./main"
 
 export const metadata = {
   title: "Sarv Jagat Corporation | Industrial Air Compressor Manufacturer",
@@ -38,17 +39,18 @@ export const metadata = {
   },
 }
 
-export default function HomePage() {
+export default function Home() {
   return (
     <>
-      <OrganizationSchema />
+      {/* <OrganizationSchema />
       <HeroSection />
       <ProductCategoriesSection />
       <IndustriesSection />
       <StatsSection />
       <TestimonialsSection />
       <PartnersSection />
-      <CTASection />
+      <CTASection /> */}
+      <HomePage/>
     </>
   )
 }

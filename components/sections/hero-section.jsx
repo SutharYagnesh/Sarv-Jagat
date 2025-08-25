@@ -18,12 +18,10 @@ export function HeroSection() {
           >
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-                Premium <span className="text-primary">Air Compressor Solutions</span> for Industrial Excellence
+                Powering <span className="text-primary"> Industries with </span> Reliable Air Solutions
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-                Sarv Jagat Corporation - Your trusted partner for high-performance industrial air compressors, pneumatic
-                tools, and compressed air solutions. Engineered for reliability, built for efficiency, designed for your
-                success.
+               Sarv Jagat delivers world-class air compressors, from 1 HP to 300+ HP, engineered for continuous operation across diverse industrial applications.
               </p>
             </div>
 
@@ -64,7 +62,7 @@ export function HeroSection() {
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="/placeholder.jpg"
+                src="/placeholder-ttai9.png"
                 alt="Sarv Jagat Corporation - Modern Air Compressor Manufacturing Facility"
                 className="w-full h-auto"
               />
