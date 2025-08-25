@@ -7,14 +7,15 @@
     "authorName": "dtfvgbhjnkm",
     "authorEmail": "fygvbhjnkm@gmail.com",
     "authorCompany": "",
-    "status": "pending",
+    "status": "draft",
     "slug": "rftgybuhnjkm",
     "publishedAt": "2025-08-24T15:00:05.222Z",
     "author.name": "dtfvgbhjnkm",
     "author.email": "fygvbhjnkm@gmail.com",
     "author.company": "",
     "imageUrl": null,
-    "id": "1756047606827"
+    "id": "1756047606827",
+    "updatedAt": "2025-08-25T05:46:02.299Z"
   },
   {
     "title": "yagnesh",
@@ -24,13 +25,14 @@
     "authorName": "yagnesh",
     "authorEmail": "y@gmail.com",
     "authorCompany": "",
-    "status": "pending",
+    "status": "draft",
     "slug": "yagnesh",
     "publishedAt": "2025-08-24T15:19:45.412Z",
     "readTime": "1",
     "author": "{\"name\":\"yagnesh\",\"email\":\"y@gmail.com\",\"company\":\"\",\"avatar\":\"/placeholder-user.jpg\"}",
     "imageUrl": null,
-    "id": "1756048785447"
+    "id": "1756048785447",
+    "updatedAt": "2025-08-25T05:46:05.613Z"
   },
   {
     "title": "sxrdctfvgybhunj",
@@ -95,5 +97,60 @@
     "author": "{\"name\":\"jay\",\"email\":\"j@gmail.com\",\"company\":\"\",\"avatar\":\"/placeholder-user.jpg\"}",
     "imageUrl": "/uploads/blog/1756098970234-SJ_COM_BOOSTER_DO NOT KNOW.jpg",
     "id": "1756098970238"
+  },
+  {
+    "title": "What is Ai ? ",
+    "excerpt": "",
+    "content": "jay suthar ",
+    "category": "Case Studies",
+    "status": "pending",
+    "slug": "what-is-ai",
+    "publishedAt": "2025-08-25T05:34:14.241Z",
+    "readTime": "1",
+    "author": {
+      "name": "suthar Yagnesh Kiranbhai ",
+      "email": "j@gmail.com",
+      "company": "",
+      "avatar": "/placeholder-user.jpg"
+    },
+    "imageUrl": "/uploads/blog/1756100054340-sj-food-ind.jpg",
+    "id": "1756100054344"
+  },
+  {
+    "title": "Air",
+    "slug": "air",
+    "excerpt": "",
+    "content": "<h1>html</h1>",
+    "coverImage": "blob:http://localhost:3000/347cfc39-a32c-4bf1-8f72-b131607b5da2",
+    "category": "Maintenance",
+    "tags": [
+      "air"
+    ],
+    "status": "draft",
+    "readTime": "1",
+    "author": "[object Object]",
+    "id": "1756100661939",
+    "updatedAt": "2025-08-25T05:46:11.012Z",
+    "publishedAt": "2025-08-25T05:44:21.793Z",
+    "imageUrl": "/uploads/blog/1756100661924-sj-screw-assemble.png"
+  },
+  {
+    "title": "swdcfvgbhnj",
+    "excerpt": "",
+    "content": "dfghjbkl;",
+    "category": "Best Practices",
+    "status": "draft",
+    "slug": "swdcfvgbhnj",
+    "publishedAt": "2025-08-25T05:45:25.883Z",
+    "readTime": "1",
+    "author": {
+      "name": "suthar Yagnesh Kiranbhai ",
+      "email": "j@gmail.com",
+      "company": "",
+      "avatar": "/placeholder-user.jpg"
+    },
+    "imageUrl": "/uploads/blog/1756100725921-SJ_COM_BOOSTER_DO NOT KNOW.jpg",
+    "id": "1756100725930",
+    "updatedAt": "2025-08-25T05:46:14.814Z"
   }
 ]

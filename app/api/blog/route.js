@@ -26,6 +26,7 @@ import { NextResponse } from 'next/server';
 export async function POST(request) {
   try {
     const formData = await request.formData();
+
     const image = formData.get('image');
     const blogData = {};
 
@@ -55,7 +56,21 @@ export async function POST(request) {
 
     // For now, we'll just log the data and return a success message.
     // In a real application, you would save this to a database.
-    const newPost = { ...blogData, imageUrl, id: Date.now().toString() }; // Assign a unique ID
+    const newPost = { ...blogData, imageUrl, id: Date.now().toString(), status: 'published' }; // Assign a unique ID and default status
+
+
+    // Handle author data consistency
+    if (blogData.authorName || blogData.authorEmail || blogData.authorCompany) {
+      newPost.author = {
+        name: blogData.authorName || newPost.author?.name || "",
+        email: blogData.authorEmail || newPost.author?.email || "",
+        company: blogData.authorCompany || newPost.author?.company || "",
+        avatar: newPost.author?.avatar || "/placeholder-user.jpg" // Default avatar
+      };
+      delete newPost.authorName;
+      delete newPost.authorEmail;
+      delete newPost.authorCompany;
+    }
 
     const posts = await readBlogPosts();
     posts.push(newPost);
@@ -68,9 +83,16 @@ export async function POST(request) {
   }
 }
 
-export async function GET() {
+export async function GET(request) {
   try {
-    const posts = await readBlogPosts();
+    const { searchParams } = new URL(request.url);
+    const includeUnpublished = searchParams.get('includeUnpublished') === 'true';
+    let posts = await readBlogPosts();
+
+    if (!includeUnpublished) {
+      posts = posts.filter(post => post.status === 'published');
+    }
+
     return NextResponse.json({ posts });
   } catch (error) {
     console.error('Error fetching blog posts:', error);
