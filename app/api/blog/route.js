@@ -1,4 +1,5 @@
 // In a real application, you would use a database for persistent storage.
+// In a real application, you would use a database for persistent storage.
 const BLOG_POSTS_FILE = path.join(process.cwd(), 'data', 'blog', 'posts.json');
 
 async function readBlogPosts() {
