@@ -1,0 +1,50 @@
+[
+  {
+    "id": "job-1",
+    "title": "Senior Mechanical Engineer",
+    "department": "Engineering",
+    "location": "Los Angeles, CA",
+    "type": "Full-time",
+    "experience": "5+ years",
+    "posted": "2024-01-15",
+    "description": "We are seeking a Senior Mechanical Engineer to join our product development team. The ideal candidate will have experience in industrial equipment design and development.",
+    "requirements": [
+      "Bachelor's degree in Mechanical Engineering",
+      "5+ years of experience in industrial equipment design",
+      "Proficiency in CAD software (SolidWorks, AutoCAD)",
+      "Strong problem-solving skills",
+      "Excellent communication skills"
+    ],
+    "responsibilities": [
+      "Design and develop new industrial equipment",
+      "Collaborate with cross-functional teams",
+      "Conduct testing and validation",
+      "Prepare technical documentation",
+      "Support manufacturing and quality teams"
+    ]
+  },
+  {
+    "id": "job-2",
+    "title": "Sales Representative",
+    "department": "Sales",
+    "location": "Chicago, IL",
+    "type": "Full-time",
+    "experience": "3+ years",
+    "posted": "2024-01-20",
+    "description": "Join our sales team as a Sales Representative to drive growth in the Midwest region. You'll be responsible for building relationships with industrial clients and promoting our product portfolio.",
+    "requirements": [
+      "Bachelor's degree in Business or Engineering",
+      "3+ years of B2B sales experience",
+      "Knowledge of industrial equipment preferred",
+      "Strong negotiation skills",
+      "Willingness to travel"
+    ],
+    "responsibilities": [
+      "Develop and maintain client relationships",
+      "Identify new business opportunities",
+      "Prepare and deliver sales presentations",
+      "Negotiate contracts and pricing",
+      "Collaborate with technical teams"
+    ]
+  }
+]

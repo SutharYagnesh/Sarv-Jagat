@@ -1,0 +1,41 @@
+[
+  {
+    "id": "dealer-1",
+    "name": "Industrial Solutions Inc.",
+    "country": "United States",
+    "state": "California",
+    "city": "Los Angeles",
+    "address": "1234 Industrial Blvd, Los Angeles, CA 90210",
+    "phone": "+1 (555) 123-4567",
+    "email": "info@industrialsolutions.com",
+    "website": "https://industrialsolutions.com",
+    "services": ["Sales", "Service", "Parts", "Training"],
+    "coordinates": { "lat": 34.0522, "lng": -118.2437 }
+  },
+  {
+    "id": "dealer-2",
+    "name": "Midwest Equipment Co.",
+    "country": "United States",
+    "state": "Illinois",
+    "city": "Chicago",
+    "address": "5678 Manufacturing Ave, Chicago, IL 60601",
+    "phone": "+1 (555) 234-5678",
+    "email": "sales@midwestequipment.com",
+    "website": "https://midwestequipment.com",
+    "services": ["Sales", "Service", "Parts"],
+    "coordinates": { "lat": 41.8781, "lng": -87.6298 }
+  },
+  {
+    "id": "dealer-3",
+    "name": "Atlantic Industrial Supply",
+    "country": "United States",
+    "state": "New York",
+    "city": "New York",
+    "address": "9012 Commerce St, New York, NY 10001",
+    "phone": "+1 (555) 345-6789",
+    "email": "contact@atlanticindustrial.com",
+    "website": "https://atlanticindustrial.com",
+    "services": ["Sales", "Service", "Parts", "Training", "Consulting"],
+    "coordinates": { "lat": 40.7128, "lng": -74.006 }
+  }
+]

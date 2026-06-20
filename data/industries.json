@@ -1,0 +1,62 @@
+[
+  {
+    "id": "manufacturing",
+    "name": "Manufacturing",
+    "slug": "manufacturing",
+    "description": "Comprehensive solutions for manufacturing operations including assembly lines, quality control, and production automation.",
+    "image": "/placeholder.svg?height=400&width=600",
+    "icon": "Factory",
+    "useCases": ["Assembly line automation", "Quality control systems", "Material handling", "Production monitoring"],
+    "products": ["ac-100", "pt-50", "ad-200"],
+    "stats": {
+      "clients": "500+",
+      "projects": "1200+",
+      "efficiency": "35%"
+    }
+  },
+  {
+    "id": "automotive",
+    "name": "Automotive",
+    "slug": "automotive",
+    "description": "Specialized equipment for automotive manufacturing, repair shops, and service centers.",
+    "image": "/placeholder.svg?height=400&width=600",
+    "icon": "Car",
+    "useCases": ["Vehicle assembly", "Paint booth operations", "Tire service", "Engine repair"],
+    "products": ["ac-100", "pt-50"],
+    "stats": {
+      "clients": "200+",
+      "projects": "800+",
+      "efficiency": "40%"
+    }
+  },
+  {
+    "id": "textile",
+    "name": "Textile",
+    "slug": "textile",
+    "description": "Reliable air solutions for textile manufacturing processes including spinning, weaving, and finishing.",
+    "image": "/placeholder.svg?height=400&width=600",
+    "icon": "Shirt",
+    "useCases": ["Spinning operations", "Weaving processes", "Fabric finishing", "Quality inspection"],
+    "products": ["ac-100", "ad-200"],
+    "stats": {
+      "clients": "150+",
+      "projects": "600+",
+      "efficiency": "30%"
+    }
+  },
+  {
+    "id": "food-beverage",
+    "name": "Food & Beverage",
+    "slug": "food-beverage",
+    "description": "Food-grade solutions for processing, packaging, and quality control in food and beverage industries.",
+    "image": "/placeholder.svg?height=400&width=600",
+    "icon": "Coffee",
+    "useCases": ["Food processing", "Packaging automation", "Quality control", "Clean room operations"],
+    "products": ["ad-200"],
+    "stats": {
+      "clients": "100+",
+      "projects": "400+",
+      "efficiency": "45%"
+    }
+  }
+]
