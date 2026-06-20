@@ -1,4 +1,7 @@
+"use client"
+
 import Link from "next/link"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Facebook, Twitter, Linkedin, Youtube, Instagram, Phone, Mail, MapPin, ArrowRight } from "lucide-react"
@@ -6,19 +9,38 @@ import { Facebook, Twitter, Linkedin, Youtube, Instagram, Phone, Mail, MapPin, A
 export function Footer() {
   const currentYear = new Date().getFullYear()
 
-  const productLinks = [
+  const [productLinks, setProductLinks] = useState([
     { name: "Screw Compressors", href: "/products/screw" },
     { name: "Piston Compressors", href: "/products/piston" },
     { name: "Oil-Free Systems", href: "/products/oil-free" },
     { name: "Specialized Solutions", href: "/products/specialized" },
-    { name: "Refrigerated Air Dryers", href: "/products" },
-  ]
+  ])
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('/api/admin/categories');
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            setProductLinks(data.map(c => ({
+              name: c.name,
+              href: `/products/category/${c.slug}`
+            })));
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      }
+    }
+    fetchCategories();
+  }, []);
 
   const industryLinks = [
-    { name: "Automotive", href: "/industries/automotive" },
-    { name: "Pharmaceuticals", href: "/industries/pharmaceuticals" },
+    { name: "Automotive Industry", href: "/industries/automotive" },
+    { name: "Pharmaceuticals & Healthcare", href: "/industries/pharmaceuticals" },
     { name: "Food & Beverage", href: "/industries/food-beverage" },
-    { name: "Textile", href: "/industries/textile" },
+    { name: "Textile & Garment", href: "/industries/textile" },
     { name: "Metal & Fabrication", href: "/industries/metal-fabrication" },
     { name: "Construction & Infrastructure", href: "/industries/construction" },
     { name: "Mining & Quarry", href: "/industries/mining" },

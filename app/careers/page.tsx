@@ -210,9 +210,12 @@ export default function CareersPage() {
 
   const handleApplicationSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Handle form submission logic here
-    console.log("Application submitted:", applicationForm)
-    alert("Application submitted successfully! We will contact you soon.")
+    
+    const text = `*New Job Application*\n\n*Position:* ${applicationForm.position}\n*Name:* ${applicationForm.name}\n*Email:* ${applicationForm.email}\n*Phone:* ${applicationForm.phone}\n*Experience:* ${applicationForm.experience}\n*Location:* ${applicationForm.location}\n*Cover Letter:* ${applicationForm.coverLetter}\n\n_(Please attach your resume to this message)_`;
+    const url = `https://wa.me/919157487233?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank");
+
+    alert("Redirecting to WhatsApp. Please attach your resume manually in the chat.")
   }
 
   return (
@@ -433,7 +436,7 @@ export default function CareersPage() {
                       </div>
 
                       <div>
-                        <Label htmlFor="resume">Resume/CV *</Label>
+                        <Label htmlFor="resume">Resume/CV (Optional via Form, Attach in WhatsApp)</Label>
                         <div className="mt-2 flex items-center gap-4">
                           <Button type="button" variant="outline" className="flex items-center gap-2 bg-transparent">
                             <Upload className="h-4 w-4" />
@@ -454,14 +457,11 @@ export default function CareersPage() {
                         />
                       </div>
 
+                        <Button type="submit" size="lg" className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white">
+                          <Send className="h-5 w-5 mr-2" />
+                          Submit via WhatsApp
+                        </Button>
                     </form>
-                      <Button type="submit" size="lg" className="w-full">
-                        <Send className="h-5 w-5 mr-2" />
-                        <a href="mailto:contact@sarvjagat.com" className="hover:underline">
-                        Submit Application
-                
-                            </a>
-                      </Button>
                   </CardContent>
                 </Card>
               </div>

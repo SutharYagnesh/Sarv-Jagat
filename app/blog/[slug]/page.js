@@ -3,7 +3,7 @@ import connectDB from "@/lib/db";
 import Blog from "@/lib/models/Blog";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Calendar, User, Tag, Share2, Facebook, Twitter, Linkedin } from "lucide-react";
+import { Calendar, User, Tag, Share2, Facebook, Twitter, Linkedin, Youtube, Instagram, Chrome } from "lucide-react";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -52,7 +52,7 @@ export default async function BlogDetailPage({ params }) {
                 <img
                   src={blog.imageUrl || "/placeholder.svg"}
                   alt={blog.title}
-                  className="max-h-full object-cover w-full h-full"
+                  className="max-h-full object-contain w-full h-full"
                 />
               </div>
             </div>
@@ -63,7 +63,6 @@ export default async function BlogDetailPage({ params }) {
               
               <div className="flex flex-wrap items-center gap-4 pb-4 border-b border-gray-100">
                 <BadgeItem icon={<Calendar className="w-4 h-4 mr-1 text-red-600" />} text={new Date(blog.publishedAt).toLocaleDateString()} />
-                <BadgeItem icon={<User className="w-4 h-4 mr-1 text-red-600" />} text={blog.author?.name || "Admin"} />
                 {blog.category && <BadgeItem icon={<Tag className="w-4 h-4 mr-1 text-red-600" />} text={blog.category} />}
               </div>
 
@@ -105,6 +104,21 @@ export default async function BlogDetailPage({ params }) {
                 <a href="https://www.linkedin.com/company/sarvjagat/" target="_blank" rel="noopener noreferrer">
                   <Button variant="outline" size="icon" className="rounded-full text-[#0A66C2] border-[#0A66C2] hover:bg-[#0A66C2] hover:text-white">
                     <Linkedin className="w-4 h-4" />
+                  </Button>
+                </a>
+                <a href="https://www.youtube.com/@SarvJagat" target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" size="icon" className="rounded-full text-[#FF0000] border-[#FF0000] hover:bg-[#FF0000] hover:text-white">
+                    <Youtube className="w-4 h-4" />
+                  </Button>
+                </a>
+                <a href="https://www.instagram.com/sarvjagat" target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" size="icon" className="rounded-full text-[#E4405F] border-[#E4405F] hover:bg-[#E4405F] hover:text-white">
+                    <Instagram className="w-4 h-4" />
+                  </Button>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Google">
+                  <Button variant="outline" size="icon" className="rounded-full text-[#DB4437] border-[#DB4437] hover:bg-[#DB4437] hover:text-white">
+                    <Chrome className="w-4 h-4" />
                   </Button>
                 </a>
               </div>

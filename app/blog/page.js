@@ -39,38 +39,38 @@ export default async function BlogPage() {
               /* Blog Grid - 4 Columns matching Product layout */
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {blogs.map((blog, idx) => (
-                  <Card key={idx} className="flex flex-col hover:shadow-lg transition-shadow duration-300">
-                    {/* Image Section */}
-                    <div className="relative aspect-square p-4 flex items-center justify-center bg-gray-50 border-b overflow-hidden">
-                      <img
-                        src={blog.imageUrl || "/placeholder.svg"}
-                        alt={blog.title}
-                        className="max-h-full object-cover w-full h-full"
-                      />
-                      {/* Optional side logo tag, similar to reference */}
-                      <div className="absolute left-2 top-0 bottom-0 flex items-center">
-                        <div className="bg-black text-white text-xs font-bold px-1 py-4 uppercase tracking-widest" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
-                          Sarv Jagat
-                        </div>
+                  <Link key={idx} href={`/blog/${blog.slug}`} className="block group">
+                    <Card className="flex flex-col hover:shadow-lg transition-shadow duration-300 h-full">
+                      {/* Image Section */}
+                      <div className="relative aspect-square p-4 flex items-center justify-center bg-gray-50 border-b overflow-hidden group-hover:bg-gray-100 transition-colors">
+                        <img
+                          src={blog.imageUrl || "/placeholder.svg"}
+                          alt={blog.title}
+                          className="max-h-full object-contain w-full h-full"
+                        />
+                        {/* Optional side logo tag, similar to reference */}
+                        {/* <div className="absolute left-2 top-0 bottom-0 flex items-center"> */}
+                           {/* <div className="bg-black text-white text-xs font-bold px-1 py-4 uppercase tracking-widest" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}> */}
+                            {/* Sarv Jagat */}
+                          {/* </div> // */}
+                        {/* </div> */}
                       </div>
-                    </div>
 
-                    {/* Content Section */}
-                    <CardContent className="p-4 flex-1 flex flex-col justify-between space-y-4">
-                      <div className="space-y-2">
-                        <p className="text-xs text-gray-500 font-medium">{new Date(blog.publishedAt).toLocaleDateString()}</p>
-                        <h3 className="font-medium text-sm line-clamp-2 h-10">{blog.title}</h3>
-                      </div>
-                      
-                      <div className="grid grid-cols-1 mt-auto pt-2">
-                        <Button asChild className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs px-2">
-                          <Link href={`/blog/${blog.slug}`}>
-                            Read Article
-                          </Link>
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      {/* Content Section */}
+                      <CardContent className="p-4 flex-1 flex flex-col justify-between space-y-4">
+                        <div className="space-y-2">
+                          <p className="text-xs text-gray-500 font-medium">{new Date(blog.publishedAt).toLocaleDateString()}</p>
+                          <h3 className="font-medium text-sm line-clamp-2 h-10 group-hover:text-red-600 transition-colors">{blog.title}</h3>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 mt-auto pt-2">
+                          <Button asChild className="w-full bg-slate-900 group-hover:bg-red-600 text-white text-xs px-2 transition-colors">
+                            <span>Read Article</span>
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 ))}
               </div>
             )}

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { ProductEnquiryForm } from "@/components/forms/product-enquiry-form"
 import { Phone, Mail, Share2 } from "lucide-react"
 import Link from "next/link"
+import { ShareButton } from "@/components/ui/share-button"
 
 export function ProductDetails({ product }) {
   const [selectedImage, setSelectedImage] = useState(0)
@@ -44,9 +45,12 @@ export function ProductDetails({ product }) {
                   alt={product.name}
                   className="max-h-full object-contain mix-blend-multiply"
                 />
-                <button className="absolute top-4 right-4 p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
-                  <Share2 className="h-4 w-4 text-gray-600" />
-                </button>
+                <ShareButton 
+                  title={product.name}
+                  text={`Check out ${product.name} from Sarv Jagat Corporation`}
+                  url={`/products/${product.slug}`}
+                  className="absolute top-4 right-4 p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+                />
               </div>
               <div className="flex space-x-2 overflow-x-auto pb-2">
                 {images.map((img, idx) => (
@@ -69,7 +73,7 @@ export function ProductDetails({ product }) {
                 <span className="text-xl font-bold text-red-600">
                   {product.price ? `₹ ${product.price} / Piece` : "Price on Request"}
                 </span>
-                <Button className="bg-red-600 hover:bg-red-700 text-white rounded-sm px-6 font-medium shadow-sm">
+                <Button className="bg-red-600 hover:bg-red-700 text-white rounded-sm px-6 font-medium shadow-sm" onClick={() => setShowEnquiryForm(true)}>
                   Get Best Price
                 </Button>
               </div>
@@ -106,7 +110,7 @@ export function ProductDetails({ product }) {
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-4 pt-4 border-t border-gray-100">
                 <Button variant="outline" className="border-red-600 text-red-600 hover:bg-red-50 hover:text-red-700 rounded-sm px-8 font-medium" asChild>
-                  <a href="tel:+919157770753">
+                  <a href="tel:+919157487233">
                     <Phone className="w-4 h-4 mr-2" />
                     Request to Call
                   </a>

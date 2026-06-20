@@ -35,25 +35,15 @@ export function ProductEnquiryForm({ product, onClose }) {
     setIsSubmitting(true)
 
     try {
-      const enquiryData = {
-        ...formData,
-        productId: product.id,
-        productName: product.name,
-        productPrice: product.price,
-        enquiryType: "product-enquiry",
-      }
+      const text = `*New Product Enquiry*\n\n*Product:* ${product.name}\n*Name:* ${formData.name}\n*Email:* ${formData.email}\n*Phone:* ${formData.phone}\n*Company:* ${formData.company}\n*Quantity:* ${formData.quantity}\n*Message:* ${formData.message}`;
+      const url = `https://wa.me/919157487233?text=${encodeURIComponent(text)}`;
+      window.open(url, "_blank");
 
-      const response = await apiClient.submitEnquiry(enquiryData)
-
-      if (response.success) {
-        toast({
-          title: "Enquiry Submitted Successfully!",
-          description: "Thank you for your interest. We'll contact you soon with detailed information.",
-        })
-        onClose()
-      } else {
-        throw new Error(response.error || "Failed to submit enquiry")
-      }
+      toast({
+        title: "Redirecting to WhatsApp",
+        description: "Please send the message in WhatsApp to complete your enquiry.",
+      })
+      onClose()
     } catch (error) {
       console.error("Product enquiry error:", error)
       toast({
@@ -126,11 +116,9 @@ export function ProductEnquiryForm({ product, onClose }) {
             />
           </div>
 
-          <Link href={"https://wa.me/message/QNU3M3AGOL3NH1"} target="_blank" rel="noopener noreferrer">
-                      <Button type="submit"  size="lg" className="w-full bg-blue-300">
-                        Submit Application
-                      </Button>
-                      </Link>
+          <Button type="submit" size="lg" className="w-full bg-red-600 hover:bg-red-700 text-white" disabled={isSubmitting}>
+            {isSubmitting ? "Processing..." : "Send Enquiry via WhatsApp"}
+          </Button>
         </form>
       </CardContent>
     </Card>

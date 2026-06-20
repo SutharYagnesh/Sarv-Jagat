@@ -34,26 +34,24 @@ export function ContactForm() {
     setIsSubmitting(true)
 
     try {
-      const response = await apiClient.submitContactForm(formData)
+      const text = `*New Contact Message*\n\n*Name:* ${formData.name}\n*Email:* ${formData.email}\n*Phone:* ${formData.phone}\n*Company:* ${formData.company}\n*Subject:* ${formData.subject}\n*Message:* ${formData.message}`;
+      const url = `https://wa.me/919157487233?text=${encodeURIComponent(text)}`;
+      window.open(url, "_blank");
 
-      if (response.success) {
-        toast({
-          title: "Message Sent Successfully!",
-          description: "Thank you for contacting us. We'll get back to you soon.",
-        })
+      toast({
+        title: "Redirecting to WhatsApp",
+        description: "Please send the message in WhatsApp to complete your contact request.",
+      })
 
-        // Reset form
-        setFormData({
-          name: "",
-          email: "",
-          company: "",
-          phone: "",
-          subject: "",
-          message: "",
-        })
-      } else {
-        throw new Error(response.error || "Failed to send message")
-      }
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        phone: "",
+        subject: "",
+        message: "",
+      })
     } catch (error) {
       console.error("Contact form error:", error)
       toast({
@@ -151,11 +149,9 @@ export function ContactForm() {
             />
           </div>
 
-          <Link href={"https://wa.me/message/QNU3M3AGOL3NH1"} target="_blank" rel="noopener noreferrer">
-                      <Button type="submit"  size="lg" className="w-full bg-red-500">
-                        Submit Application
-                      </Button>
-                      </Link>
+          <Button type="submit" size="lg" className="w-full bg-red-600 hover:bg-red-700 text-white" disabled={isSubmitting}>
+            {isSubmitting ? "Processing..." : "Send Message via WhatsApp"}
+          </Button>
         </form>
       </CardContent>
     </Card>

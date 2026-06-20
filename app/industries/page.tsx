@@ -229,12 +229,14 @@ export default function IndustriesPage() {
             {industries.map((industry, index) => (
               <Card key={index} className="product-card card-hover overflow-hidden">
                 <div className="relative">
-                  <img
-                    src={industry.image || "/placeholder.svg"}
-                    alt={`${industry.name} Air Compressor Solutions`}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="absolute top-4 left-4">
+                  <Link href={industry.href} className="block w-full h-full">
+                    <img
+                      src={industry.image || "/placeholder.svg"}
+                      alt={`${industry.name} Air Compressor Solutions`}
+                      className="w-full h-48 object-cover"
+                    />
+                  </Link>
+                  <div className="absolute top-4 left-4 pointer-events-none">
                     <div className="bg-primary text-primary-foreground p-3 rounded-full">
                       <industry.icon className="h-6 w-6" />
                     </div>

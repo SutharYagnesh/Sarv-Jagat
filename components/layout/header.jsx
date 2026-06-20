@@ -37,9 +37,6 @@ const defaultNavigation = {
     { name: "Electronics & Semiconductor", href: "/industries/electronics", description: "Precision air systems" },
     { name: "Plastic & PET Bottle", href: "/industries/plastic-pet", description: "Specialized air solutions" },
     { name: "Chemical & Process", href: "/industries/chemical", description: "Corrosion-resistant air systems" },
-    { name: "Cement & Aggregates", href: "/industries/cement", description: "High-dust resistance air systems" },
-    { name: "Power Generation", href: "/industries/power", description: "Reliable power plant air solutions" },
-    { name: "General Manufacturing", href: "/industries/manufacturing", description: "Versatile industrial air solutions" },
   ],
   services: [
     { name: "Installation", href: "/services/installation", description: "Professional setup services" },
@@ -59,18 +56,20 @@ export function Header() {
   const [navigation, setNavigation] = useState(defaultNavigation)
 
   useEffect(() => {
-    async function fetchCategories() {
+    const fetchCategories = async () => {
       try {
-        const response = await fetch('/api/admin/categories');
-        if (response.ok) {
-          const categories = await response.json();
-          if (categories && categories.length > 0) {
-            const productLinks = categories.map(cat => ({
-              name: cat.name,
-              href: `/products/category/${cat.slug}`,
-              description: `Explore ${cat.name} products`,
+        const res = await fetch('/api/admin/categories');
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            setNavigation(prev => ({
+              ...prev,
+              products: data.map(c => ({
+                name: c.name,
+                href: `/products/category/${c.slug}`,
+                description: c.description || `Explore our ${c.name} solutions`
+              }))
             }));
-            setNavigation(prev => ({ ...prev, products: productLinks }));
           }
         }
       } catch (error) {
@@ -128,7 +127,9 @@ export function Header() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-slate-900 hover:text-red-600">Products</NavigationMenuTrigger>
+                <Link href="/products">
+                  <NavigationMenuTrigger className="text-slate-900 hover:text-red-600">Products</NavigationMenuTrigger>
+                </Link>
                 <NavigationMenuContent>
                   <div className="grid w-[600px] grid-cols-2 gap-3 p-4 bg-white">
                     {navigation.products.map((item) => (
@@ -147,7 +148,9 @@ export function Header() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-slate-900 hover:text-red-600">Industries</NavigationMenuTrigger>
+                <Link href="/industries">
+                  <NavigationMenuTrigger className="text-slate-900 hover:text-red-600">Industries</NavigationMenuTrigger>
+                </Link>
                 <NavigationMenuContent>
                   <div className="grid w-[600px] grid-cols-2 gap-3 p-4 bg-white">
                     {navigation.industries.map((item) => (
@@ -166,7 +169,9 @@ export function Header() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-slate-900 hover:text-red-600">Services</NavigationMenuTrigger>
+                <Link href="/services">
+                  <NavigationMenuTrigger className="text-slate-900 hover:text-red-600">Services</NavigationMenuTrigger>
+                </Link>
                 <NavigationMenuContent>
                   <div className="grid w-[600px] grid-cols-2 gap-3 p-4 bg-white">
                     {navigation.services.map((item) => (
@@ -185,7 +190,9 @@ export function Header() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-slate-900 hover:text-red-600">Company</NavigationMenuTrigger>
+                <Link href="/about">
+                  <NavigationMenuTrigger className="text-slate-900 hover:text-red-600">Company</NavigationMenuTrigger>
+                </Link>
                 <NavigationMenuContent>
                   <div className="grid w-[600px] grid-cols-2 gap-3 p-4 bg-white">
                     {navigation.company.map((item) => (
@@ -292,6 +299,10 @@ function MobileNav({ navigation, onClose }) {
             )}
           </div>
         ))}
+
+        <Link href="/blog" onClick={onClose} className="block py-2 font-medium text-slate-900 hover:text-red-600">
+          Blog
+        </Link>
 
         <Button asChild className="w-full bg-red-600 hover:bg-red-700 text-white">
           <Link href="/contact" onClick={onClose}>

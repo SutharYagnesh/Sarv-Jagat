@@ -2,6 +2,8 @@ import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Home, Package, Building2, Wrench, Users, FileText, Phone, Mail } from "lucide-react"
+import connectDB from "@/lib/db"
+import Category from "@/lib/models/Category"
 
 export async function generateMetadata() {
   return {
@@ -26,7 +28,19 @@ export async function generateMetadata() {
   }
 }
 
-export default function SitemapPage() {
+export default async function SitemapPage() {
+  await connectDB()
+  const categories = await Category.find({}).sort({ createdAt: -1 }).lean()
+  
+  const productChildren = categories.length > 0 
+    ? categories.map(c => ({ title: c.name, href: `/products/category/${c.slug}` }))
+    : [
+        { title: "Screw Air Compressors", href: "/products/screw" },
+        { title: "Piston Compressors", href: "/products/piston" },
+        { title: "Oil-Free Systems", href: "/products/oil-free" },
+        { title: "Specialized Solutions", href: "/products/specialized" },
+      ]
+
   const siteStructure = [
     {
       title: "Home",
@@ -39,15 +53,7 @@ export default function SitemapPage() {
       icon: <Package className="h-5 w-5" />,
       href: "/products",
       description: "Complete range of air compressor products",
-      children: [
-        { title: "Screw Air Compressors", href: "/products/screw" },
-        { title: "Piston Compressors", href: "/products/piston" },
-        { title: "Single Stage Piston", href: "/products/piston/single-stage" },
-        { title: "Two Stage Piston", href: "/products/piston/two-stage" },
-        { title: "Multi-Stage Piston", href: "/products/piston/multi-stage" },
-        { title: "Oil-Free Systems", href: "/products/oil-free" },
-        { title: "Specialized Solutions", href: "/products/specialized" },
-      ],
+      children: productChildren,
     },
     {
       title: "Industries",
@@ -55,10 +61,16 @@ export default function SitemapPage() {
       href: "/industries",
       description: "Industry-specific air compressor solutions",
       children: [
-        { title: "Automotive", href: "/industries/automotive" },
-        { title: "Pharmaceuticals", href: "/industries/pharmaceuticals" },
+        { title: "Automotive Industry", href: "/industries/automotive" },
+        { title: "Pharmaceuticals & Healthcare", href: "/industries/pharmaceuticals" },
         { title: "Food & Beverage", href: "/industries/food-beverage" },
-        { title: "Textile", href: "/industries/textile" },
+        { title: "Textile & Garment", href: "/industries/textile" },
+        { title: "Metal & Fabrication", href: "/industries/metal-fabrication" },
+        { title: "Construction & Infrastructure", href: "/industries/construction" },
+        { title: "Mining & Quarry", href: "/industries/mining" },
+        { title: "Electronics & Semiconductor", href: "/industries/electronics" },
+        { title: "Plastic & PET Bottle", href: "/industries/plastic-pet" },
+        { title: "Chemical & Process", href: "/industries/chemical" },
       ],
     },
     {
@@ -96,6 +108,12 @@ export default function SitemapPage() {
       ],
     },
     {
+      title: "Blog",
+      icon: <FileText className="h-5 w-5" />,
+      href: "/blog",
+      description: "Read our latest articles and updates",
+    },
+    {
       title: "Contact",
       icon: <Phone className="h-5 w-5" />,
       href: "/contact",
@@ -128,7 +146,7 @@ export default function SitemapPage() {
       {/* Main Content */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {siteStructure.map((section, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>

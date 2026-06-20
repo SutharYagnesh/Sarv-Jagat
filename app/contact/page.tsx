@@ -96,28 +96,20 @@ export default function ContactPage() {
     e.preventDefault()
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(contactForm),
-      })
+      const text = `*New Contact Message*\n\n*Name:* ${contactForm.name}\n*Email:* ${contactForm.email}\n*Phone:* ${contactForm.phone}\n*Company:* ${contactForm.company}\n*Inquiry Type:* ${contactForm.inquiry}\n*Preferred Contact:* ${contactForm.preferredContact}\n*Message:* ${contactForm.message}`;
+      const url = `https://wa.me/919157487233?text=${encodeURIComponent(text)}`;
+      window.open(url, "_blank");
 
-      if (response.ok) {
-        alert("Thank you for your inquiry! We will contact you within 24 hours.")
-        setContactForm({
-          name: "",
-          email: "",
-          phone: "",
-          company: "",
-          inquiry: "",
-          message: "",
-          preferredContact: "",
-        })
-      } else {
-        throw new Error("Failed to submit form")
-      }
+      alert("Redirecting to WhatsApp. Please send the message to complete your inquiry.")
+      setContactForm({
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        inquiry: "",
+        message: "",
+        preferredContact: "",
+      })
     } catch (error) {
       alert("There was an error submitting your form. Please try again or contact us directly.")
     }
@@ -159,9 +151,8 @@ export default function ContactPage() {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs defaultValue="contact" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsList className="grid w-full grid-cols-2 mb-8">
               <TabsTrigger value="contact">Contact Form</TabsTrigger>
-              <TabsTrigger value="locations">Our Locations</TabsTrigger>
               <TabsTrigger value="support">Support Center</TabsTrigger>
             </TabsList>
 
@@ -178,7 +169,7 @@ export default function ContactPage() {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <form  className="space-y-6">
+                      <form onSubmit={handleContactSubmit} className="space-y-6">
                         <div className="grid md:grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor="name">Full Name *</Label>
@@ -269,17 +260,10 @@ export default function ContactPage() {
                           />
                         </div>
 
-                        {/* <Link href={"https://wa.me/message/QNU3M3AGOL3NH1"} target="_blank" rel="noopener noreferrer">
-                        <Button type="submit"  size="lg" className="w-full bg-red-500">
-                        Submit Application
-                      </Button>
-                       </Link> */}
+                        <Button type="submit" size="lg" className="w-full bg-red-600 hover:bg-red-700 text-white mt-6">
+                          Send Message via WhatsApp
+                        </Button>
                       </form>
-                      <Link href={"https://wa.me/message/QNU3M3AGOL3NH1"} target="_blank" rel="noopener noreferrer">
-                        <Button type="submit"  size="lg" className="w-full bg-red-500">
-                        Submit Application
-                      </Button>
-                       </Link>
                     </CardContent>
                   </Card>
                 </div>
@@ -345,103 +329,7 @@ export default function ContactPage() {
               </div>
             </TabsContent>
 
-            {/* Locations Tab */}
-            <TabsContent value="locations" className="space-y-8">
-              <div className="text-center mb-12">
-                <h3 className="text-3xl font-bold mb-4">Our Locations</h3>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Visit our offices across India for personalized service and support
-                </p>
-              </div>
 
-              <div className="grid md:grid-cols-2 gap-8">
-                {offices.map((office, index) => (
-                  <Card key={index} className="hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <CardTitle className="text-xl flex items-center gap-2">
-                            <Building2 className="h-5 w-5 text-red-600" />
-                            {office.name}
-                          </CardTitle>
-                          {office.type === "headquarters" && (
-                            <span className="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full mt-2">
-                              Head Office
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-start gap-3">
-                        <MapPin className="h-5 w-5 text-gray-500 mt-0.5" />
-                        <p className="text-gray-700">{office.address}</p>
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <Phone className="h-5 w-5 text-gray-500" />
-                        <a href={`tel:${office.phone}`} className="text-gray-700 hover:text-red-600">
-                          {office.phone}
-                        </a>
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <Mail className="h-5 w-5 text-gray-500" />
-                        <a href={`mailto:${office.email}`} className="text-gray-700 hover:text-red-600">
-                          {office.email}
-                        </a>
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        <Clock className="h-5 w-5 text-gray-500" />
-                        <p className="text-gray-700">{office.hours}</p>
-                      </div>
-
-                      <div className="flex gap-2 pt-2">
-                        <Button variant="outline" size="sm">
-                          <MapPin className="h-4 w-4 mr-2" />
-                          Get Directions
-                        </Button>
-                        <Button asChild variant="outline" size="sm">
-                          <a href={`tel:${office.phone}`}>
-                            <Phone className="h-4 w-4 mr-2" />
-                            Call Now
-                          </a>
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              {/* Service Coverage Map */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl text-center">Service Coverage</CardTitle>
-                  <CardDescription className="text-center">
-                    We provide comprehensive service coverage across India
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg p-8 text-center">
-                    <div className="grid md:grid-cols-3 gap-8">
-                      <div>
-                        <h4 className="text-lg font-semibold mb-2 text-blue-800">North India</h4>
-                        <p className="text-gray-700">Delhi, Punjab, Haryana, Rajasthan, UP, Uttarakhand</p>
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-semibold mb-2 text-blue-800">West India</h4>
-                        <p className="text-gray-700">Maharashtra, Gujarat, Goa, MP, Chhattisgarh</p>
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-semibold mb-2 text-blue-800">South India</h4>
-                        <p className="text-gray-700">Karnataka, Tamil Nadu, Andhra Pradesh, Kerala, Telangana</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
 
             {/* Support Center Tab */}
             <TabsContent value="support" className="space-y-8">
