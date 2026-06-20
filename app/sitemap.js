@@ -1,70 +1,27 @@
-import allProducts from "@/data/products.json"
-import fs from "fs"
-import path from "path"
-import products from "@/data/products.json"
+import connectDB from "@/lib/db"
+import Product from "@/lib/models/Product"
+import Blog from "@/lib/models/Blog"
 import industries from "../data/industries.json"
-
-async function getAllBlogPosts() {
-  try {
-    const blogDir = path.join(process.cwd(), "data", "blog")
-    const files = fs.readdirSync(blogDir)
-    const posts = files
-      .filter((file) => file.endsWith(".json"))
-      .map((file) => {
-        const filePath = path.join(blogDir, file)
-        const fileContent = fs.readFileSync(filePath, "utf8")
-        return JSON.parse(fileContent)
-      })
-      .filter((post) => post.status === "published")
-
-    return posts
-  } catch (error) {
-    return []
-  }
-}
 
 export default async function sitemap() {
   const baseUrl = "https://sarvjagat.com"
   const currentDate = new Date().toISOString()
 
-  // Static pages
-  const staticPages = [
-    {
-      url: baseUrl,
-      lastModified: currentDate,
-      changeFrequency: "daily",
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: currentDate,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: currentDate,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/products`,
-      lastModified: currentDate,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: currentDate,
-      changeFrequency: "daily",
-      priority: 0.8,
-    },
-  ]
+  let products = []
+  let blogs = []
+
+  try {
+    await connectDB()
+    products = await Product.find({ status: "Published" }).select("slug updatedAt").lean()
+    blogs = await Blog.find({ status: "published" }).select("slug updatedAt publishedAt").lean()
+  } catch (error) {
+    console.error("Failed to fetch products/blogs for sitemap", error)
+  }
 
   // Product pages
-    const productPages = allProducts.map((product) => ({
+  const productPages = products.map((product) => ({
     url: `${baseUrl}/products/${product.slug}`,
-    lastModified: currentDate,
+    lastModified: product.updatedAt ? new Date(product.updatedAt).toISOString() : currentDate,
     changeFrequency: "monthly",
     priority: 0.7,
   }))
@@ -78,10 +35,9 @@ export default async function sitemap() {
   }))
 
   // Blog pages
-  const blogPosts = await getAllBlogPosts()
-  const blogPages = blogPosts.map((post) => ({
+  const blogPages = blogs.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: post.updatedAt || post.publishedAt,
+    lastModified: post.updatedAt ? new Date(post.updatedAt).toISOString() : (post.publishedAt ? new Date(post.publishedAt).toISOString() : currentDate),
     changeFrequency: "monthly",
     priority: 0.6,
   }))
@@ -94,7 +50,7 @@ export default async function sitemap() {
   ];
   const solutionPages = solutionSlugs.map((slug) => ({
     url: `${baseUrl}/solutions/${slug}`,
-    lastModified: new Date(),
+    lastModified: currentDate,
     changeFrequency: "monthly",
     priority: 0.7,
   }));
@@ -108,77 +64,75 @@ export default async function sitemap() {
   ];
   const servicePages = serviceSlugs.map((slug) => ({
     url: `${baseUrl}/services/${slug}`,
-    lastModified: new Date(),
+    lastModified: currentDate,
     changeFrequency: "monthly",
     priority: 0.7,
   }));
 
-
-
   return [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: "yearly",
       priority: 1,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: "monthly",
       priority: 0.5,
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: "monthly",
       priority: 0.5,
     },
     {
       url: `${baseUrl}/careers`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/products`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/industries`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/solutions`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/services`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: "weekly",
       priority: 0.9,
     },
@@ -186,6 +140,6 @@ export default async function sitemap() {
     ...industriesPages,
     ...solutionPages,
     ...servicePages,
-    ...blogPosts,
+    ...blogPages,
   ];
 }
