@@ -57,11 +57,11 @@ export function ProductSchema({ product }) {
     image: product.image,
     brand: {
       "@type": "Brand",
-      name: "IndustrialCorp",
+      name: "Sarv Jagat Corporation",
     },
     manufacturer: {
       "@type": "Organization",
-      name: "IndustrialCorp",
+      name: "Sarv Jagat Corporation",
     },
     offers: {
       "@type": "Offer",
@@ -70,7 +70,7 @@ export function ProductSchema({ product }) {
       availability: "https://schema.org/InStock",
       seller: {
         "@type": "Organization",
-        name: "IndustrialCorp",
+        name: "Sarv Jagat Corporation",
       },
     },
     category: product.category,
@@ -89,23 +89,44 @@ export function ArticleSchema({ post }) {
     image: post.coverImage,
     author: {
       "@type": "Person",
-      name: post.author.name,
+      name: post.author?.name || "Sarv Jagat",
     },
     publisher: {
       "@type": "Organization",
-      name: "IndustrialCorp",
+      name: "Sarv Jagat Corporation",
       logo: {
         "@type": "ImageObject",
-        url: "https://industrialcorp.com/logo.png",
+        url: "https://sarvjagat.com/sarv-jagat-logo.png",
       },
     },
     datePublished: post.publishedAt,
     dateModified: post.updatedAt || post.publishedAt,
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://industrialcorp.com/blog/${post.slug}`,
+      "@id": `https://sarvjagat.com/blog/${post.slug}`,
     },
   }
 
   return <StructuredData data={articleData} />
+}
+
+export function ItemListSchema({ items, categoryName, url }) {
+  const itemListData = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `${categoryName} Products`,
+    url: url,
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Product",
+        name: item.title || item.name,
+        url: `https://sarvjagat.com/products/${item.slug}`,
+        image: item.image || item.images?.[0] || "https://sarvjagat.com/placeholder.jpg",
+      }
+    }))
+  };
+
+  return <StructuredData data={itemListData} />
 }

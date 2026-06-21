@@ -77,6 +77,24 @@ export async function generateMetadata({ params }) {
       ],
       type: "website",
     },
+    twitter: {
+      card: "summary_large_image",
+      title: product.seoTitle || product.name,
+      description: product.seoDescription || product.description,
+      images: [product.image],
+    },
+    keywords: product.seoKeywords ? product.seoKeywords.split(',') : [product.name, product.category, "Air Compressor", "Industrial Equipment", "Sarv Jagat"],
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   }
 }
 

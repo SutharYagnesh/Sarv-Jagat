@@ -5,6 +5,7 @@ import Category from "@/lib/models/Category"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import CategoryClient from "@/components/sections/category-client"
+import { ItemListSchema } from "@/components/structured-data"
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -18,6 +19,25 @@ export async function generateMetadata({ params }) {
   return {
     title: `${category.name} | Sarv Jagat Corporation`,
     description: `Leading Manufacturers, Exporters and Wholesaler of ${category.name} and related products.`,
+    alternates: {
+      canonical: `https://sarvjagat.com/products/category/${slug}`,
+    },
+    openGraph: {
+      title: `${category.name} | Sarv Jagat Corporation`,
+      description: `Explore our extensive range of ${category.name} designed for various industrial applications ensuring optimal performance and efficiency.`,
+      url: `https://sarvjagat.com/products/category/${slug}`,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${category.name} | Sarv Jagat Corporation`,
+      description: `Leading Manufacturers of ${category.name}.`,
+    },
+    keywords: [category.name, "Air Compressors", "Industrial Equipment", "Wholesaler", "Manufacturer"],
+    robots: {
+      index: true,
+      follow: true,
+    },
   }
 }
 
@@ -35,6 +55,7 @@ export default async function CategoryPage({ params }) {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      <ItemListSchema items={products} categoryName={category.name} url={`https://sarvjagat.com/products/category/${slug}`} />
       <div className="container mx-auto px-4">
         {/* Breadcrumb & Header */}
         <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200 mb-8">

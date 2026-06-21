@@ -4,6 +4,7 @@ import Blog from "@/lib/models/Blog";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, Tag, Share2, Facebook, Twitter, Linkedin, Youtube, Instagram, Chrome } from "lucide-react";
+import { ArticleSchema } from "@/components/structured-data";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -17,6 +18,44 @@ export async function generateMetadata({ params }) {
   return {
     title: `${blog.title} | Sarv Jagat Corporation Blog`,
     description: blog.excerpt || blog.title,
+    alternates: {
+      canonical: `https://sarvjagat.com/blog/${slug}`,
+    },
+    openGraph: {
+      title: `${blog.title} | Sarv Jagat Corporation`,
+      description: blog.excerpt || blog.title,
+      url: `https://sarvjagat.com/blog/${slug}`,
+      type: "article",
+      publishedTime: blog.publishedAt,
+      modifiedTime: blog.updatedAt || blog.publishedAt,
+      authors: [blog.author?.name || "Sarv Jagat"],
+      images: blog.imageUrl ? [
+        {
+          url: blog.imageUrl,
+          width: 1200,
+          height: 630,
+          alt: blog.title,
+        }
+      ] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blog.title,
+      description: blog.excerpt || blog.title,
+      images: blog.imageUrl ? [blog.imageUrl] : [],
+    },
+    keywords: blog.tags ? blog.tags : ["Air Compressors", "Industrial Blog", "Sarv Jagat"],
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   }
 }
 
@@ -33,6 +72,7 @@ export default async function BlogDetailPage({ params }) {
 
   return (
     <section className="py-8 bg-gray-50 min-h-screen">
+      <ArticleSchema post={blog} />
       <div className="container mx-auto px-4">
         {/* Breadcrumbs */}
         <div className="text-sm text-gray-500 mb-6 flex items-center space-x-2">
