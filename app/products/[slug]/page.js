@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { notFound } from "next/navigation"
 import { ProductDetails } from "@/components/sections/product-details"
 import { RelatedProducts } from "@/components/sections/related-products"

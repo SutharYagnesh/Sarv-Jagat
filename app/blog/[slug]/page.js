@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { notFound } from "next/navigation";
 import connectDB from "@/lib/db";
 import Blog from "@/lib/models/Blog";
@@ -174,10 +175,34 @@ export default async function BlogDetailPage({ params }) {
           </div>
 
           {/* Media Section */}
-          {(blog.youtubeLink || (blog.videos && blog.videos.length > 0)) && (
+          {(blog.images?.length > 0 || blog.instagramLink || blog.youtubeLink || (blog.videos && blog.videos.length > 0)) && (
             <div className="mt-10 pt-8 border-t border-gray-200">
-              <h3 className="text-xl font-serif text-gray-800 mb-6">Related Media</h3>
-              <div className="space-y-6">
+              <h3 className="text-xl font-serif text-gray-800 mb-6">Gallery & Media</h3>
+              <div className="space-y-8">
+                {blog.images && blog.images.length > 0 && (
+                  <div>
+                    <h4 className="text-lg font-serif text-gray-700 mb-4">Project Gallery</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {blog.images.map((img, idx) => (
+                        <div key={idx} className="aspect-[4/3] rounded-lg overflow-hidden border shadow-sm">
+                          <img src={img} alt={`${blog.title} gallery image ${idx+1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {blog.instagramLink && (
+                  <div className="flex justify-center my-6">
+                    <Button asChild className="bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:opacity-90 text-white rounded-full px-8 py-6 text-lg font-medium shadow-md">
+                      <a href={blog.instagramLink} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                        <Instagram className="w-5 h-5 mr-2" />
+                        View Original Instagram Post
+                      </a>
+                    </Button>
+                  </div>
+                )}
+
                 {blog.youtubeLink && (() => {
                   const match = blog.youtubeLink.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]+)/);
                   const videoId = match ? match[1] : null;

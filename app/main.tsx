@@ -22,6 +22,8 @@ import connectDB from "@/lib/db"
 import Product from "@/lib/models/Product"
 import Category from "@/lib/models/Category"
 
+export const dynamic = 'force-dynamic';
+
 // Main homepage component for Sarv Jagat Air Compressor website
 export default async function HomePage() {
   await connectDB();

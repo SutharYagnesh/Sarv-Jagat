@@ -17,6 +17,8 @@ import connectDB from "@/lib/db"
 import Product from "@/lib/models/Product"
 import Category from "@/lib/models/Category"
 
+export const dynamic = 'force-dynamic';
+
 // Main products catalog page with comprehensive product categories
 export default async function ProductsPage() {
   await connectDB();

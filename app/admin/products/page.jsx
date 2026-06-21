@@ -7,6 +7,8 @@ export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 50;
 
   const fetchProducts = async () => {
     try {
@@ -22,10 +24,14 @@ export default function ProductsPage() {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
+      setPage(1); // Reset page on search
       fetchProducts();
     }, 300);
     return () => clearTimeout(delayDebounceFn);
   }, [search]);
+
+  const paginatedProducts = products.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const totalPages = Math.ceil(products.length / itemsPerPage);
 
   const handleDelete = async (id) => {
     if (!confirm('Are you sure you want to delete this product?')) return;
@@ -101,7 +107,7 @@ export default function ProductsPage() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {products.map((product) => (
+                {paginatedProducts.map((product) => (
                   <tr key={product._id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -144,6 +150,30 @@ export default function ProductsPage() {
                 ))}
               </tbody>
             </table>
+            
+            {totalPages > 1 && (
+              <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                <div className="text-sm text-gray-500">
+                  Showing {(page - 1) * itemsPerPage + 1} to {Math.min(page * itemsPerPage, products.length)} of {products.length} entries
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setPage(p => Math.max(1, p - 1))}
+                    disabled={page === 1}
+                    className="px-3 py-1 border rounded text-sm disabled:opacity-50"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                    disabled={page === totalPages}
+                    className="px-3 py-1 border rounded text-sm disabled:opacity-50"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

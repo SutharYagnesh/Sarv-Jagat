@@ -17,6 +17,8 @@ export function BlogEditor({ post, onSave, onCancel }) {
     excerpt: "",
     content: "",
     coverImage: "",
+    images: [],
+    instagramLink: "",
     category: "",
     tags: [],
     videos: [],
@@ -37,6 +39,8 @@ export function BlogEditor({ post, onSave, onCancel }) {
       setFormData({
         ...post,
         tags: post.tags || [],
+        images: post.images || [],
+        instagramLink: post.instagramLink || "",
       })
     }
   }, [post])
@@ -91,6 +95,31 @@ export function BlogEditor({ post, onSave, onCancel }) {
       }
       reader.readAsDataURL(file)
     }
+  }
+
+  const handleGalleryUpload = (e) => {
+    const files = Array.from(e.target.files || [])
+    if (files.length) {
+      files.forEach(file => {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          if (e.target?.result) {
+            setFormData(prev => ({
+              ...prev,
+              images: [...prev.images, e.target.result]
+            }))
+          }
+        }
+        reader.readAsDataURL(file)
+      })
+    }
+  }
+
+  const removeGalleryImage = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }))
   }
 
   const handleVideoUpload = (e) => {
@@ -351,6 +380,45 @@ export function BlogEditor({ post, onSave, onCancel }) {
                       />
                     </div>
                   )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="instagramLink">Instagram Reference Link (Optional)</Label>
+                  <Input
+                    id="instagramLink"
+                    value={formData.instagramLink || ""}
+                    onChange={(e) => handleChange("instagramLink", e.target.value)}
+                    placeholder="https://www.instagram.com/p/..."
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Gallery Images (Optional)</Label>
+                  <div className="space-y-2">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleGalleryUpload}
+                      className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                    />
+                    {formData.images && formData.images.length > 0 && (
+                      <div className="grid grid-cols-3 gap-2 mt-2">
+                        {formData.images.map((img, idx) => (
+                          <div key={idx} className="relative group">
+                            <img src={img} className="w-full h-20 object-cover rounded border" alt="Gallery preview" />
+                            <button
+                              type="button"
+                              onClick={() => removeGalleryImage(idx)}
+                              className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="space-y-2">
