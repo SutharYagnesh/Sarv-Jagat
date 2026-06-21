@@ -48,7 +48,7 @@ export default async function HomePage() {
       description: (catProduct.description || '').substring(0, 100) + '...',
       image: catProduct.images?.[0] || "/placeholder.svg",
       category: cat.name,
-      href: `/products/${cat.slug}`,
+      href: `/products/category/${cat.slug}`,
     }
   }).filter(Boolean);
 
