@@ -30,7 +30,7 @@ export async function generateMetadata() {
 
 export default async function SitemapPage() {
   await connectDB()
-  const categories = await Category.find({}).sort({ createdAt: -1 }).lean()
+  const categories = await Category.find({}).sort({ order: 1 }).lean()
   
   const productChildren = categories.length > 0 
     ? categories.map(c => ({ title: c.name, href: `/products/category/${c.slug}` }))

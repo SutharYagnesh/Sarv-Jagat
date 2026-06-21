@@ -20,6 +20,13 @@ export function ProductDetails({ product }) {
     return match ? match[1] : null;
   };
 
+  const specs = [];
+  if (Array.isArray(product.specifications)) {
+    specs.push(...product.specifications.filter(s => s.key && s.value));
+  } else if (product.specifications && typeof product.specifications === 'object') {
+    specs.push(...Object.entries(product.specifications).map(([key, value]) => ({ key, value })));
+  }
+
   return (
     <section className="py-8 bg-gray-50 min-h-screen">
       <div className="container mx-auto px-4">
@@ -80,31 +87,24 @@ export function ProductDetails({ product }) {
 
               {/* Quick Specs Table */}
               <div className="py-2">
-                <table className="w-full text-sm text-gray-700">
-                  <tbody>
-                    <tr className="border-b border-gray-50">
-                      <td className="py-3 font-medium text-gray-500 w-1/3">Business Type</td>
-                      <td className="py-3 font-semibold">Manufacturer, Exporter, Supplier</td>
-                    </tr>
-                    <tr className="border-b border-gray-50">
-                      <td className="py-3 font-medium text-gray-500">Compressor Type</td>
-                      <td className="py-3 font-semibold">{product.technology || "Fixed Speed Rotary Screw Compressor"}</td>
-                    </tr>
-                    <tr className="border-b border-gray-50">
-                      <td className="py-3 font-medium text-gray-500">Model</td>
-                      <td className="py-3 font-semibold">{product.modelNumber || "SJ Series"}</td>
-                    </tr>
-                    <tr className="border-b border-gray-50">
-                      <td className="py-3 font-medium text-gray-500">Power Rating</td>
-                      <td className="py-3 font-semibold">{product.powerRating || "N/A"}</td>
-                    </tr>
-                    <tr>
-                      <td className="py-3 font-medium text-gray-500">Pressure Rating</td>
-                      <td className="py-3 font-semibold">{product.pressureRating || "N/A"}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <button className="text-red-600 text-sm mt-3 hover:underline font-medium">Click to view more</button>
+                {specs.length > 0 ? (
+                  <>
+                    <table className="w-full text-sm text-gray-700">
+                      <tbody>
+                        {specs.slice(0, 5).map((spec, idx) => (
+                          <tr key={idx} className="border-b border-gray-50">
+                            <td className="py-3 font-medium text-gray-500 w-1/3">{spec.key}</td>
+                            <td className="py-3 font-semibold">{spec.value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <button className="text-red-600 text-sm mt-3 hover:underline font-medium" onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById('product-details-section')?.scrollIntoView({ behavior: 'smooth' });
+                    }}>Click to view more</button>
+                  </>
+                ) : null}
               </div>
 
               {/* Action Buttons */}
@@ -125,39 +125,42 @@ export function ProductDetails({ product }) {
         </div>
 
         {/* Bottom Section: Product Details & Description */}
-        <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200 mb-8">
+        <div id="product-details-section" className="bg-white p-6 rounded-sm shadow-sm border border-gray-200 mb-8">
           <h2 className="text-xl font-serif text-gray-800 border-b border-gray-200 pb-4 mb-6">Product Details</h2>
           
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-gray-700 mb-8 border border-gray-200">
-              <tbody>
-                <tr className="border-b border-gray-200">
-                  <td className="py-3 px-4 bg-gray-50 font-medium text-gray-600 w-1/4 border-r border-gray-200">Model</td>
-                  <td className="py-3 px-4 w-1/4 border-r border-gray-200">{product.modelNumber || "N/A"}</td>
-                  <td className="py-3 px-4 bg-gray-50 font-medium text-gray-600 w-1/4 border-r border-gray-200">Manufacturer</td>
-                  <td className="py-3 px-4 w-1/4">Sarv Jagat Corporation</td>
-                </tr>
-                <tr className="border-b border-gray-200">
-                  <td className="py-3 px-4 bg-gray-50 font-medium text-gray-600 border-r border-gray-200">Power Rating</td>
-                  <td className="py-3 px-4 border-r border-gray-200">{product.powerRating || "N/A"}</td>
-                  <td className="py-3 px-4 bg-gray-50 font-medium text-gray-600 border-r border-gray-200">Pressure Rating</td>
-                  <td className="py-3 px-4">{product.pressureRating || "N/A"}</td>
-                </tr>
-                <tr className="border-b border-gray-200">
-                  <td className="py-3 px-4 bg-gray-50 font-medium text-gray-600 border-r border-gray-200">Air Delivery</td>
-                  <td className="py-3 px-4 border-r border-gray-200">{product.airFlow || "N/A"}</td>
-                  <td className="py-3 px-4 bg-gray-50 font-medium text-gray-600 border-r border-gray-200">Stage</td>
-                  <td className="py-3 px-4">{product.stage || "Single Stage"}</td>
-                </tr>
-                <tr>
-                  <td className="py-3 px-4 bg-gray-50 font-medium text-gray-600 border-r border-gray-200">Technology</td>
-                  <td className="py-3 px-4 border-r border-gray-200">{product.technology || "Rotary Screw Mechanism"}</td>
-                  <td className="py-3 px-4 bg-gray-50 font-medium text-gray-600 border-r border-gray-200">Cooling Type</td>
-                  <td className="py-3 px-4">{product.coolingType || "Air Cooled"}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          {specs.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-gray-700 mb-8 border border-gray-200">
+                <tbody>
+                  {Array.from({ length: Math.ceil(specs.length / 2) }).map((_, rowIndex) => {
+                    const idx1 = rowIndex * 2;
+                    const idx2 = rowIndex * 2 + 1;
+                    const spec1 = specs[idx1];
+                    const spec2 = specs[idx2];
+                    return (
+                      <tr key={rowIndex} className="border-b border-gray-200">
+                        <td className="py-3 px-4 bg-gray-50 font-medium text-gray-600 w-1/4 border-r border-gray-200">{spec1.key}</td>
+                        <td className={`py-3 px-4 w-1/4 ${spec2 ? 'border-r border-gray-200' : ''}`}>{spec1.value}</td>
+                        {spec2 ? (
+                          <>
+                            <td className="py-3 px-4 bg-gray-50 font-medium text-gray-600 w-1/4 border-r border-gray-200">{spec2.key}</td>
+                            <td className="py-3 px-4 w-1/4">{spec2.value}</td>
+                          </>
+                        ) : (
+                          <>
+                            <td className="py-3 px-4 bg-gray-50 font-medium text-gray-600 w-1/4 border-r border-gray-200"></td>
+                            <td className="py-3 px-4 w-1/4"></td>
+                          </>
+                        )}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-gray-500 mb-8">No detailed specifications available.</p>
+          )}
 
           <div className="text-center mb-10">
             <Button className="bg-red-600 hover:bg-red-700 text-white rounded-sm px-10 py-6 text-lg font-medium shadow-sm" onClick={() => setShowEnquiryForm(true)}>
@@ -171,16 +174,7 @@ export function ProductDetails({ product }) {
               {product.description}
             </p>
 
-            {product.specifications && Object.keys(product.specifications).length > 0 && (
-               <div className="mt-8">
-                 <h4 className="font-semibold text-gray-800 mb-4 text-lg">Key Features:</h4>
-                 <ul className="list-disc pl-5 text-gray-700 space-y-2">
-                   {Object.entries(product.specifications).map(([key, value], idx) => (
-                     <li key={idx}><strong className="font-medium">{key}:</strong> {value}</li>
-                   ))}
-                 </ul>
-               </div>
-            )}
+
           </div>
 
           {/* Media Section */}

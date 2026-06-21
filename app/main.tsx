@@ -25,7 +25,7 @@ import Category from "@/lib/models/Category"
 // Main homepage component for Sarv Jagat Air Compressor website
 export default async function HomePage() {
   await connectDB();
-  const categoriesRaw = await Category.find({}).lean();
+  const categoriesRaw = await Category.find({}).sort({ order: 1 }).lean();
   const allProductsRaw = await Product.find({ status: 'Published' }).lean();
 
   const categories = JSON.parse(JSON.stringify(categoriesRaw));
@@ -39,17 +39,18 @@ export default async function HomePage() {
     { number: "24/7", label: "Technical Help", icon: Phone },
   ]
 
-  // Featured product categories with descriptions from the provided data
+  // Featured product categories with one product per category
   let featuredProducts = categories.slice(0, 5).map(cat => {
-    const catProducts = allProducts.filter(p => p.category === cat.name);
+    const catProduct = allProducts.find(p => p.category === cat.name);
+    if (!catProduct) return null;
     return {
-      title: cat.name,
-      description: `Premium ${cat.name} solutions for industrial applications.`,
-      image: catProducts[0]?.images?.[0] || "/placeholder.svg",
-      features: catProducts.slice(0, 4).map(p => p.title),
-      href: `/products`,
+      title: catProduct.title,
+      description: (catProduct.description || '').substring(0, 100) + '...',
+      image: catProduct.images?.[0] || "/placeholder.svg",
+      category: cat.name,
+      href: `/products/${cat.slug}`,
     }
-  }).filter(cat => cat.features.length > 0);
+  }).filter(Boolean);
 
   // Fallback if no categories or products in DB yet
   if (featuredProducts.length === 0) {
@@ -58,7 +59,7 @@ export default async function HomePage() {
         title: "Products Coming Soon",
         description: "We are currently updating our catalog.",
         image: "/placeholder.svg",
-        features: ["High Quality", "Reliable", "Efficient"],
+        category: "Coming Soon",
         href: "/products",
       }
     ];
@@ -236,7 +237,7 @@ export default async function HomePage() {
                     className="  h-64 object-cover transition-transform duration-300 hover:scale-105"
                   />
                   <div className="absolute top-4 right-4">
-                    <Badge className="bg-red-600 text-white">SJ Brand</Badge>
+                    <Badge className="bg-red-600 text-white">{product.category}</Badge>
                   </div>
                 </div>
                 <CardHeader>
@@ -244,17 +245,9 @@ export default async function HomePage() {
                   <CardDescription>{product.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-2">
-                    {product.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="h-4 w-4 text-red-600" />
-                        <span>{feature}</span>
-                      </div>
-                    ))}
-                  </div>
                   <Button asChild className="w-full bg-slate-900 hover:bg-slate-800 text-white">
                     <Link href={product.href}>
-                      View Products
+                      View Product
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>

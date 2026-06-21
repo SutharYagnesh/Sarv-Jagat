@@ -6,7 +6,7 @@ export default function CategoriesPage() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ id: null, name: '', slug: '' });
+  const [formData, setFormData] = useState({ id: null, name: '', slug: '', order: 0 });
 
   const fetchCategories = async () => {
     try {
@@ -26,9 +26,9 @@ export default function CategoriesPage() {
 
   const handleOpenModal = (category = null) => {
     if (category) {
-      setFormData({ id: category._id, name: category.name, slug: category.slug });
+      setFormData({ id: category._id, name: category.name, slug: category.slug, order: category.order || 0 });
     } else {
-      setFormData({ id: null, name: '', slug: '' });
+      setFormData({ id: null, name: '', slug: '', order: 0 });
     }
     setIsModalOpen(true);
   };
@@ -52,7 +52,7 @@ export default function CategoriesPage() {
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: formData.name, slug: formData.slug }),
+        body: JSON.stringify({ name: formData.name, slug: formData.slug, order: Number(formData.order) }),
       });
       if (res.ok) {
         setIsModalOpen(false);
@@ -102,6 +102,7 @@ export default function CategoriesPage() {
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order</th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
@@ -110,6 +111,7 @@ export default function CategoriesPage() {
                 <tr key={category._id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{category.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{category.slug}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{category.order || 0}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-right">
                     <button onClick={() => handleOpenModal(category)} className="text-indigo-600 hover:text-indigo-900 mr-4">
                       <Edit2 className="w-4 h-4 inline" />
@@ -156,6 +158,15 @@ export default function CategoriesPage() {
                   value={formData.slug}
                   onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 bg-gray-50"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Order</label>
+                <input
+                  type="number"
+                  value={formData.order}
+                  onChange={(e) => setFormData({ ...formData, order: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500"
                 />
               </div>
               <div className="pt-4 flex justify-end gap-3">
