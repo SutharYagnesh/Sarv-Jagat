@@ -83,7 +83,7 @@ export async function generateMetadata({ params }) {
       description: product.seoDescription || product.description,
       images: [product.image],
     },
-    keywords: product.seoKeywords ? product.seoKeywords.split(',') : [product.name, product.category, "Air Compressor", "Industrial Equipment", "Sarv Jagat"],
+    keywords: Array.isArray(product.seoKeywords) ? product.seoKeywords : (typeof product.seoKeywords === 'string' && product.seoKeywords ? product.seoKeywords.split(',') : [product.name, product.category, "Air Compressor", "Industrial Equipment", "Sarv Jagat"]),
     robots: {
       index: true,
       follow: true,
