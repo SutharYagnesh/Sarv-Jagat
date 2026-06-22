@@ -3,7 +3,8 @@ import jobs from "@/data/jobs.json"
 
 export async function GET(request, { params }) {
   try {
-    const job = jobs.find((j) => j.id === params.id)
+    const { id } = await params;
+    const job = jobs.find((j) => j.id === id)
 
     if (!job) {
       return NextResponse.json({ error: "Job not found" }, { status: 404 })

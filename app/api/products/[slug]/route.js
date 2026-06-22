@@ -4,8 +4,9 @@ import Product from "@/lib/models/Product"
 
 export async function GET(request, { params }) {
   try {
+    const { slug } = await params;
     await connectDB();
-    const product = await Product.findOne({ slug: params.slug, status: "Published" });
+    const product = await Product.findOne({ slug, status: "Published" });
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 })

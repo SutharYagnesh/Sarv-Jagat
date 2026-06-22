@@ -3,6 +3,8 @@ import Product from "@/lib/models/Product"
 import Blog from "@/lib/models/Blog"
 import industries from "../data/industries.json"
 
+export const dynamic = 'force-dynamic';
+
 export default async function sitemap() {
   const baseUrl = "https://sarvjagat.com"
   const currentDate = new Date().toISOString()

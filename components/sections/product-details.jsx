@@ -20,7 +20,13 @@ export function ProductDetails({ product }) {
     return match ? match[1] : null;
   };
 
-  const specs = [];
+  const specs = [
+    { key: "Model Number", value: product.modelNumber },
+    { key: "Power Rating", value: product.powerRating },
+    { key: "Pressure Rating", value: product.pressureRating },
+    { key: "Air Flow", value: product.airFlow },
+  ].filter(s => s.value);
+  
   if (Array.isArray(product.specifications)) {
     specs.push(...product.specifications.filter(s => s.key && s.value));
   } else if (product.specifications && typeof product.specifications === 'object') {

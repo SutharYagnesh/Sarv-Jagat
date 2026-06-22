@@ -4,8 +4,9 @@ import Product from '@/lib/models/Product';
 
 export async function GET(request, { params }) {
   try {
+    const { id } = await params;
     await connectDB();
-    const product = await Product.findById(params.id);
+    const product = await Product.findById(id);
     if (!product) return NextResponse.json({ error: 'Not found' }, { status: 404 });
     return NextResponse.json(product);
   } catch (error) {
@@ -15,9 +16,10 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, { params }) {
   try {
+    const { id } = await params;
     const data = await request.json();
     await connectDB();
-    const product = await Product.findByIdAndUpdate(params.id, data, { new: true });
+    const product = await Product.findByIdAndUpdate(id, data, { new: true });
     if (!product) return NextResponse.json({ error: 'Not found' }, { status: 404 });
     return NextResponse.json(product);
   } catch (error) {
@@ -27,8 +29,9 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
+    const { id } = await params;
     await connectDB();
-    const product = await Product.findByIdAndDelete(params.id);
+    const product = await Product.findByIdAndDelete(id);
     if (!product) return NextResponse.json({ error: 'Not found' }, { status: 404 });
     return NextResponse.json({ success: true });
   } catch (error) {
