@@ -46,12 +46,13 @@ export default async function HomePage() {
   ]
 
   // Featured product categories with one product per category
-  let featuredProducts = categories.slice(0, 5).map(cat => {
+  let featuredProducts = categories.map(cat => {
     const catProduct = allProducts.find(p => p.category === cat.name);
     if (!catProduct) return null;
     return {
-      title: catProduct.title,
-      description: (catProduct.description || '').substring(0, 100) + '...',
+      title: cat.name,
+      productName: catProduct.title,
+      description: `Explore our range of ${cat.name}. Featured: ${catProduct.title}`,
       image: catProduct.images?.[0] || "/placeholder.svg",
       category: cat.name,
       href: `/products/category/${cat.slug}`,
