@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus, Trash2, UploadCloud, X } from 'lucide-react';
+import { RichTextEditor } from '@/components/admin/rich-text-editor';
 
 export default function ProductForm({ initialData = null }) {
   const router = useRouter();
@@ -224,7 +225,13 @@ export default function ProductForm({ initialData = null }) {
           {/* Description */}
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
             <h2 className="text-lg font-semibold text-gray-900">Description *</h2>
-            <textarea required name="description" value={formData.description} onChange={handleChange} rows={8} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 font-mono text-sm" placeholder="HTML or Markdown description..."></textarea>
+            <p className="text-xs text-gray-500">You can paste formatted text directly from Word or webpages.</p>
+            <RichTextEditor 
+              value={formData.description} 
+              onChange={(val) => setFormData({ ...formData, description: val })} 
+              rows={12} 
+              placeholder="Paste or type your product description here..." 
+            />
           </div>
           
         </div>

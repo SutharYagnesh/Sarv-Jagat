@@ -8,6 +8,8 @@
 // import { OrganizationSchema } from "@/components/structured-data"
 import HomePage from "./main"
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: "Sarv Jagat Corporation | Industrial Air Compressor Manufacturer",
   description:

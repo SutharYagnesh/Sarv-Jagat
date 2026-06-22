@@ -21,6 +21,8 @@ import { OrganizationSchema } from "@/components/structured-data"
 import connectDB from "@/lib/db"
 import Product from "@/lib/models/Product"
 import Category from "@/lib/models/Category"
+import Blog from "@/lib/models/Blog"
+import { BlogCard } from "@/components/blog-card"
 
 export const dynamic = 'force-dynamic';
 
@@ -29,9 +31,11 @@ export default async function HomePage() {
   await connectDB();
   const categoriesRaw = await Category.find({}).sort({ order: 1 }).lean();
   const allProductsRaw = await Product.find({ status: 'Published' }).lean();
+  const recentBlogsRaw = await Blog.find({ status: 'published' }).sort({ publishedAt: -1 }).limit(4).lean();
 
   const categories = JSON.parse(JSON.stringify(categoriesRaw));
   const allProducts = JSON.parse(JSON.stringify(allProductsRaw));
+  const recentBlogs = JSON.parse(JSON.stringify(recentBlogsRaw)).map(p => ({...p, id: p._id}));
 
   // Company statistics for credibility
   const stats = [
@@ -349,6 +353,37 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Recent Blogs Section */}
+      {recentBlogs && recentBlogs.length > 0 && (
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center space-y-4 mb-16">
+              <h2 className="text-3xl lg:text-4xl font-bold">
+                Latest <span className="text-red-600">News & Articles</span>
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                Stay updated with the latest industry trends, maintenance tips, and news from Sarv Jagat.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {recentBlogs.map((blog) => (
+                <BlogCard key={blog.id} post={blog} />
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Button asChild size="lg" className="bg-slate-900 hover:bg-slate-800 text-white">
+                <Link href="/blog">
+                  View All Articles
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="py-20 hero-gradient text-white">

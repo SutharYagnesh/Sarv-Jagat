@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { X, Save, Eye } from "lucide-react"
+import { RichTextEditor } from "@/components/admin/rich-text-editor"
 
 export function BlogEditor({ post, onSave, onCancel }) {
   const [formData, setFormData] = useState({
@@ -293,13 +294,11 @@ export function BlogEditor({ post, onSave, onCancel }) {
 
                 <div className="space-y-2">
                   <Label htmlFor="content">Content</Label>
-                  <Textarea
-                    id="content"
+                  <RichTextEditor
                     value={formData.content}
-                    onChange={(e) => handleChange("content", e.target.value)}
-                    placeholder="Write your post content in HTML..."
+                    onChange={(val) => handleChange("content", val)}
+                    placeholder="Paste your formatted text here (from Word or Web)..."
                     rows={20}
-                    className="font-mono text-sm"
                   />
                   <p className="text-xs text-muted-foreground">
                     Use HTML tags for formatting. Estimated read time: {formData.readTime} minutes
