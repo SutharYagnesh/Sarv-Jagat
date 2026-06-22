@@ -17,13 +17,17 @@ export async function GET(request) {
 
     // Search Products
     const productsRaw = await Product.find({
-      status: 'Published',
-      $or: [
-        { title: regex },
-        { description: regex },
-        { category: regex },
-        { modelNumber: regex },
-        { 'specifications.value': regex }
+      $and: [
+        { status: { $regex: /^published$/i } },
+        {
+          $or: [
+            { title: regex },
+            { description: regex },
+            { category: regex },
+            { modelNumber: regex },
+            { 'specifications.value': regex }
+          ]
+        }
       ]
     }).lean();
 
@@ -45,13 +49,17 @@ export async function GET(request) {
 
     // Search Blogs
     const blogsRaw = await Blog.find({
-      status: 'published',
-      $or: [
-        { title: regex },
-        { excerpt: regex },
-        { content: regex },
-        { tags: regex },
-        { category: regex }
+      $and: [
+        { status: { $regex: /^published$/i } },
+        {
+          $or: [
+            { title: regex },
+            { excerpt: regex },
+            { content: regex },
+            { tags: regex },
+            { category: regex }
+          ]
+        }
       ]
     }).lean();
 

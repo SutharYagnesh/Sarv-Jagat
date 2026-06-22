@@ -11,19 +11,26 @@ export async function GET(request) {
     const search = searchParams.get("search")
     const limit = searchParams.get("limit")
 
-    let query = { status: "Published" };
+    let query = {};
+    const andConditions = [{ status: { $regex: /^published$/i } }];
 
     if (category && category !== "all") {
-      query.category = category;
+      andConditions.push({ category: category });
     }
 
     if (search) {
       const searchRegex = new RegExp(search, "i");
-      query.$or = [
-        { title: searchRegex },
-        { description: searchRegex },
-        { modelNumber: searchRegex }
-      ];
+      andConditions.push({
+        $or: [
+          { title: searchRegex },
+          { description: searchRegex },
+          { modelNumber: searchRegex }
+        ]
+      });
+    }
+
+    if (andConditions.length > 0) {
+      query.$and = andConditions;
     }
 
     let productsQuery = Product.find(query).select('-specifications -description').lean().sort({ createdAt: -1 });

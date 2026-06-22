@@ -6,7 +6,7 @@ export async function GET(request, { params }) {
   try {
     const { slug } = await params;
     await connectDB();
-    const product = await Product.findOne({ slug, status: "Published" });
+    const product = await Product.findOne({ slug, status: { $regex: /^published$/i } });
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 })
@@ -16,7 +16,7 @@ export async function GET(request, { params }) {
     const relatedProducts = await Product.find({
       _id: { $ne: product._id },
       category: product.category,
-      status: "Published"
+      status: { $regex: /^published$/i }
     }).limit(3).lean();
 
     const response = {
