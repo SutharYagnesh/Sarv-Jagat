@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, User, Tag, Share2, Facebook, Twitter, Linkedin, Youtube, Instagram, Chrome } from "lucide-react";
 import { ArticleSchema } from "@/components/structured-data";
 import { BlogGallery } from "@/components/ui/blog-gallery";
+import { LightboxImage } from "@/components/ui/lightbox-image";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -90,18 +91,20 @@ export default async function BlogDetailPage({ params }) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Left: Image (4 cols) */}
             <div className="lg:col-span-4 space-y-4">
-              <div className="border rounded-sm p-4 flex items-center justify-center bg-white aspect-[4/3] relative hover:border-gray-300 transition-colors overflow-hidden">
-                <img
-                  src={blog.imageUrl || "/placeholder.svg"}
-                  alt={blog.title}
-                  className="max-h-full object-contain w-full h-full"
-                />
-              </div>
+              <LightboxImage
+                src={blog.imageUrl || "/placeholder.svg"}
+                alt={blog.title}
+                containerClassName="border rounded-sm p-4 flex items-center justify-center bg-white aspect-[4/3] relative hover:border-gray-300 transition-colors overflow-hidden"
+                className="w-full h-full object-cover"
+              />
             </div>
 
             {/* Right: Details (8 cols) */}
             <div className="lg:col-span-8 space-y-6">
               <h1 className="text-2xl font-serif text-gray-800 tracking-tight">{blog.title}</h1>
+              {blog.excerpt && (
+                <p className="text-lg text-gray-600 leading-relaxed pt-2 pb-4">{blog.excerpt}</p>
+              )}
               
               <div className="flex flex-wrap items-center gap-4 pb-4 border-b border-gray-100">
                 <BadgeItem icon={<Calendar className="w-4 h-4 mr-1 text-red-600" />} text={new Date(blog.publishedAt).toLocaleDateString()} />

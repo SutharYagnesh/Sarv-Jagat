@@ -13,7 +13,7 @@ export function BlogGallery({ images, instagramLink, youtubeLink, videos }) {
   // Helper to extract YouTube ID
   const getYouTubeId = (url) => {
     if (!url) return null;
-    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]+)/);
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|watch\?v=|watch\?.+&v=))([^&?]+)/);
     return match ? match[1] : null;
   }
 
@@ -65,7 +65,16 @@ export function BlogGallery({ images, instagramLink, youtubeLink, videos }) {
               </div>
             );
           }
-          return null;
+          return (
+            <div className="flex justify-center mt-8">
+              <Button asChild className="bg-red-600 hover:bg-red-700 text-white rounded-full px-8 py-6 text-lg font-medium shadow-md">
+                <a href={youtubeLink} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                  <Youtube className="w-5 h-5 mr-2" />
+                  Watch Video on YouTube
+                </a>
+              </Button>
+            </div>
+          );
         })()}
 
         {videos && videos.length > 0 && videos[0] && (
