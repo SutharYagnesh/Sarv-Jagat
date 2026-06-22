@@ -34,6 +34,25 @@ export function BlogEditor({ post, onSave, onCancel }) {
   })
   const [tagInput, setTagInput] = useState("")
   const [preview, setPreview] = useState(false)
+  const [uploadingMedia, setUploadingMedia] = useState(false)
+
+  const uploadToBlob = async (file) => {
+    try {
+      const uploadData = new FormData();
+      uploadData.append('file', file);
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: uploadData,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.url;
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    return null;
+  };
 
   useEffect(() => {
     if (post) {
@@ -82,37 +101,37 @@ export function BlogEditor({ post, onSave, onCancel }) {
     }))
   }
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files?.[0]
     if (file) {
-      // In a real app, you'd upload to a server or cloud storage
-      // For now, we'll use a placeholder
-      const reader = new FileReader()
-      reader.onload = (e) => {
+      setUploadingMedia(true)
+      const url = await uploadToBlob(file)
+      if (url) {
         setFormData((prev) => ({
           ...prev,
-          coverImage: e.target?.result || "",
+          coverImage: url,
         }))
+      } else {
+        alert("Failed to upload image")
       }
-      reader.readAsDataURL(file)
+      setUploadingMedia(false)
     }
   }
 
-  const handleGalleryUpload = (e) => {
+  const handleGalleryUpload = async (e) => {
     const files = Array.from(e.target.files || [])
     if (files.length) {
-      files.forEach(file => {
-        const reader = new FileReader()
-        reader.onload = (e) => {
-          if (e.target?.result) {
-            setFormData(prev => ({
-              ...prev,
-              images: [...prev.images, e.target.result]
-            }))
-          }
+      setUploadingMedia(true)
+      for (const file of files) {
+        const url = await uploadToBlob(file)
+        if (url) {
+          setFormData(prev => ({
+            ...prev,
+            images: [...prev.images, url]
+          }))
         }
-        reader.readAsDataURL(file)
-      })
+      }
+      setUploadingMedia(false)
     }
   }
 
@@ -123,21 +142,20 @@ export function BlogEditor({ post, onSave, onCancel }) {
     }))
   }
 
-  const handleVideoUpload = (e) => {
+  const handleVideoUpload = async (e) => {
     const file = e.target.files?.[0]
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Video size must be less than 5MB to save directly to the database.");
-        return;
-      }
-      const reader = new FileReader()
-      reader.onload = (e) => {
+      setUploadingMedia(true)
+      const url = await uploadToBlob(file)
+      if (url) {
         setFormData((prev) => ({
           ...prev,
-          videos: [e.target?.result || ""],
+          videos: [url],
         }))
+      } else {
+        alert("Failed to upload video")
       }
-      reader.readAsDataURL(file)
+      setUploadingMedia(false)
     }
   }
   
@@ -350,6 +368,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
                       type="file"
                       accept="image/*"
                       onChange={handleImageUpload}
+                      disabled={uploadingMedia}
                       className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
                     />
                     {formData.coverImage && (
@@ -399,6 +418,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
                       accept="image/*"
                       multiple
                       onChange={handleGalleryUpload}
+                      disabled={uploadingMedia}
                       className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
                     />
                     {formData.images && formData.images.length > 0 && (
@@ -427,6 +447,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
                       type="file"
                       accept="video/*"
                       onChange={handleVideoUpload}
+                      disabled={uploadingMedia}
                       className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
                     />
                     {formData.videos && formData.videos.length > 0 && formData.videos[0] && (

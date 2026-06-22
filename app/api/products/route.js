@@ -26,7 +26,7 @@ export async function GET(request) {
       ];
     }
 
-    let productsQuery = Product.find(query).sort({ createdAt: -1 });
+    let productsQuery = Product.find(query).select('-specifications -description').lean().sort({ createdAt: -1 });
 
     if (limit) {
       const limitNum = Number.parseInt(limit, 10);

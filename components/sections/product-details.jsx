@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button"
 import { ProductEnquiryForm } from "@/components/forms/product-enquiry-form"
 import { Phone, Mail, Share2 } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { ShareButton } from "@/components/ui/share-button"
+import DOMPurify from 'isomorphic-dompurify'
 
 export function ProductDetails({ product }) {
   const [selectedImage, setSelectedImage] = useState(0)
@@ -53,10 +55,12 @@ export function ProductDetails({ product }) {
             {/* Left: Images (4 cols) */}
             <div className="lg:col-span-4 space-y-4">
               <div className="border rounded-sm p-4 flex items-center justify-center bg-white aspect-square relative hover:border-gray-300 transition-colors">
-                <img
+                <Image
                   src={images[selectedImage]}
                   alt={product.name}
-                  className="max-h-full object-contain mix-blend-multiply"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-contain mix-blend-multiply p-4"
                 />
                 <ShareButton 
                   title={product.name}
@@ -72,7 +76,15 @@ export function ProductDetails({ product }) {
                     onClick={() => setSelectedImage(idx)}
                     className={`border rounded-sm p-1 flex-shrink-0 w-20 h-20 flex items-center justify-center transition-all ${selectedImage === idx ? 'border-red-600 ring-1 ring-red-600' : 'border-gray-200 hover:border-gray-400'}`}
                   >
-                    <img src={img} alt={`Thumbnail ${idx+1}`} className="max-h-full object-contain mix-blend-multiply" />
+                    <div className="relative w-full h-full">
+                      <Image 
+                        src={img} 
+                        alt={`Thumbnail ${idx+1}`} 
+                        fill
+                        sizes="80px"
+                        className="object-contain mix-blend-multiply p-1" 
+                      />
+                    </div>
                   </button>
                 ))}
               </div>
@@ -174,13 +186,12 @@ export function ProductDetails({ product }) {
             </Button>
           </div>
 
-          <div className="prose max-w-none">
+          <div className="prose max-w-none prose-p:text-gray-700 prose-p:leading-relaxed mb-8">
             <h3 className="text-lg font-serif text-red-600 mb-4">{product.name}</h3>
-            <p className="text-gray-700 whitespace-pre-line mb-8 leading-relaxed">
-              {product.description}
-            </p>
-
-
+            <div 
+              className="whitespace-pre-line mb-8"
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product.description || '') }}
+            />
           </div>
 
           {/* Media Section */}

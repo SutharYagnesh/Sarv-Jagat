@@ -8,6 +8,7 @@ import { PageHero } from "@/components/page-hero"
 import { TableOfContents } from "@/components/table-of-contents"
 import { Share2, Bookmark, Calendar, Clock, User } from "lucide-react"
 import { motion } from "framer-motion"
+import DOMPurify from 'isomorphic-dompurify'
 
 export function BlogPost({ post }) {
   const [bookmarked, setBookmarked] = useState(false)
@@ -118,7 +119,7 @@ export function BlogPost({ post }) {
                 {/* Article Content */}
                 <div
                   className="prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-a:text-primary prose-strong:text-foreground prose-ul:text-muted-foreground prose-ol:text-muted-foreground"
-                  dangerouslySetInnerHTML={{ __html: post.content }}
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content || '') }}
                 />
 
                 {/* Author Bio */}

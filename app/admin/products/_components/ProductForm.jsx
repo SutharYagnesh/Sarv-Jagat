@@ -10,6 +10,7 @@ export default function ProductForm({ initialData = null }) {
   
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -59,18 +60,37 @@ export default function ProductForm({ initialData = null }) {
     }
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData(prev => ({
-          ...prev,
-          images: [...prev.images, reader.result]
-        }));
-      };
-      reader.readAsDataURL(file);
-    });
+    if (!files.length) return;
+    
+    setUploadingImage(true);
+    for (const file of files) {
+      try {
+        const uploadData = new FormData();
+        uploadData.append('file', file);
+        
+        const res = await fetch('/api/admin/upload', {
+          method: 'POST',
+          body: uploadData,
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          setFormData(prev => ({
+            ...prev,
+            images: [...prev.images, data.url]
+          }));
+        } else {
+          console.error("Failed to upload image");
+          alert("Failed to upload image");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Failed to upload image");
+      }
+    }
+    setUploadingImage(false);
   };
 
   const removeImage = (index) => {
@@ -285,7 +305,7 @@ export default function ProductForm({ initialData = null }) {
           {/* Images */}
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
             <h2 className="text-lg font-semibold text-gray-900">Images *</h2>
-            <p className="text-xs text-gray-500">Base64 format. Max 5MB per image.</p>
+            <p className="text-xs text-gray-500">Max 5MB per image.</p>
             
             <div className="grid grid-cols-2 gap-3">
               {formData.images.map((img, index) => (
@@ -298,8 +318,8 @@ export default function ProductForm({ initialData = null }) {
               ))}
               <label className="aspect-square rounded-md border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-gray-700 cursor-pointer transition-colors">
                 <UploadCloud className="w-8 h-8 mb-2" />
-                <span className="text-xs font-medium text-center px-2">Upload Image</span>
-                <input type="file" multiple accept="image/*" onChange={handleImageUpload} className="hidden" />
+                <span className="text-xs font-medium text-center px-2">{uploadingImage ? 'Uploading...' : 'Upload Image'}</span>
+                <input type="file" multiple accept="image/*" onChange={handleImageUpload} disabled={uploadingImage} className="hidden" />
               </label>
             </div>
             {formData.images.length === 0 && (

@@ -18,7 +18,7 @@ export async function GET(request) {
       ];
     }
 
-    const products = await Product.find(query).sort({ createdAt: -1 });
+    const products = await Product.find(query).select('-description -specifications').lean().sort({ createdAt: -1 });
     return NextResponse.json(products);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
