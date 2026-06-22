@@ -5,6 +5,7 @@ import { RelatedProducts } from "@/components/sections/related-products"
 import { ProductSchema } from "@/components/structured-data"
 import connectDB from "@/lib/db"
 import Product from "@/lib/models/Product"
+import Category from "@/lib/models/Category"
 
 async function getProductData(slug) {
   try {
@@ -12,13 +13,21 @@ async function getProductData(slug) {
     const product = await Product.findOne({ slug, status: "Published" }).lean();
     if (!product) return { product: null, relatedProducts: [] };
 
+    let categorySlug = (product.category || 'uncategorized').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    if (product.category) {
+      const categoryDoc = await Category.findOne({ name: product.category }).lean();
+      if (categoryDoc && categoryDoc.slug) {
+        categorySlug = categoryDoc.slug;
+      }
+    }
+
     const relatedProductsRaw = await Product.find({
       _id: { $ne: product._id },
       category: product.category,
       status: "Published"
     }).limit(3).lean();
 
-    const formatProduct = (p) => {
+    const formatProduct = (p, catSlug) => {
       const plain = JSON.parse(JSON.stringify(p));
       const formattedSpecs = {};
       if (plain.specifications && Array.isArray(plain.specifications)) {
@@ -34,13 +43,14 @@ async function getProductData(slug) {
         image: plain.images && plain.images.length > 0 ? plain.images[0] : "/placeholder.jpg",
         images: plain.images,
         features: [],
-        specifications: formattedSpecs
+        specifications: formattedSpecs,
+        categorySlug: catSlug || (plain.category || 'uncategorized').toLowerCase().replace(/[^a-z0-9]+/g, '-')
       };
     };
 
     return {
-      product: formatProduct(product),
-      relatedProducts: relatedProductsRaw.map(formatProduct)
+      product: formatProduct(product, categorySlug),
+      relatedProducts: relatedProductsRaw.map(p => formatProduct(p))
     };
   } catch (error) {
     console.error("Error fetching product:", error);

@@ -46,7 +46,7 @@ export function ProductDetails({ product }) {
           <span>&gt;</span>
           <Link href="/products" className="hover:text-red-600">Products</Link>
           <span>&gt;</span>
-          <Link href={`/products/category/${(product.category || 'uncategorized').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="hover:text-red-600">{product.category || 'Uncategorized'}</Link>
+          <Link href={`/products/category/${product.categorySlug || (product.category || 'uncategorized').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="hover:text-red-600">{product.category || 'Uncategorized'}</Link>
           <span>&gt;</span>
           <span className="text-gray-800 font-medium">{product.name}</span>
         </div>
