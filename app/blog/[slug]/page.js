@@ -95,7 +95,7 @@ export default async function BlogDetailPage({ params }) {
                 src={blog.imageUrl || "/placeholder.svg"}
                 alt={blog.title}
                 containerClassName="border rounded-sm p-4 flex items-center justify-center bg-white aspect-[4/3] relative hover:border-gray-300 transition-colors overflow-hidden"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
             </div>
 

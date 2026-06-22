@@ -54,6 +54,8 @@ const defaultNavigation = {
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [navigation, setNavigation] = useState(defaultNavigation)
+  const router = useRouter()
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -78,6 +80,15 @@ export function Header() {
     }
     fetchCategories();
   }, []);
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      setSearchQuery('')
+      setMobileMenuOpen(false)
+    }
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -221,7 +232,17 @@ export function Header() {
             </NavigationMenuList>
           </NavigationMenu>
 
-          <div className="hidden lg:flex">
+          <div className="hidden lg:flex items-center gap-4">
+            <form onSubmit={handleSearch} className="relative">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-8 pr-3 py-1.5 text-sm border border-slate-300 rounded-full focus:outline-none focus:border-red-500 w-48 transition-all bg-white text-slate-900"
+              />
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            </form>
             <Button asChild className="bg-red-600 hover:bg-red-700 text-white">
               <Link href="/contact">Get Quote</Link>
             </Button>
@@ -247,12 +268,23 @@ export function Header() {
 
 function MobileNav({ navigation, onClose }) {
   const [openSections, setOpenSections] = useState({})
+  const router = useRouter()
+  const [searchQuery, setSearchQuery] = useState('')
 
   const toggleSection = (section) => {
     setOpenSections((prev) => ({
       ...prev,
       [section]: !prev[section],
     }))
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      setSearchQuery('')
+      onClose()
+    }
   }
 
   return (
@@ -270,6 +302,17 @@ function MobileNav({ navigation, onClose }) {
       </Link>
 
       <div className="space-y-4">
+        <form onSubmit={handleSearch} className="relative mb-4">
+          <input
+            type="text"
+            placeholder="Search site..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-8 pr-3 py-2 text-sm border rounded-md focus:outline-none focus:border-red-500 w-full"
+          />
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        </form>
+
         <Link href="/#hero" onClick={onClose} className="block py-2 text-slate-900 hover:text-red-600 font-medium">
           Home
         </Link>

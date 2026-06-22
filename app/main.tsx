@@ -244,7 +244,7 @@ export default async function HomePage() {
                     className="  h-64 object-cover transition-transform duration-300 hover:scale-105"
                   />
                   <div className="absolute top-4 right-4">
-                    <Badge className="bg-red-600 text-white">{product.category}</Badge>
+                    <Badge className="bg-red-600 text-white shadow-md font-semibold">SJ Premium</Badge>
                   </div>
                 </div>
                 <CardHeader>
