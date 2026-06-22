@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, Tag, Share2, Facebook, Twitter, Linkedin, Youtube, Instagram, Chrome } from "lucide-react";
 import { ArticleSchema } from "@/components/structured-data";
+import { BlogGallery } from "@/components/ui/blog-gallery";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -89,7 +90,7 @@ export default async function BlogDetailPage({ params }) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Left: Image (4 cols) */}
             <div className="lg:col-span-4 space-y-4">
-              <div className="border rounded-sm p-4 flex items-center justify-center bg-white aspect-square relative hover:border-gray-300 transition-colors overflow-hidden">
+              <div className="border rounded-sm p-4 flex items-center justify-center bg-white aspect-[4/3] relative hover:border-gray-300 transition-colors overflow-hidden">
                 <img
                   src={blog.imageUrl || "/placeholder.svg"}
                   alt={blog.title}
@@ -175,64 +176,12 @@ export default async function BlogDetailPage({ params }) {
           </div>
 
           {/* Media Section */}
-          {(blog.images?.length > 0 || blog.instagramLink || blog.youtubeLink || (blog.videos && blog.videos.length > 0)) && (
-            <div className="mt-10 pt-8 border-t border-gray-200">
-              <h3 className="text-xl font-serif text-gray-800 mb-6">Gallery & Media</h3>
-              <div className="space-y-8">
-                {blog.images && blog.images.length > 0 && (
-                  <div>
-                    <h4 className="text-lg font-serif text-gray-700 mb-4">Project Gallery</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {blog.images.map((img, idx) => (
-                        <div key={idx} className="aspect-[4/3] rounded-lg overflow-hidden border shadow-sm">
-                          <img src={img} alt={`${blog.title} gallery image ${idx+1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {blog.instagramLink && (
-                  <div className="flex justify-center my-6">
-                    <Button asChild className="bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:opacity-90 text-white rounded-full px-8 py-6 text-lg font-medium shadow-md">
-                      <a href={blog.instagramLink} target="_blank" rel="noopener noreferrer" className="flex items-center">
-                        <Instagram className="w-5 h-5 mr-2" />
-                        View Original Instagram Post
-                      </a>
-                    </Button>
-                  </div>
-                )}
-
-                {blog.youtubeLink && (() => {
-                  const match = blog.youtubeLink.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]+)/);
-                  const videoId = match ? match[1] : null;
-                  if (videoId) {
-                    return (
-                      <div className="aspect-video w-full max-w-4xl mx-auto rounded-lg overflow-hidden border shadow-sm bg-black">
-                        <iframe 
-                          src={`https://www.youtube.com/embed/${videoId}`}
-                          className="w-full h-full"
-                          allowFullScreen
-                          title={`${blog.title} YouTube Video`}
-                        />
-                      </div>
-                    );
-                  }
-                  return null;
-                })()}
-
-                {blog.videos && blog.videos.length > 0 && blog.videos[0] && (
-                  <div className="aspect-video w-full max-w-4xl mx-auto rounded-lg overflow-hidden border shadow-sm bg-black">
-                    <video 
-                      src={blog.videos[0]} 
-                      controls 
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
+          <BlogGallery 
+            images={blog.images} 
+            instagramLink={blog.instagramLink} 
+            youtubeLink={blog.youtubeLink} 
+            videos={blog.videos} 
+          />
 
           <div className="border-t border-gray-200 pt-8 text-center mt-10">
              <h3 className="text-lg font-serif text-gray-800 mb-4">Interested in our Air Compressors?</h3>

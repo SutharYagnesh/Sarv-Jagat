@@ -19,7 +19,7 @@ export async function GET(request) {
 
   try {
     await connectDB();
-    const admins = await Admin.find({}).select('-password').sort({ createdAt: -1 });
+    const admins = await Admin.find({}).select('-password').sort({ createdAt: -1 }).lean();
     return NextResponse.json(admins);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });

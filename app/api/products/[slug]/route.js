@@ -17,7 +17,7 @@ export async function GET(request, { params }) {
       _id: { $ne: product._id },
       category: product.category,
       status: "Published"
-    }).limit(3);
+    }).limit(3).lean();
 
     const response = {
       product,

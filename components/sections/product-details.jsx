@@ -7,11 +7,13 @@ import { Phone, Mail, Share2 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { ShareButton } from "@/components/ui/share-button"
+import { LightboxViewer } from "@/components/ui/lightbox-viewer"
 import DOMPurify from 'isomorphic-dompurify'
 
 export function ProductDetails({ product }) {
   const [selectedImage, setSelectedImage] = useState(0)
   const [showEnquiryForm, setShowEnquiryForm] = useState(false)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
 
   const images = product.images?.length > 0 ? product.images : ["/placeholder.svg"];
 
@@ -54,7 +56,10 @@ export function ProductDetails({ product }) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Left: Images (4 cols) */}
             <div className="lg:col-span-4 space-y-4">
-              <div className="border rounded-sm p-4 flex items-center justify-center bg-white aspect-square relative hover:border-gray-300 transition-colors">
+              <div 
+                className="border rounded-sm p-4 flex items-center justify-center bg-white aspect-square relative hover:border-gray-300 transition-colors cursor-zoom-in"
+                onClick={() => setLightboxOpen(true)}
+              >
                 <Image
                   src={images[selectedImage]}
                   alt={product.name}
@@ -62,12 +67,14 @@ export function ProductDetails({ product }) {
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-contain mix-blend-multiply p-4"
                 />
-                <ShareButton 
-                  title={product.name}
-                  text={`Check out ${product.name} from Sarv Jagat Corporation`}
-                  url={`/products/${product.slug}`}
-                  className="absolute top-4 right-4 p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
-                />
+                <div onClick={(e) => e.stopPropagation()}>
+                  <ShareButton 
+                    title={product.name}
+                    text={`Check out ${product.name} from Sarv Jagat Corporation`}
+                    url={`/products/${product.slug}`}
+                    className="absolute top-4 right-4 p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+                  />
+                </div>
               </div>
               <div className="flex space-x-2 overflow-x-auto pb-2">
                 {images.map((img, idx) => (
@@ -218,6 +225,13 @@ export function ProductDetails({ product }) {
             </div>
           </div>
         )}
+
+        <LightboxViewer 
+          images={images} 
+          index={selectedImage} 
+          open={lightboxOpen} 
+          close={() => setLightboxOpen(false)} 
+        />
       </div>
     </section>
   )
