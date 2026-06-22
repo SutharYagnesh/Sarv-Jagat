@@ -12,8 +12,9 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
-import { Menu, ChevronDown } from "lucide-react"
+import { Menu, ChevronDown, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 
 const defaultNavigation = {
   products: [
