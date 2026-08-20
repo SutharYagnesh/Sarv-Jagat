@@ -85,11 +85,20 @@ export function BlogEditor({ post, onSave, onCancel }) {
   }
 
   const handleAddTag = () => {
-    if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
-      setFormData((prev) => ({
-        ...prev,
-        tags: [...prev.tags, tagInput.trim()],
-      }))
+    if (tagInput.trim()) {
+      const newTags = tagInput
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag.length > 0)
+      
+      setFormData((prev) => {
+        const uniqueTags = new Set([...prev.tags])
+        newTags.forEach((tag) => uniqueTags.add(tag))
+        return {
+          ...prev,
+          tags: Array.from(uniqueTags),
+        }
+      })
       setTagInput("")
     }
   }
@@ -471,7 +480,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
                   <Input
                     value={tagInput}
                     onChange={(e) => setTagInput(e.target.value)}
-                    placeholder="Add tag..."
+                    placeholder="Add tags separated by comma..."
                     onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
                   />
                   <Button onClick={handleAddTag} size="sm">

@@ -18,6 +18,12 @@ export default function CatalogPage() {
     interest: "",
   })
 
+  const handleCustomCatalogSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const text = `*Custom Catalog Request*\n\nName: ${downloadForm.name}\nEmail: ${downloadForm.email}\nCompany: ${downloadForm.company}\nPhone: ${downloadForm.phone}\nRequirements: ${downloadForm.interest}`
+    window.open(`https://wa.me/919157487233?text=${encodeURIComponent(text)}`, '_blank')
+  }
+
   const catalogs = [
     {
       id: 1,
@@ -252,7 +258,7 @@ export default function CatalogPage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <form className="space-y-6">
+                    <form className="space-y-6" onSubmit={handleCustomCatalogSubmit}>
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="name">Full Name *</Label>

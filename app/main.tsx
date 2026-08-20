@@ -249,7 +249,7 @@ export default async function HomePage() {
                 </div>
                 <CardHeader>
                   <CardTitle className="text-xl">{product.title}</CardTitle>
-                  <CardDescription>{product.description}</CardDescription>
+                  <CardDescription>{product.description ? product.description.replace(/<[^>]*>?/gm, '') : ''}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <Button asChild className="w-full bg-slate-900 hover:bg-slate-800 text-white">

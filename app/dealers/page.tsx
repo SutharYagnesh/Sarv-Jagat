@@ -33,6 +33,27 @@ export default function DealersPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedState, setSelectedState] = useState("")
   const [selectedCity, setSelectedCity] = useState("")
+  
+  const [partnerForm, setPartnerForm] = useState({
+    companyName: "",
+    contactPerson: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    pincode: "",
+    experience: "",
+    partnershipType: "",
+    currentBusiness: "",
+    message: ""
+  })
+
+  const handlePartnerSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const text = `*Partnership Application*\n\nCompany: ${partnerForm.companyName}\nContact: ${partnerForm.contactPerson}\nEmail: ${partnerForm.email}\nPhone: ${partnerForm.phone}\nAddress: ${partnerForm.address}, ${partnerForm.city}, ${partnerForm.state} - ${partnerForm.pincode}\nExperience: ${partnerForm.experience}\nType: ${partnerForm.partnershipType}\nBusiness: ${partnerForm.currentBusiness}\nMessage: ${partnerForm.message}`
+    window.open(`https://wa.me/919157487233?text=${encodeURIComponent(text)}`, '_blank')
+  }
 
   // Dealer data
   const dealers = [
@@ -618,42 +639,42 @@ export default function DealersPage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <form className="space-y-6">
+                    <form className="space-y-6" onSubmit={handlePartnerSubmit}>
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="companyName">Company Name *</Label>
-                          <Input id="companyName" required />
+                          <Input id="companyName" value={partnerForm.companyName} onChange={e => setPartnerForm({...partnerForm, companyName: e.target.value})} required />
                         </div>
                         <div>
                           <Label htmlFor="contactPerson">Contact Person *</Label>
-                          <Input id="contactPerson" required />
+                          <Input id="contactPerson" value={partnerForm.contactPerson} onChange={e => setPartnerForm({...partnerForm, contactPerson: e.target.value})} required />
                         </div>
                       </div>
 
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="email">Email Address *</Label>
-                          <Input id="email" type="email" required />
+                          <Input id="email" type="email" value={partnerForm.email} onChange={e => setPartnerForm({...partnerForm, email: e.target.value})} required />
                         </div>
                         <div>
                           <Label htmlFor="phone">Phone Number *</Label>
-                          <Input id="phone" required />
+                          <Input id="phone" value={partnerForm.phone} onChange={e => setPartnerForm({...partnerForm, phone: e.target.value})} required />
                         </div>
                       </div>
 
                       <div>
                         <Label htmlFor="address">Business Address *</Label>
-                        <Input id="address" required />
+                        <Input id="address" value={partnerForm.address} onChange={e => setPartnerForm({...partnerForm, address: e.target.value})} required />
                       </div>
 
                       <div className="grid md:grid-cols-3 gap-4">
                         <div>
                           <Label htmlFor="city">City *</Label>
-                          <Input id="city" required />
+                          <Input id="city" value={partnerForm.city} onChange={e => setPartnerForm({...partnerForm, city: e.target.value})} required />
                         </div>
                         <div>
                           <Label htmlFor="state">State *</Label>
-                          <Select>
+                          <Select value={partnerForm.state} onValueChange={v => setPartnerForm({...partnerForm, state: v})}>
                             <SelectTrigger>
                               <SelectValue placeholder="Select state" />
                             </SelectTrigger>
@@ -668,14 +689,14 @@ export default function DealersPage() {
                         </div>
                         <div>
                           <Label htmlFor="pincode">Pincode *</Label>
-                          <Input id="pincode" required />
+                          <Input id="pincode" value={partnerForm.pincode} onChange={e => setPartnerForm({...partnerForm, pincode: e.target.value})} required />
                         </div>
                       </div>
 
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="experience">Years in Business *</Label>
-                          <Select>
+                          <Select value={partnerForm.experience} onValueChange={v => setPartnerForm({...partnerForm, experience: v})}>
                             <SelectTrigger>
                               <SelectValue placeholder="Select experience" />
                             </SelectTrigger>
@@ -689,7 +710,7 @@ export default function DealersPage() {
                         </div>
                         <div>
                           <Label htmlFor="partnershipType">Preferred Partnership *</Label>
-                          <Select>
+                          <Select value={partnerForm.partnershipType} onValueChange={v => setPartnerForm({...partnerForm, partnershipType: v})}>
                             <SelectTrigger>
                               <SelectValue placeholder="Select type" />
                             </SelectTrigger>
@@ -704,7 +725,7 @@ export default function DealersPage() {
 
                       <div>
                         <Label htmlFor="currentBusiness">Current Business Focus</Label>
-                        <Input id="currentBusiness" placeholder="e.g., Industrial equipment, HVAC, Pneumatic systems" />
+                        <Input id="currentBusiness" value={partnerForm.currentBusiness} onChange={e => setPartnerForm({...partnerForm, currentBusiness: e.target.value})} placeholder="e.g., Industrial equipment, HVAC, Pneumatic systems" />
                       </div>
 
                       <div>
@@ -713,16 +734,16 @@ export default function DealersPage() {
                           id="message"
                           className="w-full p-3 border border-gray-300 rounded-md"
                           rows={4}
+                          value={partnerForm.message}
+                          onChange={e => setPartnerForm({...partnerForm, message: e.target.value})}
                           placeholder="Tell us about your business, target market, and why you want to partner with Sarv Jagat..."
                         ></textarea>
                       </div>
-                    </form>
-                    <Link href={"https://wa.me/message/QNU3M3AGOL3NH1"} target="_blank" rel="noopener noreferrer">
+                      
                       <Button type="submit" size="lg" className="w-full">
-                        Submit Application
-
+                        Submit Application via WhatsApp
                       </Button>
-                    </Link>
+                    </form>
                   </CardContent>
                 </Card>
               </div>

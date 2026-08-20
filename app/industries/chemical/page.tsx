@@ -370,7 +370,7 @@ export default function ChemicalPage() {
               <Card key={index} className="product-card card-hover">
                 <CardHeader>
                   <CardTitle className="text-xl">{product.name}</CardTitle>
-                  <CardDescription className="text-professional">{product.description}</CardDescription>
+                  <CardDescription className="text-professional">{product.description ? product.description.replace(/<[^>]*>?/gm, '') : ''}</CardDescription>
                   <div className="pt-2">
                     <Badge className="bg-primary text-primary-foreground">{product.powerRange}</Badge>
                   </div>

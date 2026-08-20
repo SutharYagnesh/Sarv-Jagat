@@ -1,3 +1,5 @@
+"use client"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,6 +12,43 @@ import Link from "next/link"
 
 // Annual Maintenance Contract (AMC) detailed page
 export default function AMCPage() {
+  const WHATSAPP_NUMBER = "919157487233"
+  const PHONE_NUMBER = "+91-9157487233"
+
+  const [formData, setFormData] = useState({
+    company: "",
+    contact: "",
+    email: "",
+    phone: "",
+    location: "",
+    compressorType: "",
+    power: "",
+    package: "",
+    requirements: ""
+  })
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+  }
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault()
+    const { company, contact, email, phone, location, compressorType, power, package: amcPackage, requirements } = formData
+    const text = `*New AMC Inquiry*\n\nCompany: ${company}\nContact: ${contact}\nPhone: ${phone}\nEmail: ${email}\nLocation: ${location}\nCompressor Type: ${compressorType}\nPower: ${power}\nPackage: ${amcPackage}\nRequirements: ${requirements}`
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`, '_blank')
+  }
+
+  const scrollToForm = (pkgName = "") => {
+    if (pkgName) {
+      handleInputChange("package", pkgName.toLowerCase().split(' ')[0])
+    }
+    document.getElementById("amc-form")?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  const handleCall = () => {
+    window.open(`tel:${PHONE_NUMBER.replace(/-/g, '')}`)
+  }
+
   // AMC packages with detailed features and pricing
   const amcPackages = [
     {
@@ -206,13 +245,13 @@ export default function AMCPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="btn-primary">
+                <Button size="lg" className="btn-primary" onClick={() => scrollToForm()}>
                   Get AMC Quote
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline">
-                  <Calendar className="mr-2 h-5 w-5" />
-                  Schedule Consultation
+                <Button size="lg" variant="outline" onClick={handleCall}>
+                  <Phone className="mr-2 h-5 w-5" />
+                  Call for Consultation
                 </Button>
               </div>
             </div>
@@ -333,7 +372,7 @@ export default function AMCPage() {
                     </div>
                   </div>
 
-                  <Button className={`w-full ${pkg.popular ? "btn-primary" : "border-t-cyan-600"}`}>
+                  <Button className={`w-full ${pkg.popular ? "btn-primary" : "border-t-cyan-600"}`} onClick={() => scrollToForm(pkg.name)}>
                     Get {pkg.name} Quote
                   </Button>
                 </CardContent>
@@ -378,7 +417,7 @@ export default function AMCPage() {
       </section>
 
       {/* AMC Inquiry Form */}
-      <section className="py-20">
+      <section id="amc-form" className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center space-y-4 mb-12">
@@ -386,7 +425,7 @@ export default function AMCPage() {
                 Get Your <span className="text-gradient">AMC Quote</span>
               </h2>
               <p className="text-xl text-muted-foreground text-professional">
-                Fill out the form below and our service experts will provide you with a customized AMC proposal.
+                Fill out the form below and our service experts will provide you with a customized AMC proposal via WhatsApp.
               </p>
             </div>
 
@@ -397,91 +436,95 @@ export default function AMCPage() {
                   Get a customized maintenance contract proposal for your compressed air systems
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="company">Company Name *</Label>
-                    <Input id="company" placeholder="Enter your company name" />
+              <CardContent>
+                <form onSubmit={handleFormSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="company">Company Name *</Label>
+                      <Input id="company" required value={formData.company} onChange={(e) => handleInputChange("company", e.target.value)} placeholder="Enter your company name" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="contact">Contact Person *</Label>
+                      <Input id="contact" required value={formData.contact} onChange={(e) => handleInputChange("contact", e.target.value)} placeholder="Enter contact person name" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email Address *</Label>
+                      <Input id="email" type="email" required value={formData.email} onChange={(e) => handleInputChange("email", e.target.value)} placeholder="Enter email address" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone Number *</Label>
+                      <Input id="phone" required value={formData.phone} onChange={(e) => handleInputChange("phone", e.target.value)} placeholder="Enter phone number" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="location">Location *</Label>
+                      <Input id="location" required value={formData.location} onChange={(e) => handleInputChange("location", e.target.value)} placeholder="City, State" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="compressor-type">Compressor Type</Label>
+                      <Select value={formData.compressorType} onValueChange={(v) => handleInputChange("compressorType", v)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select compressor type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="screw">Screw Compressor</SelectItem>
+                          <SelectItem value="piston">Piston Compressor</SelectItem>
+                          <SelectItem value="oil-free">Oil-Free Compressor</SelectItem>
+                          <SelectItem value="multiple">Multiple Types</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="power">Power Rating</Label>
+                      <Select value={formData.power} onValueChange={(v) => handleInputChange("power", v)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select power range" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="1-10hp">1-10 HP</SelectItem>
+                          <SelectItem value="10-50hp">10-50 HP</SelectItem>
+                          <SelectItem value="50-100hp">50-100 HP</SelectItem>
+                          <SelectItem value="100hp+">100+ HP</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="package">Preferred AMC Package</Label>
+                      <Select value={formData.package} onValueChange={(v) => handleInputChange("package", v)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select AMC package" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="basic">Basic AMC</SelectItem>
+                          <SelectItem value="premium">Premium AMC</SelectItem>
+                          <SelectItem value="enterprise">Enterprise AMC</SelectItem>
+                          <SelectItem value="custom">Custom Package</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="contact">Contact Person *</Label>
-                    <Input id="contact" placeholder="Enter contact person name" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email Address *</Label>
-                    <Input id="email" type="email" placeholder="Enter email address" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
-                    <Input id="phone" placeholder="Enter phone number" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="location">Location *</Label>
-                    <Input id="location" placeholder="City, State" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="compressor-type">Compressor Type</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select compressor type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="screw">Screw Compressor</SelectItem>
-                        <SelectItem value="piston">Piston Compressor</SelectItem>
-                        <SelectItem value="oil-free">Oil-Free Compressor</SelectItem>
-                        <SelectItem value="multiple">Multiple Types</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="power">Power Rating</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select power range" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1-10hp">1-10 HP</SelectItem>
-                        <SelectItem value="10-50hp">10-50 HP</SelectItem>
-                        <SelectItem value="50-100hp">50-100 HP</SelectItem>
-                        <SelectItem value="100hp+">100+ HP</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="package">Preferred AMC Package</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select AMC package" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="basic">Basic AMC</SelectItem>
-                        <SelectItem value="premium">Premium AMC</SelectItem>
-                        <SelectItem value="enterprise">Enterprise AMC</SelectItem>
-                        <SelectItem value="custom">Custom Package</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="requirements">Additional Requirements</Label>
-                  <Textarea
-                    id="requirements"
-                    placeholder="Please describe your specific maintenance requirements, current issues, or any special considerations..."
-                    rows={4}
-                  />
-                </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="requirements">Additional Requirements</Label>
+                    <Textarea
+                      id="requirements"
+                      value={formData.requirements}
+                      onChange={(e) => handleInputChange("requirements", e.target.value)}
+                      placeholder="Please describe your specific maintenance requirements, current issues, or any special considerations..."
+                      rows={4}
+                    />
+                  </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="btn-primary flex-1">
-                    <FileText className="mr-2 h-5 w-5" />
-                    Get AMC Proposal
-                  </Button>
-                  <Button size="lg" variant="outline" className="flex-1 bg-transparent">
-                    <Phone className="mr-2 h-5 w-5" />
-                    Call for Consultation
-                  </Button>
-                </div>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button type="submit" size="lg" className="btn-primary flex-1">
+                      <FileText className="mr-2 h-5 w-5" />
+                      Get AMC Proposal via WhatsApp
+                    </Button>
+                    <Button type="button" size="lg" variant="outline" className="flex-1 bg-transparent" onClick={handleCall}>
+                      <Phone className="mr-2 h-5 w-5" />
+                      Call for Consultation
+                    </Button>
+                  </div>
+                </form>
               </CardContent>
             </Card>
           </div>
@@ -498,16 +541,17 @@ export default function AMCPage() {
               started with a comprehensive maintenance contract today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="btn-secondary">
+              <Button size="lg" className="btn-secondary" onClick={handleCall}>
                 <Phone className="mr-2 h-5 w-5" />
-                Call AMC Team: +91-9876543210
+                Call AMC Team: {PHONE_NUMBER}
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 className="text-white border-white hover:bg-white hover:text-primary bg-transparent"
+                onClick={() => window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=I would like to download the AMC brochure.`, '_blank')}
               >
-                Download AMC Brochure
+                Request Brochure on WhatsApp
               </Button>
             </div>
           </div>

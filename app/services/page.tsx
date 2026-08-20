@@ -356,7 +356,7 @@ export default function ServicesPage() {
                       </div>
                     ))}
                   </div>
-                  <Button className={`w-full ${pkg.popular ? "btn-primary" : "btn-primary"}`}>
+                  <Button className={`w-full ${pkg.popular ? "btn-primary" : "btn-primary"}`} onClick={() => window.open(`https://wa.me/919157487233?text=I am interested in getting a quote for the ${pkg.name}.`, '_blank')}>
                     Get Quote for {pkg.name}
                   </Button>
                 </CardContent>
@@ -444,14 +444,17 @@ export default function ServicesPage() {
               for your compressed air systems.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="btn-secondary text-black text-lg px-8">
-                <Phone className="mr-2 h-5 w-5" />
-                Call Service Team
+              <Button size="lg" className="btn-secondary text-black text-lg px-8" asChild>
+                <a href="tel:+919157487233">
+                  <Phone className="mr-2 h-5 w-5" />
+                  Call Service Team
+                </a>
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 className="text-white border-white hover:bg-white hover:text-primary text-lg px-8 bg-transparent"
+                onClick={() => window.open('https://wa.me/919157487233?text=I would like to schedule a service visit.', '_blank')}
               >
                 Schedule Service Visit
               </Button>
