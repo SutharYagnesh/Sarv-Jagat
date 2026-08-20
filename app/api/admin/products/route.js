@@ -8,7 +8,7 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
     const search = searchParams.get('search');
-    
+
     let query = {};
     if (category && category !== 'all') query.category = category;
     if (search) {
@@ -18,7 +18,7 @@ export async function GET(request) {
       ];
     }
 
-    const products = await Product.find(query).select('-description -specifications').lean().sort({ order: 1, createdAt: -1 });
+    const products = await Product.find(query).select('-description -specifications').lean().sort({ createdAt: -1 });
     return NextResponse.json(products);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });

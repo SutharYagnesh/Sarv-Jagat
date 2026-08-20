@@ -64,19 +64,6 @@ export default function ProductsPage() {
     }
   };
 
-  const handleUpdateOrder = async (id, newOrder) => {
-    try {
-      await fetch(`/api/admin/products/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ order: Number(newOrder) }),
-      });
-      fetchProducts();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -115,7 +102,6 @@ export default function ProductsPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Model Number</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
@@ -137,20 +123,11 @@ export default function ProductsPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.category}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.modelNumber}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <input 
-                        type="number" 
-                        defaultValue={product.order || 0}
-                        onBlur={(e) => handleUpdateOrder(product._id, e.target.value)}
-                        className="w-16 px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-center"
-                      />
-                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        product.status === 'Published' ? 'bg-green-100 text-green-800' :
-                        product.status === 'Draft' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
+                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${product.status === 'Published' ? 'bg-green-100 text-green-800' :
+                          product.status === 'Draft' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-gray-100 text-gray-800'
+                        }`}>
                         {product.status || 'Draft'}
                       </span>
                     </td>
@@ -172,7 +149,7 @@ export default function ProductsPage() {
                 ))}
               </tbody>
             </table>
-            
+
             {totalPages > 1 && (
               <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
                 <div className="text-sm text-gray-500">

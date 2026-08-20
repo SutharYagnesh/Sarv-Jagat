@@ -282,7 +282,9 @@ export default function PrivacyPolicyPage() {
                       <div className="text-gray-700">
                         Sarv Jagat Corporation
                         <br />
-                        Ahmedabad, Gujarat, India
+                        Shade No-24, Vinayak Industrial Estate - 2
+                        <br />
+                        Kathwada-GIDC, Ahmedabad-382430, Gujarat, India
                       </div>
                     </div>
                   </div>

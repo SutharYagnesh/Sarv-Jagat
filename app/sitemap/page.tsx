@@ -1,13 +1,9 @@
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Home, Package, Building2, Wrench, Users, FileText, Phone, Mail, Archive, Layers, Tag } from "lucide-react"
+import { Home, Package, Building2, Wrench, Users, FileText, Phone, Mail } from "lucide-react"
 import connectDB from "@/lib/db"
 import Category from "@/lib/models/Category"
-import Product from "@/lib/models/Product"
-import Blog from "@/lib/models/Blog"
-
-export const dynamic = 'force-dynamic'
 
 export async function generateMetadata() {
   return {
@@ -34,51 +30,26 @@ export async function generateMetadata() {
 
 export default async function SitemapPage() {
   await connectDB()
+  const categories = await Category.find({}).sort({ order: 1 }).lean()
 
-  const [products, categories, blogs] = await Promise.all([
-    Product.find({ status: 'Published' }).select('title slug category').sort({ createdAt: -1 }).lean(),
-    Category.find({ status: 'Published' }).select('name slug').sort({ name: 1 }).lean(),
-    Blog.find({ status: 'Published' }).select('title slug').sort({ createdAt: -1 }).lean(),
-  ])
-
-  const productChildren = products.length > 0 
-    ? products.map(p => ({ title: p.title, href: `/products/${p.slug}` }))
-    : []
-    
-  const categoryChildren = categories.length > 0 
+  const productChildren = categories.length > 0
     ? categories.map(c => ({ title: c.name, href: `/products/category/${c.slug}` }))
-    : []
-
-  const blogChildren = blogs.length > 0
-    ? blogs.map(b => ({ title: b.title, href: `/blog/${b.slug}` }))
-    : []
+    : [
+      { title: "Screw Air Compressors", href: "/products/screw" },
+      { title: "Piston Compressors", href: "/products/piston" },
+      { title: "Oil-Free Systems", href: "/products/oil-free" },
+      { title: "Specialized Solutions", href: "/products/specialized" },
+    ]
 
   const siteStructure = [
     {
-      title: "Main Pages",
+      title: "Home",
       icon: <Home className="h-5 w-5" />,
       href: "/",
-      description: "Main sections of the Sarv Jagat Corporation website",
-      children: [
-        { title: "Home", href: "/" },
-        { title: "About Us", href: "/about" },
-        { title: "Products", href: "/products" },
-        { title: "Services", href: "/services" },
-        { title: "Industries", href: "/industries" },
-        { title: "Catalog", href: "/catalog" },
-        { title: "Blog", href: "/blog" },
-        { title: "Contact Us", href: "/contact" },
-      ],
+      description: "Main homepage with company overview and featured products",
     },
     {
-      title: "Product Categories",
-      icon: <Tag className="h-5 w-5" />,
-      href: "/products",
-      description: "Browse our products by category",
-      children: categoryChildren,
-    },
-    {
-      title: "All Products",
+      title: "Products",
       icon: <Package className="h-5 w-5" />,
       href: "/products",
       description: "Complete range of air compressor products",
@@ -125,7 +96,7 @@ export default async function SitemapPage() {
       ],
     },
     {
-      title: "Resources & Legal",
+      title: "Resources",
       icon: <FileText className="h-5 w-5" />,
       href: "/catalog",
       description: "Documentation and resources",
@@ -137,11 +108,16 @@ export default async function SitemapPage() {
       ],
     },
     {
-      title: "Recent Blogs",
+      title: "Blog",
       icon: <FileText className="h-5 w-5" />,
       href: "/blog",
       description: "Read our latest articles and updates",
-      children: blogChildren,
+    },
+    {
+      title: "Contact",
+      icon: <Phone className="h-5 w-5" />,
+      href: "/contact",
+      description: "Get in touch with our team",
     },
   ]
 
@@ -170,14 +146,12 @@ export default async function SitemapPage() {
       {/* Main Content */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {siteStructure.map((section, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle className="text-xl flex items-center gap-3">
-                    <div className="bg-red-100 p-2 rounded-lg text-red-600">
-                      {section.icon}
-                    </div>
+                    {section.icon}
                     <Link href={section.href} className="hover:text-blue-600 transition-colors">
                       {section.title}
                     </Link>
@@ -186,13 +160,13 @@ export default async function SitemapPage() {
                 </CardHeader>
                 <CardContent>
                   {section.children && (
-                    <div className="space-y-2 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
+                    <div className="space-y-2">
                       {section.children.map((child, childIndex) => (
                         <div key={childIndex} className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0"></div>
+                          <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                           <Link
                             href={child.href}
-                            className="text-gray-700 hover:text-blue-600 transition-colors text-sm line-clamp-1"
+                            className="text-gray-700 hover:text-blue-600 transition-colors text-sm"
                           >
                             {child.title}
                           </Link>
@@ -200,7 +174,7 @@ export default async function SitemapPage() {
                       ))}
                     </div>
                   )}
-                  <div className="mt-4 pt-4 border-t border-gray-100">
+                  <div className="mt-4">
                     <Button asChild variant="outline" size="sm">
                       <Link href={section.href}>Visit Section</Link>
                     </Button>
@@ -210,8 +184,41 @@ export default async function SitemapPage() {
             ))}
           </div>
 
+          {/* Quick Links */}
+          <Card className="mt-12">
+            <CardHeader>
+              <CardTitle className="text-2xl text-center">Quick Links</CardTitle>
+              <CardDescription className="text-center">
+                Direct access to our most popular pages and resources
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Button asChild variant="outline" className="h-auto p-4 flex flex-col gap-2 bg-transparent">
+                  <Link href="/products/screw">
+                    <Package className="h-6 w-6" />
+                    <span>Screw Compressors</span>
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="h-auto p-4 flex flex-col gap-2 bg-transparent">
+                  <Link href="/contact">
+                    <Phone className="h-6 w-6" />
+                    <span>Contact Us</span>
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="h-auto p-4 flex flex-col gap-2 bg-transparent">
+                  <Link href="/catalog">
+                    <FileText className="h-6 w-6" />
+                    <span>Download Catalog</span>
+                  </Link>
+                </Button>
+
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Contact Information */}
-          <Card className="mt-12 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+          <Card className="mt-8 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
             <CardContent className="p-8">
               <div className="text-center">
                 <h3 className="text-2xl font-bold mb-4">Need Help Finding Something?</h3>

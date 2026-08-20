@@ -85,14 +85,11 @@ export function BlogEditor({ post, onSave, onCancel }) {
   }
 
   const handleAddTag = () => {
-    if (tagInput.trim()) {
-      const newTags = tagInput.split(',').map(tag => tag.trim()).filter(tag => tag && !formData.tags.includes(tag));
-      if (newTags.length > 0) {
-        setFormData((prev) => ({
-          ...prev,
-          tags: [...prev.tags, ...newTags],
-        }))
-      }
+    if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
+      setFormData((prev) => ({
+        ...prev,
+        tags: [...prev.tags, tagInput.trim()],
+      }))
       setTagInput("")
     }
   }
@@ -161,7 +158,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
       setUploadingMedia(false)
     }
   }
-  
+
   // Helper to extract YouTube ID
   const getYouTubeId = (url) => {
     if (!url) return null;
@@ -247,12 +244,12 @@ export function BlogEditor({ post, onSave, onCancel }) {
                 )}
               </div>
               <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: formData.content }} />
-              
+
               {/* Media Previews */}
               <div className="mt-8 space-y-6">
                 {formData.youtubeLink && getYouTubeId(formData.youtubeLink) && (
                   <div className="aspect-video w-full max-w-2xl mx-auto rounded-lg overflow-hidden border shadow-sm">
-                    <iframe 
+                    <iframe
                       src={`https://www.youtube.com/embed/${getYouTubeId(formData.youtubeLink)}`}
                       className="w-full h-full"
                       allowFullScreen
@@ -262,9 +259,9 @@ export function BlogEditor({ post, onSave, onCancel }) {
                 )}
                 {formData.videos && formData.videos.length > 0 && formData.videos[0] && (
                   <div className="aspect-video w-full max-w-2xl mx-auto rounded-lg overflow-hidden border shadow-sm bg-black">
-                    <video 
-                      src={formData.videos[0]} 
-                      controls 
+                    <video
+                      src={formData.videos[0]}
+                      controls
                       className="w-full h-full object-contain"
                     />
                   </div>
@@ -394,7 +391,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
                   />
                   {formData.youtubeLink && getYouTubeId(formData.youtubeLink) && (
                     <div className="mt-2 aspect-video rounded overflow-hidden">
-                      <iframe 
+                      <iframe
                         src={`https://www.youtube.com/embed/${getYouTubeId(formData.youtubeLink)}`}
                         className="w-full h-full"
                         allowFullScreen
@@ -474,7 +471,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
                   <Input
                     value={tagInput}
                     onChange={(e) => setTagInput(e.target.value)}
-                    placeholder="Add tags (comma separated)..."
+                    placeholder="Add tag..."
                     onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
                   />
                   <Button onClick={handleAddTag} size="sm">

@@ -10,8 +10,7 @@ export const metadata = {
     "Leading manufacturer of industrial air compressors, Refrigerated Air Dryers, and compressed air solutions. Trusted by industries worldwide. Contact us at +919157487233 or contact@sarvjagat.com",
   generator: "Next.js",
   metadataBase: new URL("https://sarvjagat.com"),
-  keywords: {
-  "compressors": [
+  keywords: [
     "industrial air compressor",
     "air compressor manufacturer in india",
     "best industrial air compressor",
@@ -44,9 +43,7 @@ export const metadata = {
     "high cfm air compressor",
     "energy efficient screw compressor",
     "smart screw air compressor",
-    "durable reciprocating compressor"
-  ],
-  "dryers": [
+    "durable reciprocating compressor",
     "air dryer for compressor",
     "compressed air dryer",
     "refrigerated air dryer",
@@ -60,9 +57,7 @@ export const metadata = {
     "air dryer for pharmaceutical industry",
     "air dryer for food processing",
     "compressed air dryer exporter",
-    "industrial air dryer india"
-  ],
-  "filters": [
+    "industrial air dryer india",
     "compressed air filter",
     "industrial air filter",
     "oil removal air filter",
@@ -76,9 +71,7 @@ export const metadata = {
     "industrial air purification filter",
     "compressed air filtration system",
     "air compressor intake filter",
-    "air compressor oil separator"
-  ],
-  "spares_and_accessories": [
+    "air compressor oil separator",
     "air compressor spare parts",
     "screw compressor spares",
     "reciprocating compressor spares",
@@ -93,9 +86,7 @@ export const metadata = {
     "aftermarket compressor parts",
     "air receiver tank",
     "compressed air pipeline accessories",
-    "automatic drain valve"
-  ],
-  "applications": [
+    "automatic drain valve",
     "air compressor for manufacturing",
     "air compressor for cnc machines",
     "air compressor for vmc machines",
@@ -117,9 +108,7 @@ export const metadata = {
     "air compressor for plastic industry",
     "air compressor for pet bottle blowing",
     "air compressor for textile industry",
-    "compressed air solution for automotive"
-  ],
-  "location_based": [
+    "compressed air solution for automotive",
     "air compressor manufacturer in ahmedabad",
     "air compressor manufacturer in gujarat",
     "air compressor supplier in india",
@@ -133,9 +122,7 @@ export const metadata = {
     "air compressor exporter to uae",
     "air compressor supplier in africa",
     "air compressor exporter to middle east",
-    "air compressor exporter to europe"
-  ],
-  "branded_keywords": [
+    "air compressor exporter to europe",
     "sarv jagat air compressors",
     "sj air compressor manufacturer",
     "sarv jagat industrial compressors",
@@ -149,8 +136,7 @@ export const metadata = {
     "sarv jagat compressor spares",
     "sj brand screw air compressor",
     "sarv jagat compressed air solutions"
-  ]
-},
+  ],
   authors: [{ name: "Sarv Jagat Corporation" }],
   creator: "Sarv Jagat Corporation",
   publisher: "Sarv Jagat Corporation",

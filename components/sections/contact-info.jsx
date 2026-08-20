@@ -7,7 +7,10 @@ export function ContactInfo() {
       icon: MapPin,
       title: "Head Office",
       details: [
-        "Ahmedabad, Gujarat, India",
+        "Shade No-24, Vinayak Industrial Estate - 2",
+        "Near Asudev Industrial Estate",
+        "Kathwada-Singarva Road, Kathwada-GIDC",
+        "Ahmedabad-382430, Gujarat, India",
       ],
     },
     {

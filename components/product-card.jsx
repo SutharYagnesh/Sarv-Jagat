@@ -58,9 +58,7 @@ export function ProductCard({ product }) {
         <div className="p-6 space-y-4">
           <div>
             <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2">{product.name}</h3>
-            <p className="text-sm text-muted-foreground line-clamp-2">
-              {product.description ? product.description.replace(/<[^>]*>?/gm, '') : ''}
-            </p>
+            <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
           </div>
 
           {/* Key Specs */}

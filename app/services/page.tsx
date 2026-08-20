@@ -81,7 +81,7 @@ export default function ServicesPage() {
       benefits: ["Minimal downtime", "Cost-effective repairs", "Restored performance", "Extended equipment life"],
       coverage: "All Over India",
       timeline: "Same day response",
-      href: "/contact",
+      href: "/services/",
       color: "bg-accent",
     },
     {
@@ -138,7 +138,7 @@ export default function ServicesPage() {
       benefits: ["Reduced energy costs", "Improved efficiency", "Environmental benefits", "Quick ROI"],
       coverage: "Certified Auditors",
       timeline: "3-5 days",
-      href: "/contact",
+      href: "/services/",
       color: "bg-secondary",
     },
   ]
@@ -199,7 +199,7 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      
+
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-red-900 text-white py-20">
         <div className="container mx-auto px-4">

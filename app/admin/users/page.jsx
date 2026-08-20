@@ -11,7 +11,7 @@ import { Loader2, Trash2 } from 'lucide-react';
 export default function UserManagementPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState({ username: '', password: '', role: 'Super Admin' });
+  const [form, setForm] = useState({ username: '', password: '', role: 'Manager' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -52,7 +52,7 @@ export default function UserManagementPage() {
 
       if (res.ok) {
         toast({ title: 'Success', description: 'User created successfully' });
-        setForm({ username: '', password: '', role: 'Super Admin' });
+        setForm({ username: '', password: '', role: 'Manager' });
         fetchUsers();
       } else {
         const data = await res.json();
@@ -102,19 +102,19 @@ export default function UserManagementPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Username</label>
-                <Input 
-                  value={form.username} 
-                  onChange={(e) => setForm({ ...form, username: e.target.value })} 
-                  placeholder="Enter username" 
+                <Input
+                  value={form.username}
+                  onChange={(e) => setForm({ ...form, username: e.target.value })}
+                  placeholder="Enter username"
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Password</label>
-                <Input 
+                <Input
                   type="password"
-                  value={form.password} 
-                  onChange={(e) => setForm({ ...form, password: e.target.value })} 
-                  placeholder="Enter password" 
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  placeholder="Enter password"
                 />
               </div>
               <div className="space-y-2">
@@ -124,8 +124,10 @@ export default function UserManagementPage() {
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Super Admin">Super Admin</SelectItem>
-                    <SelectItem value="Content Admin">Content Admin</SelectItem>
+                    <SelectItem value="Main Admin">Main Admin</SelectItem>
+                    <SelectItem value="GM">General Manager (GM)</SelectItem>
+                    <SelectItem value="Manager">Manager</SelectItem>
+                    <SelectItem value="Designer">Designer</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -158,9 +160,9 @@ export default function UserManagementPage() {
                       <td className="px-4 py-3 font-medium text-gray-900">{user.username}</td>
                       <td className="px-4 py-3">{user.role || 'Main Admin'}</td>
                       <td className="px-4 py-3 text-right">
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           className="text-red-600 hover:text-red-700 hover:bg-red-50"
                           onClick={() => handleDelete(user._id)}
                         >

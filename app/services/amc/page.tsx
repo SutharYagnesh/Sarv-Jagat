@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, CheckCircle, Shield, Clock, TrendingUp, Phone, Calendar } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ArrowRight, CheckCircle, Shield, Clock, TrendingUp, Phone, Calendar, FileText } from "lucide-react"
 import Link from "next/link"
-import { AMCForm } from "@/components/forms/amc-form"
 
 // Annual Maintenance Contract (AMC) detailed page
 export default function AMCPage() {
@@ -387,7 +390,100 @@ export default function AMCPage() {
               </p>
             </div>
 
-            <AMCForm />
+            <Card className="card-hover">
+              <CardHeader>
+                <CardTitle className="text-2xl text-center">AMC Inquiry Form</CardTitle>
+                <CardDescription className="text-center">
+                  Get a customized maintenance contract proposal for your compressed air systems
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="company">Company Name *</Label>
+                    <Input id="company" placeholder="Enter your company name" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="contact">Contact Person *</Label>
+                    <Input id="contact" placeholder="Enter contact person name" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email Address *</Label>
+                    <Input id="email" type="email" placeholder="Enter email address" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Input id="phone" placeholder="Enter phone number" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="location">Location *</Label>
+                    <Input id="location" placeholder="City, State" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="compressor-type">Compressor Type</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select compressor type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="screw">Screw Compressor</SelectItem>
+                        <SelectItem value="piston">Piston Compressor</SelectItem>
+                        <SelectItem value="oil-free">Oil-Free Compressor</SelectItem>
+                        <SelectItem value="multiple">Multiple Types</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="power">Power Rating</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select power range" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1-10hp">1-10 HP</SelectItem>
+                        <SelectItem value="10-50hp">10-50 HP</SelectItem>
+                        <SelectItem value="50-100hp">50-100 HP</SelectItem>
+                        <SelectItem value="100hp+">100+ HP</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="package">Preferred AMC Package</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select AMC package" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="basic">Basic AMC</SelectItem>
+                        <SelectItem value="premium">Premium AMC</SelectItem>
+                        <SelectItem value="enterprise">Enterprise AMC</SelectItem>
+                        <SelectItem value="custom">Custom Package</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="requirements">Additional Requirements</Label>
+                  <Textarea
+                    id="requirements"
+                    placeholder="Please describe your specific maintenance requirements, current issues, or any special considerations..."
+                    rows={4}
+                  />
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button size="lg" className="btn-primary flex-1">
+                    <FileText className="mr-2 h-5 w-5" />
+                    Get AMC Proposal
+                  </Button>
+                  <Button size="lg" variant="outline" className="flex-1 bg-transparent">
+                    <Phone className="mr-2 h-5 w-5" />
+                    Call for Consultation
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>

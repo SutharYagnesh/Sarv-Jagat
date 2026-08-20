@@ -18,24 +18,23 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title: category.seoTitle || `${category.name} | Sarv Jagat Corporation`,
-    description: category.seoDescription || `Leading Manufacturers, Exporters and Wholesaler of ${category.name} and related products.`,
+    title: `${category.name} | Sarv Jagat Corporation`,
+    description: `Leading Manufacturers, Exporters and Wholesaler of ${category.name} and related products.`,
     alternates: {
       canonical: `https://sarvjagat.com/products/category/${slug}`,
     },
     openGraph: {
-      title: category.seoTitle || `${category.name} | Sarv Jagat Corporation`,
-      description: category.seoDescription || `Explore our extensive range of ${category.name} designed for various industrial applications ensuring optimal performance and efficiency.`,
+      title: `${category.name} | Sarv Jagat Corporation`,
+      description: `Explore our extensive range of ${category.name} designed for various industrial applications ensuring optimal performance and efficiency.`,
       url: `https://sarvjagat.com/products/category/${slug}`,
       type: "website",
-      images: category.image ? [{ url: category.image }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title: category.seoTitle || `${category.name} | Sarv Jagat Corporation`,
-      description: category.seoDescription || `Leading Manufacturers of ${category.name}.`,
+      title: `${category.name} | Sarv Jagat Corporation`,
+      description: `Leading Manufacturers of ${category.name}.`,
     },
-    keywords: category.seoKeywords && category.seoKeywords.length > 0 ? category.seoKeywords : [category.name, "Air Compressors", "Industrial Equipment", "Wholesaler", "Manufacturer"],
+    keywords: [category.name, "Air Compressors", "Industrial Equipment", "Wholesaler", "Manufacturer"],
     robots: {
       index: true,
       follow: true,
@@ -46,7 +45,7 @@ export async function generateMetadata({ params }) {
 export default async function CategoryPage({ params }) {
   const { slug } = await params;
   await connectDB();
-  
+
   const category = await Category.findOne({ slug }).lean();
   if (!category) {
     notFound();
@@ -70,16 +69,10 @@ export default async function CategoryPage({ params }) {
             <span className="text-gray-800 font-medium">{category.name}</span>
           </div>
 
-          {category.description ? (
-            <p className="text-gray-700 leading-relaxed text-sm lg:text-base whitespace-pre-line">
-              {category.description}
-            </p>
-          ) : (
-            <p className="text-gray-700 leading-relaxed text-sm lg:text-base">
-              Leading Manufacturers, Exporters and Wholesaler of {products.map(p => p.title).join(", ")}. 
-              Explore our extensive range of {category.name} designed for various industrial applications ensuring optimal performance and efficiency.
-            </p>
-          )}
+          <p className="text-gray-700 leading-relaxed text-sm lg:text-base">
+            Leading Manufacturers, Exporters and Wholesaler of {products.map(p => p.title).join(", ")}.
+            Explore our extensive range of {category.name} designed for various industrial applications ensuring optimal performance and efficiency.
+          </p>
         </div>
 
         <CategoryClient products={products} categoryName={category.name} />

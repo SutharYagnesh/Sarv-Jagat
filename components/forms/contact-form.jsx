@@ -8,8 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { apiClient } from "@/lib/api-client"
-import { openWhatsApp } from "@/lib/whatsapp"
-
+import Link from "next/link"
 export function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -36,7 +35,8 @@ export function ContactForm() {
 
     try {
       const text = `*New Contact Message*\n\n*Name:* ${formData.name}\n*Email:* ${formData.email}\n*Phone:* ${formData.phone}\n*Company:* ${formData.company}\n*Subject:* ${formData.subject}\n*Message:* ${formData.message}`;
-      openWhatsApp(text);
+      const url = `https://wa.me/919157487233?text=${encodeURIComponent(text)}`;
+      window.open(url, "_blank");
 
       toast({
         title: "Redirecting to WhatsApp",

@@ -34,9 +34,7 @@ export function BlogCard({ post }) {
               <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">
                 {post.title}
               </h3>
-              <p className="text-muted-foreground line-clamp-3 leading-relaxed">
-                {post.excerpt ? post.excerpt.replace(/<[^>]*>?/gm, '') : ''}
-              </p>
+              <p className="text-muted-foreground line-clamp-3 leading-relaxed">{post.excerpt}</p>
             </div>
 
             {/* Tags */}

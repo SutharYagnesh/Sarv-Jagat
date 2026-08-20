@@ -1,6 +1,7 @@
 import connectDB from "@/lib/db"
 import Product from "@/lib/models/Product"
 import Blog from "@/lib/models/Blog"
+import Category from "@/lib/models/Category"
 import industries from "../data/industries.json"
 
 export const dynamic = 'force-dynamic';
@@ -11,13 +12,15 @@ export default async function sitemap() {
 
   let products = []
   let blogs = []
+  let categories = []
 
   try {
     await connectDB()
     products = await Product.find({ status: "Published" }).select("slug updatedAt").lean()
     blogs = await Blog.find({ status: "published" }).select("slug updatedAt publishedAt").lean()
+    categories = await Category.find({ status: "Published" }).select("slug updatedAt").lean()
   } catch (error) {
-    console.error("Failed to fetch products/blogs for sitemap", error)
+    console.error("Failed to fetch products/blogs/categories for sitemap", error)
   }
 
   // Product pages
@@ -26,6 +29,14 @@ export default async function sitemap() {
     lastModified: product.updatedAt ? new Date(product.updatedAt).toISOString() : currentDate,
     changeFrequency: "monthly",
     priority: 0.7,
+  }))
+
+  // Category pages
+  const categoryPages = categories.map((category) => ({
+    url: `${baseUrl}/products/category/${category.slug}`,
+    lastModified: category.updatedAt ? new Date(category.updatedAt).toISOString() : currentDate,
+    changeFrequency: "monthly",
+    priority: 0.8,
   }))
 
   // Industry pages
@@ -139,6 +150,7 @@ export default async function sitemap() {
       priority: 0.9,
     },
     ...productPages,
+    ...categoryPages,
     ...industriesPages,
     ...solutionPages,
     ...servicePages,

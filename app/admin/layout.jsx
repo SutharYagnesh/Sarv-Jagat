@@ -33,23 +33,14 @@ export default function AdminLayout({ children }) {
     router.push('/admin/login');
   };
 
-  const allNavItems = [
+  const navItems = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { name: 'Products', href: '/admin/products', icon: Package },
     { name: 'Categories', href: '/admin/categories', icon: Tags },
-    { name: 'Catalog', href: '/admin/catalog', icon: FileText },
     { name: 'Blog', href: '/admin/blog', icon: FileText },
   ];
 
-  let navItems = allNavItems;
-
-  if (role === 'Content Admin') {
-    navItems = allNavItems.filter(item => 
-      ['Dashboard', 'Categories', 'Blog'].includes(item.name)
-    );
-  }
-
-  if (role === 'Super Admin' || role === 'Main Admin') {
+  if (role === 'Main Admin') {
     navItems.push({ name: 'Users', href: '/admin/users', icon: Users });
   }
 
@@ -68,9 +59,8 @@ export default function AdminLayout({ children }) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200 ${
-                  isActive ? 'bg-red-50 text-red-600 font-medium' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                }`}
+                className={`flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200 ${isActive ? 'bg-red-50 text-red-600 font-medium' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
               >
                 <Icon className="w-5 h-5" />
                 {item.name}
@@ -79,7 +69,7 @@ export default function AdminLayout({ children }) {
           })}
         </nav>
         <div className="p-4 border-t">
-          <button 
+          <button
             onClick={handleLogout}
             className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
           >
@@ -106,7 +96,7 @@ export default function AdminLayout({ children }) {
         {/* Mobile Menu Dropdown */}
         {mobileMenuOpen && (
           <div className="absolute top-16 left-0 right-0 bg-white border-b shadow-md z-20 md:hidden p-4 space-y-2">
-             {navItems.map((item) => {
+            {navItems.map((item) => {
               const isActive = pathname === item.href || (pathname.startsWith(item.href) && item.href !== '/admin');
               const Icon = item.icon;
               return (
@@ -114,9 +104,8 @@ export default function AdminLayout({ children }) {
                   key={item.name}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-3 rounded-md transition-colors ${
-                    isActive ? 'bg-red-50 text-red-600 font-medium' : 'text-gray-600'
-                  }`}
+                  className={`flex items-center gap-3 px-3 py-3 rounded-md transition-colors ${isActive ? 'bg-red-50 text-red-600 font-medium' : 'text-gray-600'
+                    }`}
                 >
                   <Icon className="w-5 h-5" />
                   {item.name}
