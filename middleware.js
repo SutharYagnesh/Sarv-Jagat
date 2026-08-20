@@ -17,8 +17,22 @@ export async function middleware(request) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
 
-    if (path.startsWith('/admin/users') && payload.role !== 'Main Admin') {
+    const isSuperAdmin = payload.role === 'Super Admin' || payload.role === 'Main Admin';
+    const isContentAdmin = payload.role === 'Content Admin';
+
+    // Users page is strictly for Super Admins
+    if (path.startsWith('/admin/users') && !isSuperAdmin) {
       return NextResponse.redirect(new URL('/admin', request.url));
+    }
+
+    // Content Admins can only edit and publish blogs and categories
+    if (isContentAdmin) {
+      const allowedPaths = ['/admin', '/admin/blogs', '/admin/categories'];
+      const isAllowed = allowedPaths.some(allowed => path === allowed || path.startsWith(`${allowed}/`));
+      
+      if (!isAllowed) {
+        return NextResponse.redirect(new URL('/admin', request.url));
+      }
     }
   }
 

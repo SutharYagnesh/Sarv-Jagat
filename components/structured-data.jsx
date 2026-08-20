@@ -13,9 +13,8 @@ export function OrganizationSchema() {
       "Leading manufacturer of industrial air compressors, pneumatic tools, and compressed air solutions for various industries across India.",
     address: {
       "@type": "PostalAddress",
-      streetAddress:
-        "Shade No-24, Vinayak Industrial Estate - 2, Near Asudev Industrial Estate, Kathwada-Singarva Road",
-      addressLocality: "Kathwada-GIDC, Ahmedabad",
+      streetAddress: "",
+      addressLocality: "Ahmedabad",
       addressRegion: "Gujarat",
       postalCode: "382430",
       addressCountry: "IN",

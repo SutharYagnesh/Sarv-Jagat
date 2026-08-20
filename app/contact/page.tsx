@@ -25,7 +25,7 @@ export default function ContactPage() {
     {
       name: "Head Office - Ahmedabad",
       address:
-        "Shade No-24, Vinayak Industrial Estate - 2, Near Asudev Industrial Estate, Kathwada-Singarva Road, Kathwada-GIDC, Ahmedabad-382430, Gujarat, India",
+        "Ahmedabad, Gujarat, India",
       phone: "+91-9157487233",
       email: "contact@sarvjagat.com",
       hours: "Mon-Sat: 9:00 AM - 6:00 PM",

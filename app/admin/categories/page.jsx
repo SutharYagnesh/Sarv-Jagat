@@ -6,7 +6,7 @@ export default function CategoriesPage() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ id: null, name: '', slug: '', order: 0 });
+  const [formData, setFormData] = useState({ id: null, name: '', slug: '', order: 0, description: '', seoTitle: '', seoDescription: '', seoKeywords: '', image: '', status: 'Active' });
 
   const fetchCategories = async () => {
     try {
@@ -26,9 +26,20 @@ export default function CategoriesPage() {
 
   const handleOpenModal = (category = null) => {
     if (category) {
-      setFormData({ id: category._id, name: category.name, slug: category.slug, order: category.order || 0 });
+      setFormData({ 
+        id: category._id, 
+        name: category.name, 
+        slug: category.slug, 
+        order: category.order || 0,
+        description: category.description || '',
+        seoTitle: category.seoTitle || '',
+        seoDescription: category.seoDescription || '',
+        seoKeywords: category.seoKeywords ? category.seoKeywords.join(', ') : '',
+        image: category.image || '',
+        status: category.status || 'Active'
+      });
     } else {
-      setFormData({ id: null, name: '', slug: '', order: 0 });
+      setFormData({ id: null, name: '', slug: '', order: 0, description: '', seoTitle: '', seoDescription: '', seoKeywords: '', image: '', status: 'Active' });
     }
     setIsModalOpen(true);
   };
@@ -48,11 +59,23 @@ export default function CategoriesPage() {
     const url = isEdit ? `/api/admin/categories/${formData.id}` : '/api/admin/categories';
     const method = isEdit ? 'PUT' : 'POST';
 
+    const payload = { 
+      name: formData.name, 
+      slug: formData.slug, 
+      order: Number(formData.order),
+      description: formData.description,
+      seoTitle: formData.seoTitle,
+      seoDescription: formData.seoDescription,
+      seoKeywords: formData.seoKeywords.split(',').map(k => k.trim()).filter(k => k),
+      image: formData.image,
+      status: formData.status
+    };
+
     try {
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: formData.name, slug: formData.slug, order: Number(formData.order) }),
+        body: JSON.stringify(payload),
       });
       if (res.ok) {
         setIsModalOpen(false);
@@ -103,6 +126,7 @@ export default function CategoriesPage() {
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order</th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
@@ -112,6 +136,11 @@ export default function CategoriesPage() {
                 <tr key={category._id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{category.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{category.slug}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${category.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                      {category.status || 'Active'}
+                    </span>
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{category.order || 0}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-right">
                     <button onClick={() => handleOpenModal(category)} className="text-indigo-600 hover:text-indigo-900 mr-4">
@@ -131,8 +160,8 @@ export default function CategoriesPage() {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-lg max-w-md w-full overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+          <div className="bg-white rounded-xl shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50 sticky top-0 z-10">
               <h3 className="text-lg font-semibold text-gray-900">
                 {formData.id ? 'Edit Category' : 'Add Category'}
               </h3>
@@ -140,38 +169,102 @@ export default function CategoriesPage() {
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={handleNameChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500"
-                  placeholder="e.g. Screw Air Compressors"
-                />
+            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-2 sm:col-span-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={handleNameChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500"
+                    placeholder="e.g. Screw Air Compressors"
+                  />
+                </div>
+                <div className="col-span-2 sm:col-span-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Slug *</label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.slug}
+                    onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 bg-gray-50"
+                  />
+                </div>
+                <div className="col-span-2 sm:col-span-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Order</label>
+                  <input
+                    type="number"
+                    value={formData.order}
+                    onChange={(e) => setFormData({ ...formData, order: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500"
+                  />
+                </div>
+                <div className="col-span-2 sm:col-span-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                  <select
+                    value={formData.status}
+                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500"
+                  >
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                  <input
+                    type="text"
+                    value={formData.image}
+                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500"
+                    placeholder="https://example.com/image.jpg"
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Description (Text only)</label>
+                  <textarea
+                    rows={3}
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500"
+                    placeholder="A brief text introduction for the category page."
+                  />
+                </div>
+                <div className="col-span-2 sm:col-span-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">SEO Title</label>
+                  <input
+                    type="text"
+                    value={formData.seoTitle}
+                    onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500"
+                    placeholder="SEO Title"
+                  />
+                </div>
+                <div className="col-span-2 sm:col-span-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">SEO Keywords</label>
+                  <input
+                    type="text"
+                    value={formData.seoKeywords}
+                    onChange={(e) => setFormData({ ...formData, seoKeywords: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500"
+                    placeholder="Comma separated keywords"
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">SEO Description</label>
+                  <textarea
+                    rows={2}
+                    value={formData.seoDescription}
+                    onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500"
+                    placeholder="Meta description for search engines"
+                  />
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Slug</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.slug}
-                  onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 bg-gray-50"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Order</label>
-                <input
-                  type="number"
-                  value={formData.order}
-                  onChange={(e) => setFormData({ ...formData, order: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500"
-                />
-              </div>
-              <div className="pt-4 flex justify-end gap-3">
+              
+              <div className="pt-4 flex justify-end gap-3 sticky bottom-0 bg-white pb-2 border-t mt-4">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}

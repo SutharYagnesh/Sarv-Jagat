@@ -33,14 +33,23 @@ export default function AdminLayout({ children }) {
     router.push('/admin/login');
   };
 
-  const navItems = [
+  const allNavItems = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { name: 'Products', href: '/admin/products', icon: Package },
     { name: 'Categories', href: '/admin/categories', icon: Tags },
+    { name: 'Catalog', href: '/admin/catalog', icon: FileText },
     { name: 'Blog', href: '/admin/blog', icon: FileText },
   ];
 
-  if (role === 'Main Admin') {
+  let navItems = allNavItems;
+
+  if (role === 'Content Admin') {
+    navItems = allNavItems.filter(item => 
+      ['Dashboard', 'Categories', 'Blog'].includes(item.name)
+    );
+  }
+
+  if (role === 'Super Admin' || role === 'Main Admin') {
     navItems.push({ name: 'Users', href: '/admin/users', icon: Users });
   }
 

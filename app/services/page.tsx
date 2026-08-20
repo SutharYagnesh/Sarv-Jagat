@@ -81,7 +81,7 @@ export default function ServicesPage() {
       benefits: ["Minimal downtime", "Cost-effective repairs", "Restored performance", "Extended equipment life"],
       coverage: "All Over India",
       timeline: "Same day response",
-      href: "/services/",
+      href: "/contact",
       color: "bg-accent",
     },
     {
@@ -138,7 +138,7 @@ export default function ServicesPage() {
       benefits: ["Reduced energy costs", "Improved efficiency", "Environmental benefits", "Quick ROI"],
       coverage: "Certified Auditors",
       timeline: "3-5 days",
-      href: "/services/",
+      href: "/contact",
       color: "bg-secondary",
     },
   ]

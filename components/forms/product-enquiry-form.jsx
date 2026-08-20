@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { X, Send } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { apiClient } from "@/lib/api-client"
-import Link from "next/link"
+import { openWhatsApp } from "@/lib/whatsapp"
 
 export function ProductEnquiryForm({ product, onClose }) {
   const [formData, setFormData] = useState({
@@ -36,8 +36,7 @@ export function ProductEnquiryForm({ product, onClose }) {
 
     try {
       const text = `*New Product Enquiry*\n\n*Product:* ${product.name}\n*Name:* ${formData.name}\n*Email:* ${formData.email}\n*Phone:* ${formData.phone}\n*Company:* ${formData.company}\n*Quantity:* ${formData.quantity}\n*Message:* ${formData.message}`;
-      const url = `https://wa.me/919157487233?text=${encodeURIComponent(text)}`;
-      window.open(url, "_blank");
+      openWhatsApp(text);
 
       toast({
         title: "Redirecting to WhatsApp",

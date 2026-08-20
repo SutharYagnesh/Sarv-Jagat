@@ -132,8 +132,7 @@ export function Footer() {
               <div className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-red-400 mt-1" />
                 <span>
-                  Vinayak Industrial Estate - 2<br />
-                  Kathwada-GIDC, Ahmedabad-382430, Gujarat, India
+                  Ahmedabad, Gujarat, India
                 </span>
               </div>
             </div>

@@ -11,7 +11,7 @@ import { Loader2, Trash2 } from 'lucide-react';
 export default function UserManagementPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState({ username: '', password: '', role: 'Manager' });
+  const [form, setForm] = useState({ username: '', password: '', role: 'Super Admin' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -52,7 +52,7 @@ export default function UserManagementPage() {
 
       if (res.ok) {
         toast({ title: 'Success', description: 'User created successfully' });
-        setForm({ username: '', password: '', role: 'Manager' });
+        setForm({ username: '', password: '', role: 'Super Admin' });
         fetchUsers();
       } else {
         const data = await res.json();
@@ -124,10 +124,8 @@ export default function UserManagementPage() {
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Main Admin">Main Admin</SelectItem>
-                    <SelectItem value="GM">General Manager (GM)</SelectItem>
-                    <SelectItem value="Manager">Manager</SelectItem>
-                    <SelectItem value="Designer">Designer</SelectItem>
+                    <SelectItem value="Super Admin">Super Admin</SelectItem>
+                    <SelectItem value="Content Admin">Content Admin</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

@@ -85,11 +85,14 @@ export function BlogEditor({ post, onSave, onCancel }) {
   }
 
   const handleAddTag = () => {
-    if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
-      setFormData((prev) => ({
-        ...prev,
-        tags: [...prev.tags, tagInput.trim()],
-      }))
+    if (tagInput.trim()) {
+      const newTags = tagInput.split(',').map(tag => tag.trim()).filter(tag => tag && !formData.tags.includes(tag));
+      if (newTags.length > 0) {
+        setFormData((prev) => ({
+          ...prev,
+          tags: [...prev.tags, ...newTags],
+        }))
+      }
       setTagInput("")
     }
   }
@@ -471,7 +474,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
                   <Input
                     value={tagInput}
                     onChange={(e) => setTagInput(e.target.value)}
-                    placeholder="Add tag..."
+                    placeholder="Add tags (comma separated)..."
                     onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
                   />
                   <Button onClick={handleAddTag} size="sm">
