@@ -17,3 +17,4 @@ export const metadata = {
 export default function ReturnPolicyLayout({ children }) {
   return children;
 }
+
