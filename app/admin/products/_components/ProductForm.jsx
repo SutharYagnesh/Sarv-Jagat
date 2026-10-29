@@ -1,11 +1,12 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Plus, Trash2, UploadCloud, X } from 'lucide-react';
 import { RichTextEditor } from '@/components/admin/rich-text-editor';
 
 export default function ProductForm({ initialData = null }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const isEdit = !!initialData;
   
   const [categories, setCategories] = useState([]);
@@ -44,6 +45,11 @@ export default function ProductForm({ initialData = null }) {
         seoKeywords: Array.isArray(initialData.seoKeywords) ? initialData.seoKeywords.join(', ') : initialData.seoKeywords || '',
         price: initialData.price || ''
       });
+    } else {
+      const catParam = searchParams?.get('category');
+      if (catParam) {
+        setFormData(prev => ({ ...prev, category: catParam }));
+      }
     }
   }, [initialData]);
 

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Package, Tags, LogOut, Menu, FileText, Users, Building2 } from 'lucide-react';
+import { LayoutDashboard, Package, Tags, LogOut, Menu, FileText, Users, Building2, BookOpen } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export default function AdminLayout({ children }) {
@@ -33,16 +33,27 @@ export default function AdminLayout({ children }) {
     router.push('/admin/login');
   };
 
-  const navItems = [
-    { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-    { name: 'Products', href: '/admin/products', icon: Package },
-    { name: 'Categories', href: '/admin/categories', icon: Tags },
-    { name: 'Blog', href: '/admin/blog', icon: FileText },
-    { name: 'Company Info', href: '/admin/settings', icon: Building2 },
-  ];
+  const navItems = [{ name: 'Dashboard', href: '/admin', icon: LayoutDashboard }];
 
-  if (role === 'Main Admin') {
-    navItems.push({ name: 'Users', href: '/admin/users', icon: Users });
+  if (role === 'Blogger') {
+    navItems.push({ name: 'Blog', href: '/admin/blog', icon: FileText });
+  } else if (role === 'Product Manager') {
+    navItems.push({ name: 'Products', href: '/admin/products', icon: Package });
+  } else if (role === 'Manager') {
+    navItems.push({ name: 'Products', href: '/admin/products', icon: Package });
+    navItems.push({ name: 'Categories', href: '/admin/categories', icon: Tags });
+    navItems.push({ name: 'Blog', href: '/admin/blog', icon: FileText });
+    navItems.push({ name: 'Catalogs', href: '/admin/catalog', icon: BookOpen });
+  } else {
+    // Main Admin or default
+    navItems.push({ name: 'Products', href: '/admin/products', icon: Package });
+    navItems.push({ name: 'Categories', href: '/admin/categories', icon: Tags });
+    navItems.push({ name: 'Blog', href: '/admin/blog', icon: FileText });
+    navItems.push({ name: 'Catalogs', href: '/admin/catalog', icon: BookOpen });
+    if (role === 'Main Admin') {
+      navItems.push({ name: 'Company Info', href: '/admin/settings', icon: Building2 });
+      navItems.push({ name: 'Users', href: '/admin/users', icon: Users });
+    }
   }
 
   return (

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Building2, Users, Award, Target, Eye, Heart, CheckCircle, Calendar, Phone, Mail } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 export default function AboutPage() {
   const [activeTab, setActiveTab] = useState("overview")
@@ -72,7 +73,7 @@ export default function AboutPage() {
               About <span className="text-red-400">Sarv Jagat</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed">
-              Pioneering compressed air solutions for over 25 years, serving industries across India with innovation,
+              Engineered Compressed Air Solutions for Industry, serving industries across World with innovation,
               quality, and unwavering commitment to excellence.
             </p>
             <div className="flex flex-wrap justify-center gap-6 text-lg">
@@ -97,7 +98,7 @@ export default function AboutPage() {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
+            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-10">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="certifications">Certifications</TabsTrigger>
             </TabsList>
@@ -261,7 +262,7 @@ export default function AboutPage() {
               {/* Certifications */}
               <div>
                 <h4 className="text-2xl font-bold mb-6 text-center">Quality Certifications</h4>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid md:grid-cols-2 max-w-2xl mx-auto gap-6">
                   {certifications.map((cert, index) => (
                     <Card key={index} className="text-center hover:shadow-lg transition-shadow">
                       <CardHeader>
@@ -311,17 +312,22 @@ export default function AboutPage() {
             Join 2000+ satisfied customers who trust Sarv Jagat for their compressed air needs
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-blue-600">
-              <Phone className="h-5 w-5 mr-2" />
-              Contact Us Today
+            <Button asChild size="lg" className="bg-red-600 hover:bg-red-700 text-white font-medium shadow-md">
+              <Link href="/contact">
+                <Phone className="h-5 w-5 mr-2" />
+                Contact Us Today
+              </Link>
             </Button>
             <Button
+              asChild
               size="lg"
               variant="outline"
-              className="border-white text-white hover:bg-white hover:text-blue-600 bg-transparent"
+              className="border-white text-white hover:bg-white hover:text-slate-900 bg-transparent font-medium"
             >
-              <Mail className="h-5 w-5 mr-2" />
-              Request Quote
+              <Link href="/contact">
+                <Mail className="h-5 w-5 mr-2" />
+                Request Quote
+              </Link>
             </Button>
           </div>
         </div>

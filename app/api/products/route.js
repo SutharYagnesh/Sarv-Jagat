@@ -33,7 +33,7 @@ export async function GET(request) {
       query.$and = andConditions;
     }
 
-    let productsQuery = Product.find(query).select('-specifications -description').lean().sort({ createdAt: -1 });
+    let productsQuery = Product.find(query).select('-specifications -description').lean().sort({ order: 1, createdAt: -1 });
 
     if (limit) {
       const limitNum = Number.parseInt(limit, 10);

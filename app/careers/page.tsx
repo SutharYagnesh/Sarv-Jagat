@@ -1,5 +1,4 @@
 'use client';
-import { generateMetadata } from './metadata';
 import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -9,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useCompanyInfo } from "@/lib/useCompanyInfo"
 import {
   Briefcase,
   MapPin,
@@ -24,6 +24,7 @@ import {
 } from "lucide-react"
 
 export default function CareersPage() {
+  const companyInfo = useCompanyInfo()
   const [selectedJob, setSelectedJob] = useState(null)
   const [applicationForm, setApplicationForm] = useState({
     name: "",
@@ -211,8 +212,9 @@ export default function CareersPage() {
   const handleApplicationSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     
+    const rawPhone = (companyInfo.primaryPhone || '919157487233').replace(/[^0-9]/g, '');
     const text = `*New Job Application*\n\n*Position:* ${applicationForm.position}\n*Name:* ${applicationForm.name}\n*Email:* ${applicationForm.email}\n*Phone:* ${applicationForm.phone}\n*Experience:* ${applicationForm.experience}\n*Location:* ${applicationForm.location}\n*Cover Letter:* ${applicationForm.coverLetter}\n\n_(Please attach your resume to this message)_`;
-    const url = `https://wa.me/919157487233?text=${encodeURIComponent(text)}`;
+    const url = `https://wa.me/${rawPhone}?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank");
 
     alert("Redirecting to WhatsApp. Please attach your resume manually in the chat.")
@@ -254,8 +256,8 @@ export default function CareersPage() {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs defaultValue="benefits" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="benefits">Benefits & Culture</TabsTrigger>
+            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-10">
+              <TabsTrigger value="benefits">Benefits &amp; Culture</TabsTrigger>
               <TabsTrigger value="apply">Apply Now</TabsTrigger>
             </TabsList> 
             

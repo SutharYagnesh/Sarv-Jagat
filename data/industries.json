@@ -9,7 +9,7 @@
     "useCases": ["Assembly line automation", "Quality control systems", "Material handling", "Production monitoring"],
     "products": ["ac-100", "pt-50", "ad-200"],
     "stats": {
-      "clients": "500+",
+      "clients": "2000+",
       "projects": "1200+",
       "efficiency": "35%"
     }

@@ -21,7 +21,7 @@ export function HeroSection() {
                 Powering <span className="text-primary"> Industries with </span> Reliable Air Solutions
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-               Sarv Jagat delivers world-class air compressors, from 1 HP to 300+ HP, engineered for continuous operation across diverse industrial applications.
+               Sarv Jagat delivers world-class air compressors, from 1 HP to 220+ HP, engineered for continuous operation across diverse industrial applications.
               </p>
             </div>
 

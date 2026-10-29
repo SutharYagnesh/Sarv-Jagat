@@ -172,20 +172,32 @@ export default async function BlogDetailPage({ params }) {
           </div>
         </div>
 
-        {/* Bottom Section: Blog Content (Matching Product Description section) */}
+        {/* Gallery & Media / Project Gallery Section (Placed ABOVE Blog Content as requested) */}
+        {(blog.images?.length > 0 || blog.youtubeLink || blog.instagramLink || blog.videos?.length > 0) && (
+          <div className="bg-white p-8 rounded-sm shadow-sm border border-gray-200 mb-8">
+            <h2 className="text-xl font-serif text-gray-800 border-b border-gray-200 pb-4 mb-6 flex flex-wrap items-center justify-between gap-2">
+              <span>Project Gallery &amp; Media</span>
+              <span className="text-xs text-red-600 font-sans font-semibold uppercase tracking-wider bg-red-50 px-3 py-1 rounded-full border border-red-100">
+                Supplied Machinery &amp; Installations
+              </span>
+            </h2>
+            <BlogGallery 
+              images={blog.images} 
+              instagramLink={blog.instagramLink} 
+              youtubeLink={blog.youtubeLink} 
+              videos={blog.videos} 
+              hideHeader={true}
+              title={blog.title}
+            />
+          </div>
+        )}
+
+        {/* Blog Content Section (Detailed Article & Technical Specifications) */}
         <div className="bg-white p-8 rounded-sm shadow-sm border border-gray-200 mb-8">
-          <h2 className="text-xl font-serif text-gray-800 border-b border-gray-200 pb-4 mb-6">Article Overview</h2>
+          <h2 className="text-xl font-serif text-gray-800 border-b border-gray-200 pb-4 mb-6">Article Overview &amp; Specifications</h2>
           
           <div className="prose max-w-none text-gray-700 leading-relaxed mb-10" dangerouslySetInnerHTML={{ __html: blog.content }}>
           </div>
-
-          {/* Media Section */}
-          <BlogGallery 
-            images={blog.images} 
-            instagramLink={blog.instagramLink} 
-            youtubeLink={blog.youtubeLink} 
-            videos={blog.videos} 
-          />
 
           <div className="border-t border-gray-200 pt-8 text-center mt-10">
              <h3 className="text-lg font-serif text-gray-800 mb-4">Interested in our Air Compressors?</h3>

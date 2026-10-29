@@ -124,10 +124,10 @@ export default function UserManagementPage() {
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Main Admin">Main Admin</SelectItem>
-                    <SelectItem value="GM">General Manager (GM)</SelectItem>
-                    <SelectItem value="Manager">Manager</SelectItem>
-                    <SelectItem value="Designer">Designer</SelectItem>
+                    <SelectItem value="Main Admin">Main Admin (Full Access to Everything)</SelectItem>
+                    <SelectItem value="Manager">Manager (Products, Categories, Blog, Catalog)</SelectItem>
+                    <SelectItem value="Product Manager">Product Manager (Products Only)</SelectItem>
+                    <SelectItem value="Blogger">Blogger (Blog Only)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

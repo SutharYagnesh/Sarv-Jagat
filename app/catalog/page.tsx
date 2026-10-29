@@ -1,106 +1,64 @@
 'use client';
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Download, FileText, Mail, Phone, Eye } from "lucide-react"
-import { generateMetadata } from './metadata';
+
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Download, FileText, Mail, Phone, Eye, RefreshCw, MessageSquare, Star, CheckCircle2 } from "lucide-react";
+import { useCompanyInfo } from "@/lib/useCompanyInfo";
+
+interface CatalogItem {
+  _id: string;
+  title: string;
+  description?: string;
+  category: string;
+  pdfUrl: string;
+  fileSize?: string;
+  pages?: number;
+  format?: string;
+  isComprehensive?: boolean;
+}
 
 export default function CatalogPage() {
+  const companyInfo = useCompanyInfo();
+  const [catalogs, setCatalogs] = useState<CatalogItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const [downloadForm, setDownloadForm] = useState({
     name: "",
     email: "",
     company: "",
     phone: "",
     interest: "",
-  })
+  });
+
+  useEffect(() => {
+    fetch('/api/catalog')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        setCatalogs(Array.isArray(data) ? data : []);
+      })
+      .catch((err) => console.error('Failed to load catalogs', err))
+      .finally(() => setLoading(false));
+  }, []);
 
   const handleCustomCatalogSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const text = `*Custom Catalog Request*\n\nName: ${downloadForm.name}\nEmail: ${downloadForm.email}\nCompany: ${downloadForm.company}\nPhone: ${downloadForm.phone}\nRequirements: ${downloadForm.interest}`
-    window.open(`https://wa.me/919157487233?text=${encodeURIComponent(text)}`, '_blank')
-  }
+    e.preventDefault();
+    const rawPhone = (companyInfo.primaryPhone || '919157487233').replace(/[^0-9]/g, '');
+    const text = `*Custom Catalog Request*\n\n*Name:* ${downloadForm.name}\n*Email:* ${downloadForm.email}\n*Company:* ${downloadForm.company}\n*Phone:* ${downloadForm.phone}\n*Requirements:* ${downloadForm.interest}`;
+    window.open(`https://wa.me/${rawPhone}?text=${encodeURIComponent(text)}`, '_blank');
+  };
 
-  const catalogs = [
-    {
-      id: 1,
-      title: "Complete Product Catalog 2024",
-      description: "Comprehensive catalog featuring all Sarv Jagat air compressor products and specifications",
-      pages: 120,
-      size: "15.2 MB",
-      format: "PDF",
-      category: "Complete Range",
-      image: "/catalog-complete.png",
-      downloadUrl: "https://drive.google.com/uc?export=download&id=1-_e_SCeR8ppQQ3bbThJkNeXHJS2U5mtt",
-    },
-    {
-      id: 2,
-      title: "Screw Air Compressors",
-      description: "Detailed specifications and technical data for rotary screw compressors",
-      pages: 45,
-      size: "8.5 MB",
-      format: "PDF",
-      category: "Screw Compressors",
-      image: "/catalog-screw.png",
-      downloadUrl: "https://drive.google.com/uc?export=download&id=1-_e_SCeR8ppQQ3bbThJkNeXHJS2U5mtt",
-    },
-    {
-      id: 3,
-      title: "Reciprocating Piston Compressors",
-      description: "Complete range of single and multi-stage piston compressors",
-      pages: 38,
-      size: "6.8 MB",
-      format: "PDF",
-      category: "Piston Compressors",
-      image: "/catalog-piston.png",
-      downloadUrl: "https://drive.google.com/uc?export=download&id=1-_e_SCeR8ppQQ3bbThJkNeXHJS2U5mtt",
-    },
-    {
-      id: 4,
-      title: "Oil-Free Air Systems",
-      description: "Contamination-free air solutions for critical applications",
-      pages: 28,
-      size: "4.2 MB",
-      format: "PDF",
-      category: "Oil-Free Systems",
-      image: "/catalog-oilfree.png",
-      downloadUrl: "https://drive.google.com/uc?export=download&id=1-_e_SCeR8ppQQ3bbThJkNeXHJS2U5mtt",
-    },
-    {
-      id: 5,
-      title: "Service & Maintenance Guide",
-      description: "Comprehensive maintenance procedures and service schedules",
-      pages: 65,
-      size: "9.1 MB",
-      format: "PDF",
-      category: "Service",
-      image: "/catalog-service.png",
-      downloadUrl: "https://drive.google.com/uc?export=download&id=1-_e_SCeR8ppQQ3bbThJkNeXHJS2U5mtt",
-    },
-    {
-      id: 6,
-      title: "Spare Parts Catalog",
-      description: "Complete spare parts listing with part numbers and specifications",
-      pages: 85,
-      size: "12.3 MB",
-      format: "PDF",
-      category: "Spare Parts",
-      image: "/catalog-parts.png",
-      downloadUrl: "https://drive.google.com/uc?export=download&id=1-_e_SCeR8ppQQ3bbThJkNeXHJS2U5mtt",
-    },
-  ]
-
-  const handleDownloadSubmit = (e: React.MouseEvent<HTMLButtonElement>, catalogId: number) => {
-    e.preventDefault()
-    const catalog = catalogs.find((c) => c.id === catalogId)
-    if (catalog && catalog.downloadUrl !== "#") {
-      window.open(catalog.downloadUrl, "_blank")
+  const handleDownload = (pdfUrl: string) => {
+    if (pdfUrl) {
+      window.open(pdfUrl, '_blank');
     }
-    alert("Thank you! Your download will begin shortly. We'll also send you updates about our latest products.")
-  }
+  };
+
+  const comprehensiveCatalog = catalogs.find((c) => c.isComprehensive) || (catalogs.length > 0 ? catalogs[0] : null);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -109,12 +67,11 @@ export default function CatalogPage() {
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 font-serif">
               Product <span className="text-red-400">Catalogs</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed">
-              Download comprehensive product catalogs, technical specifications, and documentation for all Sarv Jagat
-              air compressor solutions.
+              Download comprehensive technical catalogs, engineering specifications, and documentation for {companyInfo.companyName} industrial compressed air solutions.
             </p>
             <div className="flex flex-wrap justify-center gap-6 text-lg">
               <div className="flex items-center gap-2">
@@ -123,11 +80,11 @@ export default function CatalogPage() {
               </div>
               <div className="flex items-center gap-2">
                 <Download className="h-5 w-5 text-red-400" />
-                <span>Instant Download</span>
+                <span>Instant PDF Download</span>
               </div>
               <div className="flex items-center gap-2">
                 <Eye className="h-5 w-5 text-red-400" />
-                <span>Latest Updates</span>
+                <span>Latest Engineering Updates</span>
               </div>
             </div>
           </div>
@@ -146,127 +103,169 @@ export default function CatalogPage() {
             {/* Catalogs Tab */}
             <TabsContent value="catalogs" className="space-y-8">
               <div className="text-center mb-12">
-                <h3 className="text-3xl font-bold mb-4">Available Catalogs</h3>
+                <h3 className="text-3xl font-bold mb-4">Available Catalogs &amp; Brochures</h3>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Browse and download our comprehensive product catalogs and technical documentation
+                  Browse and download our official product range documentation and engineering guides
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {catalogs.map((catalog) => (
-                  <Card key={catalog.id} className="hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                      <div className="relative h-48 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg mb-4 flex items-center justify-center">
-                        <FileText className="h-16 w-16 text-blue-600" />
-                      </div>
-                      <Badge variant="secondary" className="w-fit">
-                        {catalog.category}
-                      </Badge>
-                      <CardTitle className="text-xl">{catalog.title}</CardTitle>
-                      <CardDescription>{catalog.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-3 gap-4 text-sm text-gray-600">
-                        <div>
-                          <div className="font-medium">{catalog.pages}</div>
-                          <div>Pages</div>
-                        </div>
-                        <div>
-                          <div className="font-medium">{catalog.size}</div>
-                          <div>Size</div>
-                        </div>
-                        <div>
-                          <div className="font-medium">{catalog.format}</div>
-                          <div>Format</div>
-                        </div>
-                      </div>
-
-                      <div className="flex gap-2">
-                        <Button className="flex-1" onClick={(e) => handleDownloadSubmit(e, catalog.id)}>
-                          <Download className="h-4 w-4 mr-2" />
-                          Download
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              {/* Featured Catalog */}
-              <Card className="bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-                <CardContent className="p-8">
-                  <div className="grid lg:grid-cols-2 gap-8 items-center">
-                    <div>
-                      <h4 className="text-2xl font-bold mb-4">Complete Product Catalog 2024</h4>
-                      <p className="text-blue-100 mb-6">
-                        Our most comprehensive catalog featuring the complete range of Sarv Jagat air compressor
-                        solutions, technical specifications, and application guidelines.
-                      </p>
-                      <div className="flex items-center gap-6 text-sm mb-6">
-                        <div>
-                          <div className="font-semibold">120 Pages</div>
-                          <div className="text-blue-200">Comprehensive</div>
-                        </div>
-                        <div>
-                          <div className="font-semibold">15.2 MB</div>
-                          <div className="text-blue-200">High Quality</div>
-                        </div>
-                        <div>
-                          <div className="font-semibold">2024 Edition</div>
-                          <div className="text-blue-200">Latest</div>
-                        </div>
-                      </div>
-                      <Button
-                        size="lg"
-                        variant="secondary"
-                        className="text-blue-600"
-                        onClick={(e) => handleDownloadSubmit(e, 1)}
-                      >
-                        <Download className="h-5 w-5 mr-2" />
-                        Download Complete Catalog
-                      </Button>
-                    </div>
-                    <div className="text-center">
-                      <div className="w-48 h-64 bg-white/10 rounded-lg flex items-center justify-center mx-auto">
-                        <FileText className="h-24 w-24 text-white/80" />
-                      </div>
-                    </div>
+              {loading ? (
+                <div className="p-16 flex flex-col items-center justify-center gap-3 text-gray-500">
+                  <RefreshCw className="w-8 h-8 animate-spin text-red-600" />
+                  <p>Loading available catalogs...</p>
+                </div>
+              ) : catalogs.length === 0 ? (
+                <div className="bg-white border rounded-xl p-12 text-center max-w-2xl mx-auto shadow-sm space-y-4">
+                  <div className="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center mx-auto">
+                    <FileText className="w-8 h-8" />
                   </div>
-                </CardContent>
-              </Card>
+                  <h4 className="text-2xl font-bold text-gray-900">Digital Catalogs Under Update</h4>
+                  <p className="text-gray-600 leading-relaxed text-sm">
+                    Our technical engineering desk is currently revising our digital product brochures with the latest 2025/2026 machine specifications. In the meantime, you can request an instant customized catalog below, or contact our technical team directly.
+                  </p>
+                  <div className="pt-2 flex flex-wrap justify-center gap-3">
+                    <a
+                      href={`https://wa.me/${(companyInfo.primaryPhone || '919157487233').replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hello Sarv Jagat, please share your product catalog PDF.')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium shadow-sm transition-all"
+                    >
+                      <MessageSquare className="w-4 h-4" />
+                      Request Catalog on WhatsApp
+                    </a>
+                    <a
+                      href={`tel:${companyInfo.primaryPhone.replace(/[^0-9+]/g, '')}`}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium shadow-sm transition-all"
+                    >
+                      <Phone className="w-4 h-4" />
+                      Call {companyInfo.primaryPhone}
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {catalogs.map((catalog) => (
+                      <Card key={catalog._id} className="hover:shadow-lg transition-shadow flex flex-col justify-between">
+                        <CardHeader>
+                          <div className="relative h-44 bg-gradient-to-br from-blue-100 to-red-50 rounded-lg mb-4 flex items-center justify-center border">
+                            <FileText className="h-16 w-16 text-red-600" />
+                          </div>
+                          <Badge variant="secondary" className="w-fit">
+                            {catalog.category || 'General'}
+                          </Badge>
+                          <CardTitle className="text-xl mt-2">{catalog.title}</CardTitle>
+                          {catalog.description && <CardDescription>{catalog.description}</CardDescription>}
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div className="grid grid-cols-3 gap-4 text-sm text-gray-600 border-t pt-3">
+                            <div>
+                              <div className="font-medium text-gray-900">{catalog.pages || '-'}</div>
+                              <div className="text-xs text-gray-500">Pages</div>
+                            </div>
+                            <div>
+                              <div className="font-medium text-gray-900">{catalog.fileSize || 'PDF'}</div>
+                              <div className="text-xs text-gray-500">Size</div>
+                            </div>
+                            <div>
+                              <div className="font-medium text-gray-900">{catalog.format || 'PDF'}</div>
+                              <div className="text-xs text-gray-500">Format</div>
+                            </div>
+                          </div>
+
+                          <div className="flex gap-2 pt-2">
+                            <Button className="flex-1 bg-red-600 hover:bg-red-700 text-white" onClick={() => handleDownload(catalog.pdfUrl)}>
+                              <Download className="h-4 w-4 mr-2" />
+                              Download PDF
+                            </Button>
+                            <Button variant="outline" size="sm" onClick={() => handleDownload(catalog.pdfUrl)} title="Preview in new tab">
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+
+                  {/* Featured Comprehensive Main Catalog */}
+                  {comprehensiveCatalog && (
+                    <Card className="bg-gradient-to-r from-slate-900 via-blue-900 to-red-950 text-white shadow-xl mt-8">
+                      <CardContent className="p-8">
+                        <div className="grid lg:grid-cols-2 gap-8 items-center">
+                          <div>
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-500/30 text-red-200 border border-red-400/40 rounded-full text-xs font-semibold mb-4 uppercase tracking-wider">
+                              <Star className="w-3.5 h-3.5 fill-red-400" />
+                              Comprehensive Main Catalog
+                            </span>
+                            <h4 className="text-2xl md:text-3xl font-bold mb-4 font-serif">{comprehensiveCatalog.title}</h4>
+                            <p className="text-slate-200 mb-6 text-sm leading-relaxed">
+                              {comprehensiveCatalog.description ||
+                                `Comprehensive catalog featuring the complete range of ${companyInfo.companyName} air compressor solutions, engineering specifications, pressure ratings, and application guidelines.`}
+                            </p>
+                            <div className="flex items-center gap-6 text-sm mb-6">
+                              <div>
+                                <div className="font-semibold text-white">{comprehensiveCatalog.pages || 'Full'} Pages</div>
+                                <div className="text-slate-300 text-xs">Comprehensive</div>
+                              </div>
+                              <div>
+                                <div className="font-semibold text-white">{comprehensiveCatalog.fileSize || 'PDF'}</div>
+                                <div className="text-slate-300 text-xs">High Resolution</div>
+                              </div>
+                              <div>
+                                <div className="font-semibold text-white">Latest Edition</div>
+                                <div className="text-slate-300 text-xs">Verified OEM Specs</div>
+                              </div>
+                            </div>
+                            <Button
+                              size="lg"
+                              className="bg-red-600 hover:bg-red-700 text-white shadow-lg"
+                              onClick={() => handleDownload(comprehensiveCatalog.pdfUrl)}
+                            >
+                              <Download className="h-5 w-5 mr-2" />
+                              Download Comprehensive Catalog
+                            </Button>
+                          </div>
+                          <div className="text-center">
+                            <div className="w-48 h-64 bg-white/10 rounded-lg flex items-center justify-center mx-auto border border-white/20 shadow-inner">
+                              <FileText className="h-24 w-24 text-white/80" />
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </>
+              )}
             </TabsContent>
 
             {/* Request Custom Catalog Tab */}
             <TabsContent value="request" className="space-y-8">
               <div className="text-center mb-12">
-                <h3 className="text-3xl font-bold mb-4">Request Custom Catalog</h3>
+                <h3 className="text-3xl font-bold mb-4">Request Custom Technical Catalog</h3>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Need specific product information or custom documentation? Request a personalized catalog tailored to
-                  your requirements.
+                  Need specific CFM/pressure parameters or customized plant documentation? Request a personalized brochure tailored to your facility.
                 </p>
               </div>
 
               <div className="max-w-2xl mx-auto">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-2xl">Custom Catalog Request</CardTitle>
+                    <CardTitle>Catalog Request Form</CardTitle>
                     <CardDescription>
-                      Fill out the form below and we'll create a customized catalog based on your specific needs
+                      Fill out the form below and our technical team will forward the appropriate engineering data sheets.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <form className="space-y-6" onSubmit={handleCustomCatalogSubmit}>
-                      <div className="grid md:grid-cols-2 gap-4">
+                    <form onSubmit={handleCustomCatalogSubmit} className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="name">Full Name *</Label>
                           <Input
                             id="name"
+                            required
                             value={downloadForm.name}
                             onChange={(e) => setDownloadForm({ ...downloadForm, name: e.target.value })}
-                            required
+                            placeholder="Your full name"
                           />
                         </div>
                         <div>
@@ -274,47 +273,50 @@ export default function CatalogPage() {
                           <Input
                             id="email"
                             type="email"
+                            required
                             value={downloadForm.email}
                             onChange={(e) => setDownloadForm({ ...downloadForm, email: e.target.value })}
-                            required
+                            placeholder="corporate@company.com"
                           />
                         </div>
                       </div>
 
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <Label htmlFor="company">Company Name</Label>
+                          <Label htmlFor="company">Company / Industry *</Label>
                           <Input
                             id="company"
+                            required
                             value={downloadForm.company}
                             onChange={(e) => setDownloadForm({ ...downloadForm, company: e.target.value })}
+                            placeholder="Company Name"
                           />
                         </div>
                         <div>
-                          <Label htmlFor="phone">Phone Number</Label>
+                          <Label htmlFor="phone">Phone / WhatsApp *</Label>
                           <Input
                             id="phone"
+                            required
                             value={downloadForm.phone}
                             onChange={(e) => setDownloadForm({ ...downloadForm, phone: e.target.value })}
+                            placeholder="+91-XXXXXXXXXX"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <Label htmlFor="interest">Specific Requirements</Label>
-                        <textarea
+                        <Label htmlFor="interest">Equipment Interest / Required Air Flow (CFM / Bar)</Label>
+                        <Input
                           id="interest"
-                          className="w-full p-3 border border-gray-300 rounded-md"
-                          rows={4}
-                          placeholder="Please describe your specific requirements, industry, application, or any particular products you're interested in..."
                           value={downloadForm.interest}
                           onChange={(e) => setDownloadForm({ ...downloadForm, interest: e.target.value })}
-                        ></textarea>
+                          placeholder="e.g. 50 HP Screw Compressor, 10 Bar, Refrigerated Air Dryer"
+                        />
                       </div>
 
-                      <Button type="submit" size="lg" className="w-full">
-                        <Mail className="h-5 w-5 mr-2" />
-                        Request Custom Catalog
+                      <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3">
+                        <MessageSquare className="h-4 w-4 mr-2" />
+                        Send Catalog Request via WhatsApp
                       </Button>
                     </form>
                   </CardContent>
@@ -324,30 +326,6 @@ export default function CatalogPage() {
           </Tabs>
         </div>
       </section>
-
-      {/* Contact CTA */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 py-16 text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h3 className="text-3xl font-bold mb-4">Need More Information?</h3>
-          <p className="text-xl mb-8">
-            Our technical team is ready to help you choose the right air compressor solution for your specific needs.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-blue-600">
-              <Phone className="h-5 w-5 mr-2" />
-              <a href="tel:+919157487233">Call +91-9157487233</a>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-blue-600 bg-transparent"
-            >
-              <Mail className="h-5 w-5 mr-2" />
-              <a href="mailto:contact@sarvjagat.com">Email Us</a>
-            </Button>
-          </div>
-        </div>
-      </section>
     </div>
-  )
+  );
 }

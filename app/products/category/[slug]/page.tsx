@@ -51,7 +51,7 @@ export default async function CategoryPage({ params }) {
     notFound();
   }
 
-  const productsRaw = await Product.find({ category: category.name, status: "Published" }).lean();
+  const productsRaw = await Product.find({ category: category.name, status: "Published" }).sort({ order: 1, createdAt: -1 }).lean();
   const products = JSON.parse(JSON.stringify(productsRaw));
 
   return (

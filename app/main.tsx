@@ -40,7 +40,7 @@ export default async function HomePage() {
   // Company statistics for credibility
   const stats = [
     { number: "18+", label: "Years Experience", icon: Award },
-    { number: "500+", label: "Happy Customers", icon: Users },
+    { number: "2000+", label: "Happy Customers", icon: Users },
     { number: "25+", label: "Service Support", icon: MapPin },
     { number: "24/7", label: "Technical Help", icon: Phone },
   ]
@@ -143,7 +143,7 @@ export default async function HomePage() {
                   <span className="block text-red-400">Reliable Air Solutions</span>
                 </h1>
                 <p className="text-xl text-white/90 max-w-2xl">
-                  Sarv Jagat delivers world-class air compressors, from 1 HP to 300+ HP, engineered for continuous
+                  Sarv Jagat delivers world-class air compressors, from 1 HP to 220+ HP, engineered for continuous
                   operation across diverse industrial applications.
                 </p>
               </div>
@@ -177,7 +177,7 @@ export default async function HomePage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-red-400" />
-                  <span>Pan-India Service Network</span>
+                  <span>World-wide Service Network</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-red-400" />

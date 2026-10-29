@@ -6,7 +6,7 @@ import { LightboxViewer } from "@/components/ui/lightbox-viewer"
 import { Instagram, Youtube } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-export function BlogGallery({ images, instagramLink, youtubeLink, videos }) {
+export function BlogGallery({ images, instagramLink, youtubeLink, videos, hideHeader = false, title = "" }) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
 
@@ -22,12 +22,12 @@ export function BlogGallery({ images, instagramLink, youtubeLink, videos }) {
   }
 
   return (
-    <div className="mt-10 pt-8 border-t border-gray-200">
-      <h3 className="text-xl font-serif text-gray-800 mb-6">Gallery & Media</h3>
+    <div className={hideHeader ? "" : "mt-10 pt-8 border-t border-gray-200"}>
+      {!hideHeader && <h3 className="text-xl font-serif text-gray-800 mb-6">Gallery &amp; Media</h3>}
       <div className="space-y-8">
         {images && images.length > 0 && (
           <div>
-            <h4 className="text-lg font-serif text-gray-700 mb-4">Project Gallery</h4>
+            {!hideHeader && <h4 className="text-lg font-serif text-gray-700 mb-4">Project Gallery</h4>}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {images.map((img, idx) => (
                 <div 
@@ -40,7 +40,8 @@ export function BlogGallery({ images, instagramLink, youtubeLink, videos }) {
                 >
                   <Image 
                     src={img} 
-                    alt={`Gallery image ${idx+1}`} 
+                    alt={title ? `${title} - Industrial Equipment Installation Image ${idx+1}` : `Sarv Jagat Air Compressor Installation - Photo ${idx+1}`} 
+                    title={title ? `${title} - Industrial Equipment Image ${idx+1}` : `Sarv Jagat Air Compressor - Photo ${idx+1}`}
                     fill
                     sizes="(max-width: 768px) 50vw, 33vw"
                     className="object-contain hover:scale-105 transition-transform duration-300" 

@@ -362,10 +362,11 @@ export default function ContactPage() {
                         <li>• Maintenance scheduling</li>
                       </ul>
                     </div>
-                    <Button className="w-full"><a href="tel:+919157770753" className="hover:underline">
-                      <Phone className="h-4 w-4 mr-2" />
-                      Call Technical Support
-                            </a>
+                    <Button asChild className="w-full bg-red-600 hover:bg-red-700 text-white">
+                      <a href={`tel:${(companyInfo.secondaryPhone || companyInfo.primaryPhone).replace(/[^0-9+]/g, '')}`} className="flex items-center justify-center">
+                        <Phone className="h-4 w-4 mr-2" />
+                        Call Technical Support
+                      </a>
                     </Button>
                   </CardContent>
                 </Card>
@@ -387,12 +388,11 @@ export default function ContactPage() {
                         <li>• Energy audits</li>
                       </ul>
                     </div>
-                    <Button className="w-full">
-                      <a href="mailto:contact@sarvjagat.com" className="hover:underline">
-                      
-                      <Mail className="h-4 w-4 mr-2" />
-                      Contact Sales Team
-                            </a>
+                    <Button asChild className="w-full bg-red-600 hover:bg-red-700 text-white">
+                      <a href={`mailto:${companyInfo.primaryEmail}`} className="flex items-center justify-center">
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact Sales Team
+                      </a>
                     </Button>
                   </CardContent>
                 </Card>
@@ -414,11 +414,11 @@ export default function ContactPage() {
                         <li>• Preventive maintenance</li>
                       </ul>
                     </div>
-                    <Button className="w-full">
-                      <a href="tel:+919157770753" className="hover:underline">
-                      <MessageSquare className="h-4 w-4 mr-2" />
-                             Schedule Service
-                            </a>
+                    <Button asChild className="w-full bg-red-600 hover:bg-red-700 text-white">
+                      <a href={`tel:${companyInfo.primaryPhone.replace(/[^0-9+]/g, '')}`} className="flex items-center justify-center">
+                        <MessageSquare className="h-4 w-4 mr-2" />
+                        Schedule Service
+                      </a>
                     </Button>
                   </CardContent>
                 </Card>
