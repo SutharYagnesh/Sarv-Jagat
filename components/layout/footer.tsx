@@ -61,6 +61,8 @@ export function Footer() {
     { name: "Blog", href: "/blog" },
     { name: "Careers", href: "/careers" },
     { name: "Contact", href: "/contact" },
+    { name: "Return Policy", href: "/return-policy" },
+    { name: "Shipping Policy", href: "/shipping-policy" },
   ]
 
   return (
@@ -255,7 +257,13 @@ export function Footer() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-slate-400 text-sm">© {currentYear} Sarv Jagat Corporation. All rights reserved.</div>
-            <div className="flex gap-6 text-sm">
+            <div className="flex flex-wrap gap-6 text-sm">
+              <Link href="/return-policy" className="text-slate-400 hover:text-red-400 transition-colors">
+                Return Policy
+              </Link>
+              <Link href="/shipping-policy" className="text-slate-400 hover:text-red-400 transition-colors">
+                Shipping Policy
+              </Link>
               <Link href="/privacy" className="text-slate-400 hover:text-red-400 transition-colors">
                 Privacy Policy
               </Link>

@@ -160,6 +160,7 @@ export function ProductSchema({ product }) {
         merchantReturnDays: 14,
         returnMethod: "https://schema.org/ReturnByMail",
         returnFees: "https://schema.org/FreeReturn",
+        merchantReturnLink: `${BASE_URL}/return-policy`,
       },
     },
     additionalProperty: additionalProperty.length > 0 ? additionalProperty : undefined,
@@ -229,6 +230,7 @@ export function SuppliedProductSchema({ item }) {
         merchantReturnDays: 14,
         returnMethod: "https://schema.org/ReturnByMail",
         returnFees: "https://schema.org/FreeReturn",
+        merchantReturnLink: `${BASE_URL}/return-policy`,
       },
     },
   }

@@ -104,6 +104,18 @@ export default async function sitemap() {
       priority: 0.4,
     },
     {
+      url: `${baseUrl}/return-policy`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/shipping-policy`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
       url: `${baseUrl}/sitemap`,
       lastModified: currentDate,
       changeFrequency: "weekly",
