@@ -1,11 +1,14 @@
 export const metadata = {
   title: "Terms of Service | Sarv Jagat",
   description: "Read the terms and conditions for using Sarv Jagat Corporation's website and services. Understand our policies on service use, products, intellectual property, and liability.",
+  alternates: {
+    canonical: "https://www.sarvjagat.com/terms",
+  },
   keywords: ["terms of service", "terms and conditions", "legal policy", "Sarv Jagat terms", "website terms"],
   openGraph: {
     title: "Terms of Service | Sarv Jagat",
     description: "Terms and conditions for Sarv Jagat Corporation's website and services.",
-    url: "https://sarvjagat.com/terms",
+    url: "https://www.sarvjagat.com/terms",
     siteName: "Sarv Jagat",
     images: [
       {

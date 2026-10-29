@@ -21,12 +21,12 @@ export async function generateMetadata({ params }) {
     title: `${category.name} | Sarv Jagat Corporation`,
     description: `Leading Manufacturers, Exporters and Wholesaler of ${category.name} and related products.`,
     alternates: {
-      canonical: `https://sarvjagat.com/products/category/${slug}`,
+      canonical: `https://www.sarvjagat.com/products/category/${slug}`,
     },
     openGraph: {
       title: `${category.name} | Sarv Jagat Corporation`,
       description: `Explore our extensive range of ${category.name} designed for various industrial applications ensuring optimal performance and efficiency.`,
-      url: `https://sarvjagat.com/products/category/${slug}`,
+      url: `https://www.sarvjagat.com/products/category/${slug}`,
       type: "website",
     },
     twitter: {
@@ -56,7 +56,7 @@ export default async function CategoryPage({ params }) {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <ItemListSchema items={products} categoryName={category.name} url={`https://sarvjagat.com/products/category/${slug}`} />
+      <ItemListSchema items={products} categoryName={category.name} url={`https://www.sarvjagat.com/products/category/${slug}`} />
       <div className="container mx-auto px-4">
         {/* Breadcrumb & Header */}
         <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200 mb-8">

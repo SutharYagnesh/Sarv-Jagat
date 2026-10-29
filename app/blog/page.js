@@ -7,8 +7,17 @@ import Blog from '@/lib/models/Blog';
 import BlogCatalogClient from '@/components/sections/blog-catalog-client';
 
 export const metadata = {
-  title: "Blog | Sarv Jagat Corporation",
-  description: "Read the latest news, articles, and insights from Sarv Jagat Corporation.",
+  title: "Industrial Compressed Air Blog & Supplied Items | Sarv Jagat Corporation",
+  description: "Read the latest news, case studies, and supplied industrial compressor installations from Sarv Jagat Corporation.",
+  alternates: {
+    canonical: "https://www.sarvjagat.com/blog",
+  },
+  openGraph: {
+    title: "Industrial Compressed Air Blog & Supplied Items | Sarv Jagat Corporation",
+    description: "Read the latest news, case studies, and supplied industrial compressor installations from Sarv Jagat Corporation.",
+    url: "https://www.sarvjagat.com/blog",
+    type: "website",
+  },
 };
 
 export default async function BlogPage() {

@@ -5,7 +5,7 @@ import Blog from "@/lib/models/Blog";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, Tag, Share2, Facebook, Twitter, Linkedin, Youtube, Instagram, Chrome } from "lucide-react";
-import { ArticleSchema } from "@/components/structured-data";
+import { ArticleSchema, SuppliedProductSchema } from "@/components/structured-data";
 import { BlogGallery } from "@/components/ui/blog-gallery";
 import { LightboxImage } from "@/components/ui/lightbox-image";
 
@@ -22,12 +22,12 @@ export async function generateMetadata({ params }) {
     title: `${blog.title} | Sarv Jagat Corporation Blog`,
     description: blog.excerpt || blog.title,
     alternates: {
-      canonical: `https://sarvjagat.com/blog/${slug}`,
+      canonical: `https://www.sarvjagat.com/blog/${slug}`,
     },
     openGraph: {
       title: `${blog.title} | Sarv Jagat Corporation`,
       description: blog.excerpt || blog.title,
-      url: `https://sarvjagat.com/blog/${slug}`,
+      url: `https://www.sarvjagat.com/blog/${slug}`,
       type: "article",
       publishedTime: blog.publishedAt,
       modifiedTime: blog.updatedAt || blog.publishedAt,
@@ -76,6 +76,7 @@ export default async function BlogDetailPage({ params }) {
   return (
     <section className="py-8 bg-gray-50 min-h-screen">
       <ArticleSchema post={blog} />
+      <SuppliedProductSchema item={blog} />
       <div className="container mx-auto px-4">
         {/* Breadcrumbs */}
         <div className="text-sm text-gray-500 mb-6 flex items-center space-x-2">

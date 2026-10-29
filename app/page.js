@@ -15,13 +15,13 @@ export const metadata = {
   description:
     "Leading manufacturer of industrial air compressors, pneumatic tools, and compressed air solutions. Reciprocating, screw, and oil-free compressors for all industries.",
   alternates: {
-    canonical: "https://sarvjagat.com",
+    canonical: "https://www.sarvjagat.com",
   },
   openGraph: {
     title: "Sarv Jagat Corporation | Industrial Air Compressor Manufacturer",
     description:
       "Leading manufacturer of industrial air compressors, pneumatic tools, and compressed air solutions for all industries.",
-    url: "https://sarvjagat.com",
+    url: "https://www.sarvjagat.com",
     images: [
       {
         url: "/og-image.jpg",

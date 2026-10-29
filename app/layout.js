@@ -9,7 +9,10 @@ export const metadata = {
   description:
     "Leading manufacturer of industrial air compressors, Refrigerated Air Dryers, and compressed air solutions. Trusted by industries worldwide. Contact us at +919157487233 or contact@sarvjagat.com",
   generator: "Next.js",
-  metadataBase: new URL("https://sarvjagat.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://www.sarvjagat.com"),
+  alternates: {
+    canonical: "./",
+  },
   keywords: [
     "industrial air compressor",
     "air compressor manufacturer in india",
@@ -154,7 +157,7 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://sarvjagat.com",
+    url: "https://www.sarvjagat.com",
     title: "Sarv Jagat Corporation | Premium Industrial Air Compressor Solutions",
     description:
       "Leading manufacturer of industrial air compressors, pneumatic tools, and compressed air solutions. Trusted by industries worldwide. Contact us at +919157487233 or contact@sarvjagat.com",

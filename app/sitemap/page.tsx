@@ -13,7 +13,7 @@ export async function generateMetadata() {
     openGraph: {
       title: "Sitemap | Sarv Jagat",
       description: "Complete website structure and navigation for Sarv Jagat Corporation.",
-      url: "https://sarvjagat.com/sitemap",
+      url: "https://www.sarvjagat.com/sitemap",
       siteName: "Sarv Jagat",
       images: [
         {

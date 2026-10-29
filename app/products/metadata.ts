@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: "Products | Industrial Equipment & Solutions",
   description:
     "Browse our comprehensive range of industrial equipment including air compressors, pneumatic tools, dryers, and vacuum pumps.",
+  alternates: {
+    canonical: "https://www.sarvjagat.com/products",
+  },
   keywords: [
     "industrial equipment",
     "air compressors",

@@ -8,7 +8,7 @@ export const generateMetadata = (): Metadata => {
     openGraph: {
       title: "Services | Sarv Jagat",
       description: "Comprehensive services for air compressors: installation, maintenance, repair, and support.",
-      url: "https://sarvjagat.com/services",
+      url: "https://www.sarvjagat.com/services",
       siteName: "Sarv Jagat",
       images: [
         {

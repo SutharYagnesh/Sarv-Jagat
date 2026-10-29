@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -21,6 +20,51 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   generateEtags: true,
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/Home',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/index',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/index.html',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/products/category',
+        destination: '/products',
+        permanent: true,
+      },
+    ];
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/google-merchant.xml',
+        destination: '/api/feeds/google-merchant',
+      },
+      {
+        source: '/google-shopping.xml',
+        destination: '/api/feeds/google-merchant',
+      },
+      {
+        source: '/feeds/products.xml',
+        destination: '/api/feeds/google-merchant',
+      },
+    ];
+  },
   headers: async () => {
     return [
       {

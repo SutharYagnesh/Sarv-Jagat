@@ -5,7 +5,7 @@ export const metadata = {
   openGraph: {
     title: "Search Products | Sarv Jagat",
     description: "Search our comprehensive range of air compressors, dryers, and accessories.",
-    url: "https://sarvjagat.com/search",
+    url: "https://www.sarvjagat.com/search",
     siteName: "Sarv Jagat",
     images: [
       {

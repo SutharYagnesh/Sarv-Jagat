@@ -7,10 +7,14 @@ export const metadata = {
   title: "Industry Solutions | Sarv Jagat Corporation - Compressed Air Solutions",
   description:
     "Comprehensive compressed air solutions for manufacturing, automotive, textile, pharmaceutical, and food processing industries. Expert consultation and custom solutions.",
+  alternates: {
+    canonical: "https://www.sarvjagat.com/solutions",
+  },
   openGraph: {
     title: "Industry Solutions | Sarv Jagat Corporation",
     description:
       "Comprehensive compressed air solutions for manufacturing, automotive, textile, pharmaceutical, and food processing industries.",
+    url: "https://www.sarvjagat.com/solutions",
     images: ["/industrial-solutions.png"],
   },
 }
