@@ -57,7 +57,7 @@ export function ProductSchema({ product }) {
 
   const productUrl = `${BASE_URL}/products/${product.slug}`
   const imageUrl = getAbsoluteImageUrl(product.image || product.images?.[0])
-  const priceVal = product.price && Number(product.price) > 0 ? Number(product.price).toFixed(2) : "150000.00"
+  const priceVal = product.price && Number(product.price) > 0 ? Number(product.price).toFixed(2) : "1.00"
 
   // Build additionalProperty array from specifications
   const additionalProperty = []
@@ -202,7 +202,7 @@ export function SuppliedProductSchema({ item }) {
     offers: {
       "@type": "Offer",
       url: itemUrl,
-      price: "100000.00",
+      price: "1.00",
       priceCurrency: "INR",
       priceValidUntil: "2027-12-31",
       itemCondition: "https://schema.org/NewCondition",

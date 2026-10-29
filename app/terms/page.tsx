@@ -1,9 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { FileText, Scale, AlertTriangle, Shield, Mail, Phone } from "lucide-react"
+'use client';
 
-export { metadata } from './metadata'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { FileText, Scale, AlertTriangle, Shield, Mail, Phone, MapPin, Truck, CheckCircle2 } from "lucide-react"
+import { useCompanyInfo } from "@/lib/useCompanyInfo"
 
 export default function TermsOfServicePage() {
+  const companyInfo = useCompanyInfo()
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Hero Section */}
@@ -100,18 +102,23 @@ export default function TermsOfServicePage() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-3">Quotations and Pricing</h3>
+                  <h3 className="text-lg font-semibold mb-3">Quotations and Industrial Pricing</h3>
                   <p className="text-gray-700">
-                    All quotations are valid for 30 days unless otherwise specified. Prices are subject to change
-                    without notice. Final pricing will be confirmed at the time of order placement.
+                    Commercial quotations are customized based on technical air specifications, pressure ratings (CFM/Bar), and auxiliary packages. Quotations remain valid for 30 calendar days unless mutually extended. Final contract pricing is confirmed upon official Purchase Order issuance.
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-3">Warranty</h3>
+                  <h3 className="text-lg font-semibold mb-3">Warranty &amp; Service Resolution</h3>
                   <p className="text-gray-700">
-                    Our products are covered by manufacturer's warranty as specified in individual product
-                    documentation. Warranty terms and conditions are available upon request.
+                    All industrial equipment is protected under the official <strong>Manufacturer Warranty</strong> as defined in the commercial supply contract. Equipment returns, parts replacements, and warranty remediation are strictly governed by the warranty timeline or settled via direct bilateral customer consultation and mutual technical accord.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold mb-3">Dispatch &amp; Freight Transportation</h3>
+                  <p className="text-gray-700">
+                    Shipments are scheduled for dispatch on the day material becomes available upon completion of quality assurance and factory load testing. Pan-India road transport transit spans <strong>2 to 15 working days</strong>, and international worldwide freight requires <strong>25 to 35 working days</strong>, subject to shipping schedules and regional customs clearance.
                   </p>
                 </div>
               </CardContent>
@@ -247,31 +254,29 @@ export default function TermsOfServicePage() {
                   <div className="flex items-center gap-3">
                     <Mail className="h-5 w-5 text-blue-600" />
                     <div>
-                      <div className="font-medium">Email</div>
-                      <a href="mailto:legal@sarvjagat.com" className="text-blue-600 hover:underline">
-                        legal@sarvjagat.com
+                      <div className="font-medium">Official Email</div>
+                      <a href={`mailto:${companyInfo.primaryEmail}`} className="text-blue-600 hover:underline">
+                        {companyInfo.primaryEmail}
                       </a>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <Phone className="h-5 w-5 text-blue-600" />
                     <div>
-                      <div className="font-medium">Phone</div>
-                      <a href="tel:+919157487233" className="text-blue-600 hover:underline">
-                        +91-9157487233
+                      <div className="font-medium">Corporate Telephone</div>
+                      <a href={`tel:${companyInfo.primaryPhone.replace(/[^0-9+]/g, '')}`} className="text-blue-600 hover:underline">
+                        {companyInfo.primaryPhone}
                       </a>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Mail className="h-5 w-5 text-blue-600 mt-1" />
+                    <MapPin className="h-5 w-5 text-blue-600 mt-1" />
                     <div>
-                      <div className="font-medium">Address</div>
+                      <div className="font-medium">Factory Works &amp; Legal Jurisdiction</div>
                       <div className="text-gray-700">
-                        Sarv Jagat Corporation
+                        {companyInfo.companyName}
                         <br />
-                        Shade No-24, Vinayak Industrial Estate - 2
-                        <br />
-                        Kathwada-GIDC, Ahmedabad-382430, Gujarat, India
+                        {companyInfo.address}
                       </div>
                     </div>
                   </div>

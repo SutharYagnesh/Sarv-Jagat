@@ -9,7 +9,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast"
 import { apiClient } from "@/lib/api-client"
 import Link from "next/link"
+import { useCompanyInfo } from "@/lib/useCompanyInfo"
 export function ContactForm() {
+  const companyInfo = useCompanyInfo()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -34,8 +36,9 @@ export function ContactForm() {
     setIsSubmitting(true)
 
     try {
+      const rawPhone = (companyInfo.primaryPhone || '919157487233').replace(/[^0-9]/g, '');
       const text = `*New Contact Message*\n\n*Name:* ${formData.name}\n*Email:* ${formData.email}\n*Phone:* ${formData.phone}\n*Company:* ${formData.company}\n*Subject:* ${formData.subject}\n*Message:* ${formData.message}`;
-      const url = `https://wa.me/919157487233?text=${encodeURIComponent(text)}`;
+      const url = `https://wa.me/${rawPhone}?text=${encodeURIComponent(text)}`;
       window.open(url, "_blank");
 
       toast({

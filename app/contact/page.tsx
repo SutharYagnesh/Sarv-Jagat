@@ -10,7 +10,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Phone, Mail, MapPin, Clock, Send, MessageSquare, Headphones, Building2, Users, Wrench } from "lucide-react"
 import Link from "next/link"
+import { useCompanyInfo } from "@/lib/useCompanyInfo"
+
 export default function ContactPage() {
+  const companyInfo = useCompanyInfo()
   const [contactForm, setContactForm] = useState({
     name: "",
     email: "",
@@ -23,12 +26,11 @@ export default function ContactPage() {
 
   const offices = [
     {
-      name: "Head Office - Ahmedabad",
-      address:
-        "Shade No-24, Vinayak Industrial Estate - 2, Near Asudev Industrial Estate, Kathwada-Singarva Road, Kathwada-GIDC, Ahmedabad-382430, Gujarat, India",
-      phone: "+91-9157487233",
-      email: "contact@sarvjagat.com",
-      hours: "Mon-Sat: 9:00 AM - 6:00 PM",
+      name: `Head Office - ${companyInfo.city || 'Ahmedabad'}`,
+      address: companyInfo.address,
+      phone: companyInfo.primaryPhone,
+      email: companyInfo.primaryEmail,
+      hours: companyInfo.workingHours || "Mon-Sat: 9:00 AM - 6:00 PM",
       type: "headquarters",
     },
     {
@@ -57,22 +59,24 @@ export default function ContactPage() {
     },
   ]
 
+  const rawPhone = (companyInfo.primaryPhone || '+919157487233').replace(/[^0-9]/g, '')
+
   const contactMethods = [
     {
       icon: <Phone className="h-8 w-8 text-red-600" />,
       title: "Phone Support",
-      description: "24/7 technical support hotline",
-      contact: "+91-9157487233",
+      description: "Direct engineering & sales hotline",
+      contact: companyInfo.primaryPhone,
       action: "Call Now",
-      href: "tel:+919157487233",
+      href: `tel:${companyInfo.primaryPhone.replace(/[^0-9+]/g, '')}`,
     },
     {
       icon: <Mail className="h-8 w-8 text-red-600" />,
       title: "Email Support",
       description: "Get detailed responses within 24 hours",
-      contact: "contact@sarvjagat.com",
+      contact: companyInfo.primaryEmail,
       action: "Send Email",
-      href: "mailto:contact@sarvjagat.com",
+      href: `mailto:${companyInfo.primaryEmail}`,
     },
     {
       icon: <MessageSquare className="h-8 w-8 text-red-600" />,
@@ -80,15 +84,15 @@ export default function ContactPage() {
       description: "Instant support via WhatsApp",
       contact: "Available 24/7",
       action: "Start Chat",
-      href: "https://wa.me/919157487233",
+      href: `https://wa.me/${rawPhone}`,
     },
     {
       icon: <Headphones className="h-8 w-8 text-red-600" />,
       title: "Technical Helpline",
       description: "Expert technical assistance",
-      contact: "+91-9157487233",
+      contact: companyInfo.secondaryPhone || companyInfo.primaryPhone,
       action: "Get Help",
-      href: "tel:+919157487233",
+      href: `tel:${(companyInfo.secondaryPhone || companyInfo.primaryPhone).replace(/[^0-9+]/g, '')}`,
     },
   ]
 
@@ -97,7 +101,7 @@ export default function ContactPage() {
 
     try {
       const text = `*New Contact Message*\n\n*Name:* ${contactForm.name}\n*Email:* ${contactForm.email}\n*Phone:* ${contactForm.phone}\n*Company:* ${contactForm.company}\n*Inquiry Type:* ${contactForm.inquiry}\n*Preferred Contact:* ${contactForm.preferredContact}\n*Message:* ${contactForm.message}`;
-      const url = `https://wa.me/919157487233?text=${encodeURIComponent(text)}`;
+      const url = `https://wa.me/${rawPhone}?text=${encodeURIComponent(text)}`;
       window.open(url, "_blank");
 
       alert("Redirecting to WhatsApp. Please send the message to complete your inquiry.")

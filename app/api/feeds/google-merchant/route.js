@@ -47,11 +47,13 @@ export async function GET() {
   // 1. Process Catalog Products
   for (const product of products) {
     const id = `SJ-PROD-${product._id || product.slug}`;
-    const title = product.title || product.name || "Sarv Jagat Industrial Compressor";
-    const desc = cleanDescription(product.seoDescription || product.description || title);
+    const rawTitle = product.title || product.name || "Sarv Jagat Industrial Compressor";
+    const hasExactPrice = product.price && Number(product.price) > 0;
+    const price = hasExactPrice ? Number(product.price).toFixed(2) : "1.00";
+    const title = hasExactPrice ? rawTitle : `${rawTitle} - Price on Request / Inquire for Quote`;
+    const desc = cleanDescription(product.seoDescription || product.description || rawTitle);
     const link = `${baseUrl}/products/${product.slug}`;
     const primaryImage = getAbsoluteImageUrl(product.images?.[0] || product.image, baseUrl);
-    const price = product.price && Number(product.price) > 0 ? Number(product.price).toFixed(2) : "150000.00";
     const category = product.category || "Air Compressors";
     const mpn = product.modelNumber || product.slug;
 
@@ -81,20 +83,22 @@ export async function GET() {
         <g:identifier_exists>no</g:identifier_exists>
         <g:shipping>
           <g:country>IN</g:country>
-          <g:service>Standard Industrial Freight</g:service>
+          <g:service>Standard Industrial Freight (2-15 Working Days)</g:service>
           <g:price>0.00 INR</g:price>
         </g:shipping>
+        <g:return_policy_label>warranty_policy</g:return_policy_label>
       </item>`);
   }
 
   // 2. Process Blogs as Supplied Industrial Equipment / Case Study Items
   for (const blog of blogs) {
     const id = `SJ-SUPPLIED-${blog._id || blog.slug}`;
-    const title = blog.title || "Sarv Jagat Supplied Industrial Equipment";
-    const desc = cleanDescription(blog.excerpt || blog.content || title);
+    const rawTitle = blog.title || "Sarv Jagat Supplied Industrial Equipment";
+    const title = `${rawTitle} - Supplied Equipment / Ask for Price`;
+    const desc = cleanDescription(blog.excerpt || blog.content || rawTitle);
     const link = `${baseUrl}/blog/${blog.slug}`;
     const primaryImage = getAbsoluteImageUrl(blog.imageUrl || blog.images?.[0], baseUrl);
-    const price = "100000.00"; // Indicative baseline price for industrial equipment inquiry
+    const price = "1.00"; // Valid minimal price for B2B inquiry / ask-for-price
     const category = blog.category || "Supplied Industrial Air Compressors";
 
     let additionalImagesXml = "";
@@ -123,9 +127,10 @@ export async function GET() {
         <g:identifier_exists>no</g:identifier_exists>
         <g:shipping>
           <g:country>IN</g:country>
-          <g:service>Standard Industrial Freight</g:service>
+          <g:service>Standard Industrial Freight (2-15 Working Days)</g:service>
           <g:price>0.00 INR</g:price>
         </g:shipping>
+        <g:return_policy_label>warranty_policy</g:return_policy_label>
       </item>`);
   }
 

@@ -1,9 +1,10 @@
 'use client'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Shield, Eye, Lock, UserCheck, Mail, Phone } from "lucide-react"
-import { generateMetadata } from './metadata'
+import { Shield, Eye, Lock, UserCheck, Mail, Phone, MapPin } from "lucide-react"
+import { useCompanyInfo } from "@/lib/useCompanyInfo"
 
 export default function PrivacyPolicyPage() {
+  const companyInfo = useCompanyInfo()
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Hero Section */}
@@ -270,21 +271,28 @@ export default function PrivacyPolicyPage() {
                     <Phone className="h-5 w-5 text-blue-600" />
                     <div>
                       <div className="font-medium">Phone</div>
-                      <a href="tel:+919157487233" className="text-blue-600 hover:underline">
-                        +91-9157487233
+                      <a href={`tel:${companyInfo.primaryPhone.replace(/[^0-9+]/g, '')}`} className="text-blue-600 hover:underline">
+                        {companyInfo.primaryPhone}
                       </a>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Mail className="h-5 w-5 text-blue-600 mt-1" />
                     <div>
-                      <div className="font-medium">Address</div>
+                      <div className="font-medium">Email</div>
+                      <a href={`mailto:${companyInfo.primaryEmail}`} className="text-blue-600 hover:underline">
+                        {companyInfo.primaryEmail}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <MapPin className="h-5 w-5 text-blue-600 mt-1" />
+                    <div>
+                      <div className="font-medium">Registered Works &amp; Head Office</div>
                       <div className="text-gray-700">
-                        Sarv Jagat Corporation
+                        {companyInfo.companyName}
                         <br />
-                        Shade No-24, Vinayak Industrial Estate - 2
-                        <br />
-                        Kathwada-GIDC, Ahmedabad-382430, Gujarat, India
+                        {companyInfo.address}
                       </div>
                     </div>
                   </div>

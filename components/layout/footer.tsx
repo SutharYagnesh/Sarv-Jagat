@@ -5,9 +5,11 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Facebook, Twitter, Linkedin, Youtube, Instagram, Phone, Mail, MapPin, ArrowRight } from "lucide-react"
+import { useCompanyInfo } from "@/lib/useCompanyInfo"
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
+  const companyInfo = useCompanyInfo()
 
   const [productLinks, setProductLinks] = useState([
     { name: "Screw Compressors", href: "/products/screw" },
@@ -121,21 +123,20 @@ export function Footer() {
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-red-400" />
-                <a href="tel:+919157487233" className="hover:text-red-400">
-                  +91-9157487233
+                <a href={`tel:${companyInfo.primaryPhone.replace(/[^0-9+]/g, '')}`} className="hover:text-red-400">
+                  {companyInfo.primaryPhone}
                 </a>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-red-400" />
-                <a href="mailto:contact@sarvjagat.com" className="hover:text-red-400">
-                  contact@sarvjagat.com
+                <a href={`mailto:${companyInfo.primaryEmail}`} className="hover:text-red-400">
+                  {companyInfo.primaryEmail}
                 </a>
               </div>
               <div className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-red-400 mt-1" />
-                <span>
-                  Vinayak Industrial Estate - 2<br />
-                  Kathwada-GIDC, Ahmedabad-382430, Gujarat, India
+                <MapPin className="h-5 w-5 text-red-400 mt-1 shrink-0" />
+                <span className="text-slate-300 text-sm">
+                  {companyInfo.shortAddress || companyInfo.address}
                 </span>
               </div>
             </div>

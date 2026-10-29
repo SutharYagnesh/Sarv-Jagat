@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Package, Tags, LogOut, Menu, FileText, Users } from 'lucide-react';
+import { LayoutDashboard, Package, Tags, LogOut, Menu, FileText, Users, Building2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export default function AdminLayout({ children }) {
@@ -38,6 +38,7 @@ export default function AdminLayout({ children }) {
     { name: 'Products', href: '/admin/products', icon: Package },
     { name: 'Categories', href: '/admin/categories', icon: Tags },
     { name: 'Blog', href: '/admin/blog', icon: FileText },
+    { name: 'Company Info', href: '/admin/settings', icon: Building2 },
   ];
 
   if (role === 'Main Admin') {
