@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import ProductForm from '../../_components/ProductForm';
 
@@ -28,5 +28,9 @@ export default function EditProductPage() {
   if (loading) return <div className="p-8 text-center text-gray-500">Loading product data...</div>;
   if (!product) return <div className="p-8 text-center text-red-500">Product not found</div>;
 
-  return <ProductForm initialData={product} />;
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-gray-500">Loading form...</div>}>
+      <ProductForm initialData={product} />
+    </Suspense>
+  );
 }
