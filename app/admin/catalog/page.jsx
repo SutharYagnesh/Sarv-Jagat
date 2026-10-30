@@ -14,6 +14,9 @@ import {
   RefreshCw,
   UploadCloud,
   FileCheck,
+  Database,
+  Cloud,
+  HardDrive,
 } from 'lucide-react';
 
 export default function AdminCatalogPage() {
@@ -26,8 +29,12 @@ export default function AdminCatalogPage() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
-  const [showManualUrl, setShowManualUrl] = useState(false);
+  const [storageStats, setStorageStats] = useState({ totalMb: '0.00 MB', count: 0 });
+  const [cleaningStorage, setCleaningStorage] = useState(false);
   const fileInputRef = useRef(null);
+
+  // Storage option: 'database' (direct file upload) or 'cloud' (Google Drive / Dropbox)
+  const [storageType, setStorageType] = useState('database');
 
   const [formData, setFormData] = useState({
     id: null,
@@ -58,9 +65,40 @@ export default function AdminCatalogPage() {
     }
   };
 
+  const fetchStorageStats = async () => {
+    try {
+      const res = await fetch('/api/admin/upload/clean');
+      if (res.ok) {
+        const data = await res.json();
+        setStorageStats({ totalMb: data.totalMb || '0.00 MB', count: data.count || 0 });
+      }
+    } catch (err) {
+      console.error('Failed to fetch media storage stats', err);
+    }
+  };
+
   useEffect(() => {
     fetchCatalogs();
+    fetchStorageStats();
   }, []);
+
+  const handleCleanStorage = async () => {
+    if (!window.confirm('Clean up all unreferenced PDF/media files in MongoDB database?')) return;
+    setCleaningStorage(true);
+    try {
+      const res = await fetch('/api/admin/upload/clean', { method: 'POST' });
+      if (res.ok) {
+        const d = await res.json();
+        setMessage(d.message || 'Database media cleaned successfully!');
+        fetchStorageStats();
+        setTimeout(() => setMessage(''), 4000);
+      }
+    } catch (err) {
+      alert('Error cleaning storage');
+    } finally {
+      setCleaningStorage(false);
+    }
+  };
 
   // Chunked upload to completely bypass Vercel's 4.5 MB serverless limit
   // Splits large PDFs (8MB, 12MB, 25MB+) into safe 2 MB chunks
@@ -94,8 +132,8 @@ export default function AdminCatalogPage() {
         const percent = Math.round(((chunkIndex + 1) / totalChunks) * 100);
         setUploadProgress(
           totalChunks > 1
-            ? `Uploading to database GridFS: ${percent}% (Part ${chunkIndex + 1} of ${totalChunks})...`
-            : `Uploading to database GridFS: ${percent}%...`
+            ? `Uploading in parts: ${percent}% (Part ${chunkIndex + 1} of ${totalChunks})...`
+            : `Uploading to database: ${percent}%...`
         );
 
         const res = await fetch('/api/admin/upload/chunk', {
@@ -122,10 +160,11 @@ export default function AdminCatalogPage() {
                   .replace(/[-_]+/g, ' ')
                   .replace(/\b\w/g, (c) => c.toUpperCase()),
           }));
-          setUploadProgress(`✓ PDF Stored in Database (${calculatedSize}). URL Auto-Generated.`);
+          setUploadProgress(`✓ Stored in Database (${calculatedSize}). URL Auto-Generated.`);
         }
       }
 
+      fetchStorageStats();
       return finalUrl;
     } catch (err) {
       console.error('Upload error:', err);
@@ -153,21 +192,43 @@ export default function AdminCatalogPage() {
       setFormData((prev) => ({ ...prev, title: cleanName }));
     }
 
-    // Auto-calculate size immediately
     const autoSize = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
     setFormData((prev) => ({ ...prev, fileSize: autoSize }));
 
-    // Auto-upload in chunks immediately
     await uploadFileToDb(file);
+  };
+
+  const handleCloudUrlChange = (value) => {
+    let cleanUrl = value.trim();
+    // Auto-convert Google Drive viewer links to direct preview format if needed
+    if (cleanUrl.includes('drive.google.com/file/d/')) {
+      const match = cleanUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      if (match) {
+        cleanUrl = `https://drive.google.com/file/d/${match[1]}/view`;
+      }
+    }
+    setFormData((prev) => ({
+      ...prev,
+      pdfUrl: cleanUrl,
+      fileSize: prev.fileSize && prev.fileSize !== 'PDF Document' ? prev.fileSize : 'Cloud PDF',
+    }));
   };
 
   const handleOpenModal = (cat = null) => {
     setError('');
     setSelectedFile(null);
     setUploadProgress('');
-    setShowManualUrl(false);
 
     if (cat) {
+      const isCloud = Boolean(
+        cat.pdfUrl &&
+          !cat.pdfUrl.startsWith('/api/media/') &&
+          (cat.pdfUrl.includes('drive.google.com') ||
+            cat.pdfUrl.includes('dropbox.com') ||
+            cat.pdfUrl.startsWith('http'))
+      );
+      setStorageType(isCloud ? 'cloud' : 'database');
+
       setFormData({
         id: cat._id,
         title: cat.title,
@@ -180,8 +241,8 @@ export default function AdminCatalogPage() {
         order: cat.order || 0,
         status: cat.status || 'Published',
       });
-      setShowManualUrl(Boolean(cat.pdfUrl && !cat.pdfUrl.startsWith('/api/media')));
     } else {
+      setStorageType('database');
       setFormData({
         id: null,
         title: '',
@@ -205,8 +266,7 @@ export default function AdminCatalogPage() {
 
     let finalPdfUrl = formData.pdfUrl;
 
-    // If file was selected but not uploaded yet, upload now
-    if (!finalPdfUrl && selectedFile) {
+    if (storageType === 'database' && !finalPdfUrl && selectedFile) {
       setSaving(true);
       finalPdfUrl = await uploadFileToDb(selectedFile);
       if (!finalPdfUrl) {
@@ -217,7 +277,11 @@ export default function AdminCatalogPage() {
     }
 
     if (!finalPdfUrl) {
-      setError('Please choose a PDF file to upload.');
+      setError(
+        storageType === 'database'
+          ? 'Please choose a PDF file to upload.'
+          : 'Please enter a valid Google Drive, Dropbox, or Cloud link.'
+      );
       return;
     }
 
@@ -242,6 +306,7 @@ export default function AdminCatalogPage() {
         setMessage(isEdit ? 'Catalog updated successfully!' : 'New catalog added successfully!');
         setIsModalOpen(false);
         fetchCatalogs();
+        fetchStorageStats();
         setTimeout(() => setMessage(''), 4000);
       } else {
         const d = await res.json().catch(() => ({}));
@@ -256,12 +321,13 @@ export default function AdminCatalogPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this catalog PDF?')) return;
+    if (!window.confirm('Are you sure you want to delete this catalog PDF? The media file will also be permanently removed from MongoDB database.')) return;
     try {
       const res = await fetch(`/api/admin/catalog/${id}`, { method: 'DELETE' });
       if (res.ok) {
-        setMessage('Catalog removed successfully');
+        setMessage('Catalog and database media file deleted permanently!');
         fetchCatalogs();
+        fetchStorageStats();
         setTimeout(() => setMessage(''), 4000);
       } else {
         alert('Failed to delete catalog');
@@ -281,19 +347,38 @@ export default function AdminCatalogPage() {
             PDF Catalogs Management
           </h1>
           <p className="text-sm text-gray-500 mt-1">
-            Upload and control specific product catalogs and technical brochures shown on{' '}
+            Upload and control specific product catalogs shown on{' '}
             <a href="/catalog" target="_blank" className="text-red-600 hover:underline">
               https://www.sarvjagat.com/catalog
             </a>
           </p>
         </div>
-        <button
-          onClick={() => handleOpenModal()}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg shadow-sm transition-all"
-        >
-          <Plus className="w-5 h-5" />
-          Add New Catalog PDF
-        </button>
+
+        <div className="flex items-center gap-3">
+          {/* Storage Stat Pill */}
+          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-lg text-xs text-slate-700">
+            <Database className="w-3.5 h-3.5 text-slate-500" />
+            <span>
+              DB Storage: <strong>{storageStats.totalMb}</strong>
+            </span>
+            <button
+              onClick={handleCleanStorage}
+              disabled={cleaningStorage}
+              className="text-red-600 hover:text-red-800 font-semibold ml-1 underline disabled:opacity-50"
+              title="Purge deleted/unused media files from MongoDB"
+            >
+              {cleaningStorage ? 'Cleaning...' : 'Clean'}
+            </button>
+          </div>
+
+          <button
+            onClick={() => handleOpenModal()}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg shadow-sm transition-all text-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Add New Catalog PDF
+          </button>
+        </div>
       </div>
 
       {/* Notifications */}
@@ -323,82 +408,103 @@ export default function AdminCatalogPage() {
           </div>
           <h3 className="text-lg font-semibold text-gray-800">No Catalogs Uploaded Yet</h3>
           <p className="text-sm text-gray-500 max-w-md mx-auto">
-            No PDF catalogs have been added yet. Click &quot;Add New Catalog PDF&quot; above to upload your equipment brochures. One can be marked as the Comprehensive Main Catalog.
+            No PDF catalogs have been added yet. Click &quot;Add New Catalog PDF&quot; above to upload directly to website database or connect a Google Drive link.
           </p>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {catalogs.map((item) => (
-            <div
-              key={item._id}
-              className={`bg-white border rounded-xl p-5 shadow-sm space-y-4 relative flex flex-col justify-between ${
-                item.isComprehensive ? 'ring-2 ring-red-500 bg-red-50/10' : ''
-              }`}
-            >
-              <div className="space-y-3">
-                <div className="flex items-start justify-between gap-2">
-                  <span className="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-700 rounded-full">
-                    {item.category}
-                  </span>
-                  {item.isComprehensive && (
-                    <span className="text-xs font-bold px-2.5 py-1 bg-red-100 text-red-700 rounded-full flex items-center gap-1">
-                      <Star className="w-3.5 h-3.5 fill-red-600" />
-                      Comprehensive Main PDF
+          {catalogs.map((item) => {
+            const isCloud =
+              item.pdfUrl &&
+              (item.pdfUrl.includes('drive.google.com') ||
+                item.pdfUrl.includes('dropbox.com') ||
+                item.pdfUrl.startsWith('http'));
+
+            return (
+              <div
+                key={item._id}
+                className={`bg-white border rounded-xl p-5 shadow-sm space-y-4 relative flex flex-col justify-between ${
+                  item.isComprehensive ? 'ring-2 ring-red-500 bg-red-50/10' : ''
+                }`}
+              >
+                <div className="space-y-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-700 rounded-full">
+                      {item.category}
                     </span>
-                  )}
-                </div>
+                    <div className="flex items-center gap-1.5">
+                      {isCloud ? (
+                        <span className="text-[11px] font-medium px-2 py-0.5 bg-blue-50 text-blue-700 rounded flex items-center gap-1">
+                          <Cloud className="w-3 h-3" />
+                          Cloud Link
+                        </span>
+                      ) : (
+                        <span className="text-[11px] font-medium px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded flex items-center gap-1">
+                          <Database className="w-3 h-3" />
+                          DB Stored
+                        </span>
+                      )}
+                      {item.isComprehensive && (
+                        <span className="text-xs font-bold px-2.5 py-1 bg-red-100 text-red-700 rounded-full flex items-center gap-1">
+                          <Star className="w-3.5 h-3.5 fill-red-600" />
+                          Main PDF
+                        </span>
+                      )}
+                    </div>
+                  </div>
 
-                <h3 className="font-bold text-gray-900 text-lg leading-snug">{item.title}</h3>
-                {item.description && <p className="text-sm text-gray-600 line-clamp-2">{item.description}</p>}
+                  <h3 className="font-bold text-gray-900 text-lg leading-snug">{item.title}</h3>
+                  {item.description && <p className="text-sm text-gray-600 line-clamp-2">{item.description}</p>}
 
-                <div className="flex items-center gap-4 text-xs text-gray-500 pt-2 border-t">
-                  {item.pages > 0 && (
+                  <div className="flex items-center gap-4 text-xs text-gray-500 pt-2 border-t">
+                    {item.pages > 0 && (
+                      <span>
+                        Pages: <strong>{item.pages}</strong>
+                      </span>
+                    )}
                     <span>
-                      Pages: <strong>{item.pages}</strong>
+                      Size: <strong>{item.fileSize || 'PDF Document'}</strong>
                     </span>
-                  )}
-                  <span>
-                    Size: <strong>{item.fileSize || 'PDF Document'}</strong>
-                  </span>
-                  <span>
-                    Status:{' '}
-                    <strong className={item.status === 'Published' ? 'text-green-600' : 'text-gray-500'}>
-                      {item.status}
-                    </strong>
-                  </span>
+                    <span>
+                      Status:{' '}
+                      <strong className={item.status === 'Published' ? 'text-green-600' : 'text-gray-500'}>
+                        {item.status}
+                      </strong>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t flex items-center justify-between gap-2">
+                  <a
+                    href={item.pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    Open PDF
+                  </a>
+
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => handleOpenModal(item)}
+                      className="p-1.5 text-gray-600 hover:text-red-600 hover:bg-gray-100 rounded"
+                      title="Edit"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item._id)}
+                      className="p-1.5 text-gray-600 hover:text-red-600 hover:bg-gray-100 rounded"
+                      title="Delete (Purges PDF from Database)"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
-
-              <div className="pt-4 border-t flex items-center justify-between gap-2">
-                <a
-                  href={item.pdfUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-800 font-medium"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  Open PDF
-                </a>
-
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => handleOpenModal(item)}
-                    className="p-1.5 text-gray-600 hover:text-red-600 hover:bg-gray-100 rounded"
-                    title="Edit"
-                  >
-                    <Edit2 className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item._id)}
-                    className="p-1.5 text-gray-600 hover:text-red-600 hover:bg-gray-100 rounded"
-                    title="Delete"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -423,113 +529,165 @@ export default function AdminCatalogPage() {
                 </div>
               )}
 
-              {/* 1. PDF File Upload Area (Chunked Database Upload) */}
+              {/* Storage Method Selector Tabs */}
               <div>
-                <label className="block text-sm font-semibold text-gray-800 mb-1">
-                  Catalog PDF File <span className="text-red-500">*</span>
+                <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wide mb-1.5">
+                  Choose Where To Upload / Host PDF
                 </label>
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className={`border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all ${
-                    formData.pdfUrl
-                      ? 'border-green-300 bg-green-50/40 hover:bg-green-50'
-                      : 'border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-red-400'
-                  }`}
-                >
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="application/pdf"
-                    onChange={handleFileChange}
-                    className="hidden"
-                  />
+                <div className="grid grid-cols-2 gap-2 p-1 bg-gray-100 rounded-lg">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStorageType('database');
+                      setError('');
+                    }}
+                    className={`py-2 px-3 rounded-md text-xs font-medium flex items-center justify-center gap-1.5 transition-all ${
+                      storageType === 'database'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    <HardDrive className="w-3.5 h-3.5 text-red-600" />
+                    <span>Upload to Database</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStorageType('cloud');
+                      setError('');
+                    }}
+                    className={`py-2 px-3 rounded-md text-xs font-medium flex items-center justify-center gap-1.5 transition-all ${
+                      storageType === 'cloud'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    <Cloud className="w-3.5 h-3.5 text-blue-600" />
+                    <span>Google Drive / Cloud</span>
+                  </button>
+                </div>
+              </div>
 
-                  {uploading ? (
-                    <div className="flex flex-col items-center justify-center gap-2 py-2">
-                      <RefreshCw className="w-7 h-7 text-red-600 animate-spin" />
-                      <span className="text-xs font-semibold text-red-600">
-                        {uploadProgress || 'Uploading in chunks to database...'}
-                      </span>
-                    </div>
-                  ) : formData.pdfUrl ? (
-                    <div className="flex flex-col items-center justify-center gap-2 py-1">
-                      <div className="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
-                        <FileCheck className="w-6 h-6" />
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-green-800">
-                          {selectedFile ? selectedFile.name : 'PDF Attached'}
-                        </p>
-                        <p className="text-[11px] text-green-600 mt-0.5">
-                          ✓ Stored in Database &bull; Size: {formData.fileSize} (Auto-Calculated)
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-3 pt-1">
-                        <a
-                          href={formData.pdfUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="text-xs text-blue-600 hover:underline flex items-center gap-1 font-medium"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5" />
-                          Test Preview PDF
-                        </a>
-                        <span className="text-xs text-gray-400">|</span>
-                        <span className="text-xs text-red-600 font-medium hover:underline">
-                          Change File
+              {/* Option 1: Direct Database Upload */}
+              {storageType === 'database' && (
+                <div>
+                  <label className="block text-sm font-semibold text-gray-800 mb-1">
+                    Select PDF File <span className="text-red-500">*</span>
+                  </label>
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className={`border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition-all ${
+                      formData.pdfUrl && formData.pdfUrl.startsWith('/api/media/')
+                        ? 'border-green-300 bg-green-50/40 hover:bg-green-50'
+                        : 'border-gray-300 bg-gray-50 hover:bg-gray-100 hover:border-red-400'
+                    }`}
+                  >
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="application/pdf"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+
+                    {uploading ? (
+                      <div className="flex flex-col items-center justify-center gap-2 py-2">
+                        <RefreshCw className="w-7 h-7 text-red-600 animate-spin" />
+                        <span className="text-xs font-semibold text-red-600">
+                          {uploadProgress || 'Uploading in parts to database...'}
                         </span>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center gap-2 py-3">
-                      <div className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center">
-                        <UploadCloud className="w-6 h-6" />
+                    ) : formData.pdfUrl && formData.pdfUrl.startsWith('/api/media/') ? (
+                      <div className="flex flex-col items-center justify-center gap-2 py-1">
+                        <div className="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
+                          <FileCheck className="w-6 h-6" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-green-800">
+                            {selectedFile ? selectedFile.name : 'PDF Attached'}
+                          </p>
+                          <p className="text-[11px] text-green-600 mt-0.5">
+                            ✓ Stored in Database &bull; Size: {formData.fileSize} (Auto-Calculated)
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-3 pt-1">
+                          <a
+                            href={formData.pdfUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-xs text-blue-600 hover:underline flex items-center gap-1 font-medium"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            Test Preview PDF
+                          </a>
+                          <span className="text-xs text-gray-400">|</span>
+                          <span className="text-xs text-red-600 font-medium hover:underline">
+                            Change File
+                          </span>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-semibold text-gray-700">
-                          Click to select and upload PDF
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          Supports 8 MB, 12 MB, 25 MB+ (Uploaded safely in chunks to database)
-                        </p>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center gap-2 py-3">
+                        <div className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center">
+                          <UploadCloud className="w-6 h-6" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-gray-700">
+                            Click to select and upload PDF
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            Supports 8 MB, 12 MB, 25 MB+ (Uploaded in safe 2 MB parts to database)
+                          </p>
+                        </div>
                       </div>
+                    )}
+                  </div>
+
+                  {uploadProgress && !uploading && (
+                    <p className="text-xs text-green-700 mt-1 font-medium">{uploadProgress}</p>
+                  )}
+                </div>
+              )}
+
+              {/* Option 2: Google Drive / Dropbox / External Cloud Link */}
+              {storageType === 'cloud' && (
+                <div className="space-y-2 p-3 bg-blue-50/50 border border-blue-200 rounded-xl">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-800 mb-1">
+                      Paste Google Drive, Dropbox, or Cloud Link <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="url"
+                      required={storageType === 'cloud'}
+                      placeholder="https://drive.google.com/file/d/... or Dropbox link"
+                      value={formData.pdfUrl && !formData.pdfUrl.startsWith('/api/media/') ? formData.pdfUrl : ''}
+                      onChange={(e) => handleCloudUrlChange(e.target.value)}
+                      className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm font-mono bg-white"
+                    />
+                  </div>
+
+                  <p className="text-[11px] text-blue-700 leading-relaxed">
+                    💡 <strong>Google Drive Tip:</strong> In Google Drive, right-click your PDF &gt; click <em>Share</em> &gt; under General Access select <strong>&quot;Anyone with the link&quot;</strong> &gt; Copy link and paste here.
+                  </p>
+
+                  {formData.pdfUrl && !formData.pdfUrl.startsWith('/api/media/') && (
+                    <div className="pt-1">
+                      <a
+                        href={formData.pdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-blue-600 hover:underline inline-flex items-center gap-1 font-medium"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        Test Open Cloud Link
+                      </a>
                     </div>
                   )}
                 </div>
+              )}
 
-                {uploadProgress && !uploading && (
-                  <p className="text-xs text-green-700 mt-1 font-medium">{uploadProgress}</p>
-                )}
-
-                {/* Optional manual URL override */}
-                <div className="mt-1 text-right">
-                  <button
-                    type="button"
-                    onClick={() => setShowManualUrl(!showManualUrl)}
-                    className="text-[11px] text-gray-500 hover:text-gray-800 underline"
-                  >
-                    {showManualUrl ? 'Hide manual link' : 'Optional: paste external PDF link'}
-                  </button>
-                </div>
-
-                {showManualUrl && (
-                  <div className="mt-2 p-2 bg-gray-50 border rounded-lg animate-fade-in">
-                    <label className="block text-[11px] font-medium text-gray-600 mb-1">
-                      Manual / External PDF URL (Optional Override)
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="https://... or /api/media/..."
-                      value={formData.pdfUrl}
-                      onChange={(e) => setFormData({ ...formData, pdfUrl: e.target.value })}
-                      className="w-full px-2.5 py-1.5 border rounded text-xs font-mono bg-white"
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* 2. Catalog Title */}
+              {/* Catalog Title */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Catalog Title <span className="text-red-500">*</span>
@@ -544,7 +702,7 @@ export default function AdminCatalogPage() {
                 />
               </div>
 
-              {/* 3. Category */}
+              {/* Category */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Equipment Range / Category <span className="text-red-500">*</span>
@@ -559,7 +717,7 @@ export default function AdminCatalogPage() {
                 />
               </div>
 
-              {/* 4. Description */}
+              {/* Description */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Description (Optional)</label>
                 <textarea
@@ -571,7 +729,7 @@ export default function AdminCatalogPage() {
                 />
               </div>
 
-              {/* 5. Page Count (Optional) - Note: File size is 100% automated and no longer asked */}
+              {/* Optional Page Count */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Page Count (Optional)
@@ -585,7 +743,7 @@ export default function AdminCatalogPage() {
                 />
               </div>
 
-              {/* 6. Comprehensive Main Catalog Flag */}
+              {/* Comprehensive Main Catalog Flag */}
               <div className="pt-2">
                 <label className="flex items-center gap-2 cursor-pointer p-3 bg-red-50/60 border border-red-200 rounded-lg">
                   <input
