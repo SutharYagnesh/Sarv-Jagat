@@ -57,7 +57,7 @@ export function ContactInfo() {
 
   const quickStats = [
     { icon: Users, label: "Expert Engineers", value: "25+" },
-    { icon: Globe, label: "States Served", value: "15+" },
+    { icon: Globe, label: "States Served", value: "18+" },
     { icon: MapPin, label: "Service Centers", value: "5+" },
   ]
 

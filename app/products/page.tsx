@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -19,29 +18,35 @@ import Category from "@/lib/models/Category"
 
 export const dynamic = 'force-dynamic';
 
-// Main products catalog page with comprehensive product categories
+// Main products catalog page with comprehensive product categories synced to admin drag-and-drop order
 export default async function ProductsPage() {
   await connectDB();
-  const categoriesRaw = await Category.find({}).sort({ order: 1 }).lean();
-  const allProductsRaw = await Product.find({ status: 'Published' }).lean();
+  const categoriesRaw = await Category.find({}).sort({ order: 1, createdAt: 1 }).lean();
+  const allProductsRaw = await Product.find({ status: { $regex: /^published$/i } })
+    .sort({ order: 1, createdAt: -1 })
+    .lean();
 
   const categories = JSON.parse(JSON.stringify(categoriesRaw));
   const allProducts = JSON.parse(JSON.stringify(allProductsRaw));
 
-  // Build the list of categories and their associated products
+  // Build the list of categories and their associated products in exact drag-and-drop order
   const productCategories = categories.map((cat) => {
-    const catProducts = allProducts.filter(p => p.category === cat.name);
+    const catNameLower = (cat.name || '').trim().toLowerCase();
+    const catProducts = allProducts
+      .filter((p) => (p.category || '').trim().toLowerCase() === catNameLower)
+      .sort((a, b) => (a.order || 0) - (b.order || 0));
+
     return {
       title: cat.name,
       slug: cat.slug,
-      products: catProducts.map(p => ({
+      products: catProducts.map((p) => ({
         id: p._id,
         name: p.title,
         slug: p.slug,
         image: p.images?.[0] || "/placeholder.svg",
-      }))
-    }
-  }).filter(cat => cat.products.length > 0);
+      })),
+    };
+  }).filter((cat) => cat.products.length > 0);
 
   return (
     <div className="min-h-screen bg-background">
