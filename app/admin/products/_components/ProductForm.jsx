@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Plus, Trash2, UploadCloud, X } from 'lucide-react';
+import { Plus, Trash2, UploadCloud, X, Copy, RefreshCw } from 'lucide-react';
 import { RichTextEditor } from '@/components/admin/rich-text-editor';
 
 export default function ProductForm({ initialData = null }) {
@@ -11,6 +11,7 @@ export default function ProductForm({ initialData = null }) {
   
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [cloning, setCloning] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -161,13 +162,55 @@ export default function ProductForm({ initialData = null }) {
     }
   };
 
+  const handleCloneCurrent = async () => {
+    if (!initialData?._id) return;
+    setCloning(true);
+    try {
+      const res = await fetch(`/api/admin/products/${initialData._id}/clone`, {
+        method: 'POST',
+      });
+      if (res.ok) {
+        const cloned = await res.json();
+        router.push(`/admin/products/${cloned._id}/edit`);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alert(`Failed to clone product: ${err.error || 'Server error'}`);
+      }
+    } catch (err) {
+      alert('Error cloning product');
+    } finally {
+      setCloning(false);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-8 pb-12">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-2xl font-bold text-gray-900">{isEdit ? 'Edit Product' : 'Add New Product'}</h1>
-        <div className="flex items-center gap-4">
-          <button type="button" onClick={() => router.back()} className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">Cancel</button>
-          <button type="submit" disabled={loading} className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 transition-colors">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <button type="button" onClick={() => router.back()} className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors text-sm">Cancel</button>
+          {isEdit && (
+            <button
+              type="button"
+              disabled={cloning}
+              onClick={handleCloneCurrent}
+              className="px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition-colors flex items-center gap-1.5 text-sm disabled:opacity-50"
+              title="Duplicate this product into a new draft and edit it"
+            >
+              {cloning ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  <span>Cloning...</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4" />
+                  <span>Duplicate as New</span>
+                </>
+              )}
+            </button>
+          )}
+          <button type="submit" disabled={loading} className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 transition-colors text-sm font-medium">
             {loading ? 'Saving...' : 'Save Product'}
           </button>
         </div>

@@ -22,7 +22,7 @@ export const metadata = {
 
 export default async function BlogPage() {
   await connectDB();
-  const blogsRaw = await Blog.find({ status: 'published' }).sort({ publishedAt: -1 }).lean();
+  const blogsRaw = await Blog.find({ status: 'published' }).sort({ order: 1, publishedAt: -1 }).lean();
   const blogs = JSON.parse(JSON.stringify(blogsRaw));
 
   return (

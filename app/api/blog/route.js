@@ -95,7 +95,7 @@ export async function GET(request) {
     const includeUnpublished = searchParams.get('includeUnpublished') === 'true';
     
     const query = includeUnpublished ? {} : { status: 'published' };
-    const posts = await Blog.find(query).sort({ publishedAt: -1 }).lean();
+    const posts = await Blog.find(query).sort({ order: 1, publishedAt: -1 }).lean();
     
     // Map _id to id for frontend
     const mappedPosts = posts.map(p => {
