@@ -60,6 +60,7 @@ export function Footer() {
 
   const companyLinks = [
     { name: "About Us", href: "/about" },
+    { name: "Authorized Dealers", href: "/dealers" },
     { name: "Blog", href: "/blog" },
     { name: "Careers", href: "/careers" },
     { name: "Contact", href: "/contact" },

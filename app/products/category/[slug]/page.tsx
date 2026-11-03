@@ -55,9 +55,9 @@ export default async function CategoryPage({ params }) {
   const products = JSON.parse(JSON.stringify(productsRaw));
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 overflow-x-hidden max-w-full">
       <ItemListSchema items={products} categoryName={category.name} url={`https://www.sarvjagat.com/products/category/${slug}`} />
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-full">
         {/* Breadcrumb & Header */}
         <div className="bg-white p-6 rounded-sm shadow-sm border border-gray-200 mb-8">
           <h1 className="text-3xl font-serif text-gray-800 tracking-tight mb-4">{category.name}</h1>
@@ -70,8 +70,7 @@ export default async function CategoryPage({ params }) {
           </div>
 
           <p className="text-gray-700 leading-relaxed text-sm lg:text-base">
-            Leading Manufacturers, Exporters and Wholesaler of {products.map(p => p.title).join(", ")}.
-            Explore our extensive range of {category.name} designed for various industrial applications ensuring optimal performance and efficiency.
+            {category.description || `Leading manufacturers, exporters, and wholesale suppliers of premium ${category.name}. Explore our energy-efficient, robust industrial solutions engineered for optimal performance, continuous reliability, and long service life.`}
           </p>
         </div>
 

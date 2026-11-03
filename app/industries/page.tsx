@@ -277,7 +277,7 @@ export default function IndustriesPage() {
 
                   {/* Recommended Products */}
                   <div className="space-y-3">
-                    <div className="text-sm font-medium text-muted-foreground">Recommended Products:</div>
+                    <div className="text-sm font-medium text-muted-foreground">Explore Products:</div>
                     <div className="flex flex-wrap gap-2">
                       {industry.products.map((product, idx) => (
                         <Badge key={idx} variant="secondary" className="text-xs">

@@ -4,9 +4,11 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowRight, CheckCircle, Factory, Wrench, Car, Paintbrush, Phone } from "lucide-react"
 import Link from "next/link"
+import ExploreProductsSection from "@/components/sections/explore-products"
 
-// Automotive industry specific page with detailed applications and solutions
-export default function MetalFabricationPage() {
+export const dynamic = 'force-dynamic';
+
+export default async function MetalFabricationPage() {
   // Automotive applications based on product descriptions
   const applications = [
     {
@@ -346,48 +348,8 @@ export default function MetalFabricationPage() {
         </div>
       </section>
 
-      {/* Recommended Products Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-16">
-            <Badge className="bg-green-100 text-green-600">Products</Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold heading-professional">
-              Recommended Products for <span className="text-gradient">Metal & Fabrication</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto text-professional">
-              Explore our range of high-performance compressed air systems specifically designed to meet the rigorous
-              demands of the metal & fabrication industry.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {recommendedProducts.map((product, index) => (
-              <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold text-primary">{product.name}</CardTitle>
-                  {/* <CardDescription className="text-muted-foreground">{product.description}</CardDescription> */}
-                </CardHeader>
-                <CardContent>
-                  <h4 className="font-semibold mb-2">Key Features:</h4>
-                  <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                    {product.features.map((feature, i) => (
-                      <li key={i}>{feature}</li>
-                    ))}
-                  </ul>
-                  <div className="mt-4 text-sm text-muted-foreground">
-                    <span className="font-semibold">Power Range:</span> {product.powerRange}
-                  </div>
-                  <Button asChild className="mt-6 w-full">
-                    <Link href={product.href}>
-                      Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Explore our Products Section (6 Random Products) */}
+      <ExploreProductsSection />
 
       {/* Contact Section */}
       <section className="py-20 bg-slate-800 text-white">

@@ -47,6 +47,7 @@ const defaultNavigation = {
   ],
   company: [
     { name: "About Us", href: "/about", description: "Our company story and values" },
+    { name: "Authorized Dealers", href: "/dealers", description: "Find our authorized dealers and partner network across India" },
     { name: "Careers", href: "/careers", description: "Join our growing team" },
     { name: "Contact", href: "/contact", description: "Get in touch with us" },
   ],
@@ -93,22 +94,20 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-      <div className="bg-slate-900 text-white py-2 px-4">
-        <div className="container mx-auto flex justify-between items-center text-sm">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
+      <div className="bg-slate-900 text-white py-1.5 px-3 sm:px-4">
+        <div className="container mx-auto flex flex-wrap justify-between items-center text-xs sm:text-sm gap-2">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-6">
+            <div className="flex items-center gap-1.5">
               <a href="tel:+919157487233" className="hover:text-red-400">
                 📞 +91-9157487233
               </a>
-
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <a href="mailto:connect@sarvjagat.com" className="hover:text-red-400">
                 ✉️ connect@sarvjagat.com
               </a>
             </div>
           </div>
-          
         </div>
       </div>
 

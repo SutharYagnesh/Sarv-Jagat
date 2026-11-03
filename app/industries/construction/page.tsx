@@ -4,9 +4,12 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowRight, CheckCircle, Factory, Wrench, Mountain, Clock, Rocket, DollarSign } from "lucide-react"
 import Link from "next/link"
+import ExploreProductsSection from "@/components/sections/explore-products"
+
+export const dynamic = 'force-dynamic';
 
 // Construction & Infrastructure industry specific page with detailed applications and solutions
-export default function ConstructionPage() {
+export default async function ConstructionPage() {
   // Construction & Infrastructure applications based on product descriptions
   const applications = [
     {
@@ -369,49 +372,8 @@ export default function ConstructionPage() {
         </div>
       </section>
 
-      {/* Recommended Products */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl font-bold heading-professional">
-              Recommended Construction & Infrastructure Products
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-professional">
-              Specially selected SJ compressor systems optimized for automotive industry requirements.
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-8">
-            {recommendedProducts.map((product, index) => (
-              <Card key={index} className="product-card card-hover">
-                <CardHeader>
-                  <CardTitle className="text-xl">{product.name}</CardTitle>
-                  {/* <CardDescription className="text-professional">{product.description}</CardDescription> */}
-                  <div className="pt-2">
-                    <Badge className="bg-primary text-primary-foreground">{product.powerRange}</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-2">
-                    {product.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="h-4 w-4 text-primary" />
-                        <span>{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <Button asChild className="w-full btn-primary">
-                    <Link href={product.href}>
-                      View Product Details
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Explore our Products Section (6 Random Products) */}
+      <ExploreProductsSection />
 
       {/* CTA Section */}
       <section className="py-20 hero-gradient text-white">

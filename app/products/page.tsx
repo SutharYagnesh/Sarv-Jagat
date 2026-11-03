@@ -49,8 +49,8 @@ export default async function ProductsPage() {
   }).filter((cat) => cat.products.length > 0);
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-background overflow-x-hidden max-w-full">
+      <div className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
         {/* Breadcrumb */}
         <div className="text-sm text-muted-foreground mb-8">
           <Link href="/" className="hover:text-primary">Home</Link>

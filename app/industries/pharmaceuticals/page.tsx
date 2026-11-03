@@ -3,8 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, CheckCircle, Shield, Beaker, Award, Phone, Droplets } from "lucide-react"
 import Link from "next/link"
+import ExploreProductsSection from "@/components/sections/explore-products"
 
-export default function PharmaceuticalsPage() {
+export const dynamic = 'force-dynamic';
+
+export default async function PharmaceuticalsPage() {
   const applications = [
     {
       title: "Tablet Compression",
@@ -160,6 +163,9 @@ export default function PharmaceuticalsPage() {
           </div>
         </div>
       </section>
+
+      {/* Explore our Products Section (6 Random Products) */}
+      <ExploreProductsSection />
 
       {/* CTA Section */}
       <section className="py-20 hero-gradient text-white">

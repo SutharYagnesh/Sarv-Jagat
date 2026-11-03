@@ -14,6 +14,7 @@ import {
   Building2,
   BookOpen,
   ShieldCheck,
+  MapPin,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -56,12 +57,14 @@ export default function AdminLayout({ children }) {
     navItems.push({ name: 'Categories', href: '/admin/categories', icon: Tags });
     navItems.push({ name: 'Blog', href: '/admin/blog', icon: FileText });
     navItems.push({ name: 'Catalogs', href: '/admin/catalog', icon: BookOpen });
+    navItems.push({ name: 'Dealers', href: '/admin/dealers', icon: MapPin });
   } else {
     // Main Admin or default
     navItems.push({ name: 'Products', href: '/admin/products', icon: Package });
     navItems.push({ name: 'Categories', href: '/admin/categories', icon: Tags });
     navItems.push({ name: 'Blog', href: '/admin/blog', icon: FileText });
     navItems.push({ name: 'Catalogs', href: '/admin/catalog', icon: BookOpen });
+    navItems.push({ name: 'Dealers', href: '/admin/dealers', icon: MapPin });
     if (user.role === 'Main Admin') {
       navItems.push({ name: 'Company Info', href: '/admin/settings', icon: Building2 });
       navItems.push({ name: 'Users', href: '/admin/users', icon: Users });

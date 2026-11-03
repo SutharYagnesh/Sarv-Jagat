@@ -21,11 +21,42 @@ async function getProductData(slug) {
       }
     }
 
-    const relatedProductsRaw = await Product.find({
-      _id: { $ne: product._id },
-      category: product.category,
-      status: "Published"
-    }).limit(3).lean();
+    let relatedProductsRaw = [];
+    try {
+      relatedProductsRaw = await Product.aggregate([
+        {
+          $match: {
+            _id: { $ne: product._id },
+            category: product.category,
+            status: "Published"
+          }
+        },
+        { $sample: { size: 3 } }
+      ]);
+
+      // If category has fewer than 3 products, sample from other published products
+      if (relatedProductsRaw.length < 3) {
+        const remaining = 3 - relatedProductsRaw.length;
+        const excludeIds = [product._id, ...relatedProductsRaw.map((r) => r._id)];
+        const additional = await Product.aggregate([
+          {
+            $match: {
+              _id: { $nin: excludeIds },
+              status: "Published"
+            }
+          },
+          { $sample: { size: remaining } }
+        ]);
+        relatedProductsRaw = [...relatedProductsRaw, ...additional];
+      }
+    } catch (e) {
+      console.error("Failed to aggregate random related products, using fallback:", e);
+      relatedProductsRaw = await Product.find({
+        _id: { $ne: product._id },
+        category: product.category,
+        status: "Published"
+      }).limit(3).lean();
+    }
 
     const formatProduct = (p, catSlug) => {
       const plain = JSON.parse(JSON.stringify(p));

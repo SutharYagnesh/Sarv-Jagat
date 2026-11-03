@@ -40,6 +40,7 @@ export async function middleware(request) {
         path.startsWith('/admin/products') ||
         path.startsWith('/admin/categories') ||
         path.startsWith('/admin/catalog') ||
+        path.startsWith('/admin/dealers') ||
         path.startsWith('/admin/settings') ||
         path.startsWith('/admin/users')
       ) {
@@ -53,6 +54,7 @@ export async function middleware(request) {
         path.startsWith('/admin/blog') ||
         path.startsWith('/admin/categories') ||
         path.startsWith('/admin/catalog') ||
+        path.startsWith('/admin/dealers') ||
         path.startsWith('/admin/settings') ||
         path.startsWith('/admin/users')
       ) {

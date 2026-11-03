@@ -24,6 +24,10 @@ export async function POST(request, { params }) {
       candidateSlug = `${baseSlug}-${counter}`;
     }
 
+    // Place cloned post at the very top (smallest order number)
+    const lowestPost = await Blog.findOne({}).sort({ order: 1 }).select('order').lean();
+    const minOrder = (lowestPost && typeof lowestPost.order === 'number') ? lowestPost.order : 0;
+
     const duplicateData = {
       title: `${source.title} (Copy)`,
       slug: candidateSlug,
@@ -39,7 +43,7 @@ export async function POST(request, { params }) {
       videos: Array.isArray(source.videos) ? [...source.videos] : [],
       youtubeLink: source.youtubeLink || '',
       readTime: source.readTime || 5,
-      order: (source.order || 0) + 1,
+      order: Math.min(minOrder - 1, -1),
       publishedAt: new Date(),
     };
 

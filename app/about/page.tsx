@@ -9,9 +9,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Building2, Users, Award, Target, Eye, Heart, CheckCircle, Calendar, Phone, Mail } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { useCompanyInfo } from "@/lib/useCompanyInfo"
 
 export default function AboutPage() {
   const [activeTab, setActiveTab] = useState("overview")
+  const companyInfo = useCompanyInfo()
 
   // Company milestones data
   const milestones = [
@@ -261,14 +263,24 @@ export default function AboutPage() {
 
               {/* Certifications */}
               <div>
-                <h4 className="text-2xl font-bold mb-6 text-center">Quality Certifications</h4>
-                <div className="grid md:grid-cols-2 max-w-2xl mx-auto gap-6">
-                  {certifications.map((cert, index) => (
-                    <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+                <h4 className="text-2xl font-bold mb-6 text-center">Quality Certifications &amp; Standards</h4>
+                <div className="grid md:grid-cols-2 max-w-4xl mx-auto gap-6">
+                  {((companyInfo?.certifications && companyInfo.certifications.length > 0)
+                    ? companyInfo.certifications
+                    : certifications
+                  ).map((cert, index) => (
+                    <Card key={index} className="text-center hover:shadow-lg transition-shadow flex flex-col justify-between">
                       <CardHeader>
-                        <Award className="h-12 w-12 text-blue-600 mx-auto mb-2" />
-                        <CardTitle className="text-lg">{cert.name}</CardTitle>
-                        <Badge variant="outline">{cert.year}</Badge>
+                        {cert.image ? (
+                          <div className="mb-3 flex justify-center">
+                            <img src={cert.image} alt={cert.title || cert.name} className="h-16 w-auto object-contain rounded" />
+                          </div>
+                        ) : (
+                          <Award className="h-12 w-12 text-blue-600 mx-auto mb-2" />
+                        )}
+                        <CardTitle className="text-lg">{cert.title || cert.name}</CardTitle>
+                        {cert.authority && <p className="text-xs text-muted-foreground font-medium">{cert.authority}</p>}
+                        {cert.year && <div className="pt-1"><Badge variant="outline">{cert.year}</Badge></div>}
                       </CardHeader>
                       <CardContent>
                         <p className="text-gray-600 text-sm">{cert.description}</p>

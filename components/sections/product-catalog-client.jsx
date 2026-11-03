@@ -25,9 +25,9 @@ export default function ProductCatalogClient({ categories }) {
   }).filter(cat => cat.products.length > 0);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 w-full max-w-full overflow-hidden">
       {/* Search Bar */}
-      <div className="relative max-w-md mx-auto mb-12">
+      <div className="relative max-w-md mx-auto mb-12 px-2">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
           <Input 
@@ -40,7 +40,7 @@ export default function ProductCatalogClient({ categories }) {
         </div>
       </div>
 
-      <div className="space-y-16">
+      <div className="space-y-16 w-full max-w-full">
         {filteredCategories.map((category, index) => {
           const isSearching = searchTerm.trim().length > 0;
           const displayCount = isSearching ? category.products.length : visibleCounts[category.slug];
@@ -48,25 +48,25 @@ export default function ProductCatalogClient({ categories }) {
           const hasMore = !isSearching && category.products.length > visibleCounts[category.slug];
 
           return (
-            <section key={index} className="space-y-6 border-b pb-12 last:border-0">
+            <section key={index} className="space-y-6 border-b pb-12 last:border-0 w-full max-w-full">
               <div className="flex items-center justify-between border-b pb-2">
-                <h2 className="text-2xl font-semibold text-red-600">{category.title}</h2>
+                <h2 className="text-xl sm:text-2xl font-semibold text-red-600 break-words">{category.title}</h2>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
                 {visibleProducts.map((product, idx) => (
-                  <Card key={idx} className="flex flex-col hover:shadow-lg transition-shadow duration-300">
+                  <Card key={idx} className="flex flex-col hover:shadow-lg transition-shadow duration-300 w-full max-w-full overflow-hidden">
                     <div className="relative aspect-square p-4 flex items-center justify-center bg-gray-50 border-b">
-                      <Link href={`/products/${product.slug}`}>
+                      <Link href={`/products/${product.slug}`} className="w-full h-full flex items-center justify-center">
                         <img
                           src={product.image}
                           alt={product.name}
-                          className="max-h-full object-contain mix-blend-multiply"
+                          className="max-h-full max-w-full object-contain mix-blend-multiply"
                         />
                       </Link>
                     </div>
                     <CardContent className="p-4 flex-1 flex flex-col justify-between space-y-4">
-                      <h3 className="font-medium text-sm text-center line-clamp-2 h-10">{product.name}</h3>
+                      <h3 className="font-medium text-sm text-center line-clamp-2 h-10 break-words">{product.name}</h3>
                       <div className="grid grid-cols-2 gap-2 mt-auto">
                         <Button asChild className="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs px-2">
                           <Link href={`/contact`}>Enquiry Now</Link>

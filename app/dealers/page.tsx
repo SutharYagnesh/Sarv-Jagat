@@ -1,7 +1,7 @@
 
 
 'use client';
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -165,8 +165,41 @@ export default function DealersPage() {
     Gujarat: ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar"],
   }
 
+  const [dealersList, setDealersList] = useState(dealers)
+  const [networkSettings, setNetworkSettings] = useState({
+    showLocateDealerTab: false,
+    heroTitle: "Dealer Network",
+    heroSubtitle:
+      "Find authorized Sarv Jagat dealers and service centers across India. Get expert support, genuine parts, and professional service from our trusted partners.",
+    dealersCount: "200+ Dealers",
+    coverageText: "Pan-India Coverage",
+    certifiedPartnersText: "Certified Partners",
+    networkDescription:
+      "Our nationwide dealer network spans across all major industrial belts to provide prompt sales, installation, and after-sales support.",
+    regionalCoverage: [
+      { region: "North India", states: "Delhi, Punjab, Haryana, UP, Rajasthan", dealers: "45+" },
+      { region: "West India", states: "Maharashtra, Gujarat, MP, Goa", dealers: "60+" },
+      { region: "South India", states: "Karnataka, Tamil Nadu, Andhra Pradesh, Kerala", dealers: "55+" },
+      { region: "East India", states: "West Bengal, Odisha, Jharkhand, Bihar", dealers: "40+" },
+    ],
+  })
+
+  useEffect(() => {
+    fetch("/api/dealers")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) {
+          if (data.settings) setNetworkSettings((prev) => ({ ...prev, ...data.settings }))
+          if (Array.isArray(data.dealers) && data.dealers.length > 0) {
+            setDealersList(data.dealers)
+          }
+        }
+      })
+      .catch((err) => console.error("Error loading dealers:", err))
+  }, [])
+
   // Filter dealers based on search criteria
-  const filteredDealers = dealers.filter((dealer) => {
+  const filteredDealers = dealersList.filter((dealer) => {
     const matchesSearch =
       searchQuery === "" ||
       dealer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -180,7 +213,7 @@ export default function DealersPage() {
   })
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 overflow-x-hidden max-w-full">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20">
         <div className="absolute inset-0 bg-black/20"></div>
@@ -190,21 +223,21 @@ export default function DealersPage() {
               Dealer <span className="text-red-400">Network</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed">
-              Find authorized Sarv Jagat dealers and service centers across India. Get expert support, genuine parts,
-              and professional service from our trusted partners.
+              {networkSettings.heroSubtitle ||
+                "Find authorized Sarv Jagat dealers and service centers across India. Get expert support, genuine parts, and professional service from our trusted partners."}
             </p>
             <div className="flex flex-wrap justify-center gap-6 text-lg">
               <div className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-red-400" />
-                <span>200+ Dealers</span>
+                <span>{networkSettings.dealersCount || "200+ Dealers"}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-5 w-5 text-red-400" />
-                <span>Pan-India Coverage</span>
+                <span>{networkSettings.coverageText || "Pan-India Coverage"}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Award className="h-5 w-5 text-red-400" />
-                <span>Certified Partners</span>
+                <span>{networkSettings.certifiedPartnersText || "Certified Partners"}</span>
               </div>
             </div>
           </div>
@@ -215,14 +248,21 @@ export default function DealersPage() {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs defaultValue="partnership" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsList
+              className={`grid w-full mb-8 ${
+                networkSettings.showLocateDealerTab ? "grid-cols-3" : "grid-cols-2"
+              }`}
+            >
               <TabsTrigger value="partnership">Become a Partner</TabsTrigger>
               <TabsTrigger value="network">Our Network</TabsTrigger>
-              <TabsTrigger value="locator">Dealer Locator</TabsTrigger>
+              {networkSettings.showLocateDealerTab && (
+                <TabsTrigger value="locator">Dealer Locator</TabsTrigger>
+              )}
             </TabsList>
 
-            {/* Dealer Locator Tab */}
-            <TabsContent value="locator" className="space-y-8">
+            {/* Dealer Locator Tab (Shown only when enabled by Admin Panel) */}
+            {networkSettings.showLocateDealerTab && (
+              <TabsContent value="locator" className="space-y-8">
               {/* Search and Filter Section */}
               <Card>
                 <CardHeader>
@@ -298,7 +338,7 @@ export default function DealersPage() {
 
                 <div className="grid lg:grid-cols-2 gap-6">
                   {filteredDealers.map((dealer) => (
-                    <Card key={dealer.id} className="hover:shadow-lg transition-shadow">
+                    <Card key={dealer._id || dealer.id} className="hover:shadow-lg transition-shadow">
                       <CardHeader>
                         <div className="flex justify-between items-start">
                           <div>
@@ -351,9 +391,14 @@ export default function DealersPage() {
                         <div>
                           <p className="text-sm font-medium mb-2">Specialties:</p>
                           <div className="flex flex-wrap gap-1">
-                            {dealer.specialties.map((specialty, index) => (
+                            {(Array.isArray(dealer.specialties)
+                              ? dealer.specialties
+                              : typeof dealer.specialties === "string"
+                              ? dealer.specialties.split(",")
+                              : []
+                            ).map((specialty, index) => (
                               <Badge key={index} variant="outline" className="text-xs">
-                                {specialty}
+                                {specialty.trim ? specialty.trim() : specialty}
                               </Badge>
                             ))}
                           </div>
@@ -381,6 +426,7 @@ export default function DealersPage() {
                 </div>
               </div>
             </TabsContent>
+            )}
 
             {/* Network Overview Tab */}
             <TabsContent value="network" className="space-y-8">
@@ -525,16 +571,19 @@ export default function DealersPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {[
-                      { region: "North India", states: "Delhi, Punjab, Haryana, UP, Rajasthan", dealers: "45+" },
-                      { region: "West India", states: "Maharashtra, Gujarat, MP, Goa", dealers: "60+" },
-                      {
-                        region: "South India",
-                        states: "Karnataka, Tamil Nadu, Andhra Pradesh, Kerala",
-                        dealers: "55+",
-                      },
-                      { region: "East India", states: "West Bengal, Odisha, Jharkhand, Bihar", dealers: "40+" },
-                    ].map((region, index) => (
+                    {(networkSettings.regionalCoverage && networkSettings.regionalCoverage.length > 0
+                      ? networkSettings.regionalCoverage
+                      : [
+                          { region: "North India", states: "Delhi, Punjab, Haryana, UP, Rajasthan", dealers: "45+" },
+                          { region: "West India", states: "Maharashtra, Gujarat, MP, Goa", dealers: "60+" },
+                          {
+                            region: "South India",
+                            states: "Karnataka, Tamil Nadu, Andhra Pradesh, Kerala",
+                            dealers: "55+",
+                          },
+                          { region: "East India", states: "West Bengal, Odisha, Jharkhand, Bihar", dealers: "40+" },
+                        ]
+                    ).map((region, index) => (
                       <div key={index} className="text-center p-4 bg-blue-50 rounded-lg">
                         <h5 className="font-semibold text-lg mb-2 text-blue-800">{region.region}</h5>
                         <p className="text-sm text-gray-600 mb-3">{region.states}</p>

@@ -15,7 +15,7 @@ import {
   Building2,
 } from "lucide-react"
 import Link from "next/link"
-import WhatsAppButton from "@/components/whatsapp-button"
+import CompanyInfo from "@/lib/models/CompanyInfo"
 import { OrganizationSchema } from "@/components/structured-data"
 
 import connectDB from "@/lib/db"
@@ -29,6 +29,8 @@ export const dynamic = 'force-dynamic';
 // Main homepage component for Sarv Jagat Air Compressor website
 export default async function HomePage() {
   await connectDB();
+  const companyInfoRaw = await CompanyInfo.findOne().lean();
+  const companyInfo = companyInfoRaw ? JSON.parse(JSON.stringify(companyInfoRaw)) : null;
   const categoriesRaw = await Category.find({}).sort({ order: 1 }).lean();
   const allProductsRaw = await Product.find({ status: 'Published' }).lean();
   const recentBlogsRaw = await Blog.find({ status: 'published' }).sort({ publishedAt: -1 }).limit(4).lean();
@@ -39,10 +41,10 @@ export default async function HomePage() {
 
   // Company statistics for credibility
   const stats = [
-    { number: "18+", label: "Years Experience", icon: Award },
-    { number: "2000+", label: "Happy Customers", icon: Users },
-    { number: "25+", label: "Service Support", icon: MapPin },
-    { number: "24/7", label: "Technical Help", icon: Phone },
+    { number: companyInfo?.stats?.yearsExperience || "18+", label: "Years Experience", icon: Award },
+    { number: companyInfo?.stats?.happyClients || "2000+", label: "Happy Customers", icon: Users },
+    { number: companyInfo?.stats?.serviceSupport || "25+", label: "Service Support", icon: MapPin },
+    { number: companyInfo?.stats?.technicalHelp || "24/7", label: "Technical Help", icon: Phone },
   ]
 
   // Featured product categories with one product per category
@@ -137,7 +139,7 @@ export default async function HomePage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
               <div className="space-y-4">
-                <Badge className="bg-red-600 text-white">Trusted Since 2024</Badge>
+                <Badge className="bg-red-600 text-white">{companyInfo?.heroBadge || "Trusted Since 2024"}</Badge>
                 <h1 className="text-4xl lg:text-6xl font-bold">
                   Powering Industries with
                   <span className="block text-red-400">Reliable Air Solutions</span>
@@ -189,13 +191,13 @@ export default async function HomePage() {
             <div className="relative">
               {/* hero Section Photo */}
               <img
-                src="/sj-main-page.png"
+                src={companyInfo?.heroImage || "/sj-main-page.png"}
                 alt="Sarv Jagat Air Compressor Manufacturing Facility"
                 className="rounded-lg shadow-2xl"
               />
               <div className="absolute -bottom-6 -left-6 bg-white text-slate-900 p-6 rounded-lg shadow-xl">
-                <div className="text-3xl font-bold text-red-600">18+</div>
-                <div className="text-sm text-slate-600">Years of Excellence</div>
+                <div className="text-3xl font-bold text-red-600">{companyInfo?.stats?.yearsExperience || "18+"}</div>
+                <div className="text-sm text-slate-600">{companyInfo?.stats?.installationsText || "Years of Excellence"}</div>
               </div>
             </div>
           </div>
@@ -416,7 +418,7 @@ export default async function HomePage() {
       </section>
 
       {/* WhatsApp Float Button */}
-      <WhatsAppButton />
+      {/* WhatsApp float handled globally */}
     </div>
   )
 }

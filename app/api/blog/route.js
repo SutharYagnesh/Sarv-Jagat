@@ -79,6 +79,14 @@ export async function POST(request) {
         blogData.imageUrl = blogData.coverImage;
     }
 
+    // Always place new blog post at the very top (smallest order number)
+    const lowestPost = await Blog.findOne({}).sort({ order: 1 }).select('order').lean();
+    const minOrder = (lowestPost && typeof lowestPost.order === 'number') ? lowestPost.order : 0;
+    blogData.order = Math.min(minOrder - 1, -1);
+    if (!blogData.publishedAt) {
+      blogData.publishedAt = new Date();
+    }
+
     const newPost = await Blog.create(blogData);
 
     return NextResponse.json({ success: true, post: newPost });
