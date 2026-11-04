@@ -3,6 +3,27 @@ import connectDB from '@/lib/db';
 import Product from '@/lib/models/Product';
 import Blog from '@/lib/models/Blog';
 
+export const dynamic = 'force-dynamic';
+
+function stripHtml(text) {
+  if (!text) return '';
+  return text
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/<\/p>/gi, ' ')
+    .replace(/<\/div>/gi, ' ')
+    .replace(/<[^>]*>?/gm, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 export async function GET(request) {
   try {
     await connectDB();
@@ -13,7 +34,7 @@ export async function GET(request) {
       return NextResponse.json([]);
     }
 
-    const regex = new RegExp(query, 'i');
+    const regex = new RegExp(query.trim(), 'i');
 
     // Search Products
     const productsRaw = await Product.find({
@@ -25,7 +46,11 @@ export async function GET(request) {
             { description: regex },
             { category: regex },
             { modelNumber: regex },
-            { 'specifications.value': regex }
+            { powerRating: regex },
+            { pressureRating: regex },
+            { airFlow: regex },
+            { 'specifications.value': regex },
+            { 'specifications.key': regex }
           ]
         }
       ]
@@ -35,7 +60,7 @@ export async function GET(request) {
       id: p._id.toString(),
       type: 'product',
       title: p.title,
-      description: p.description,
+      description: stripHtml(p.description) || p.title,
       category: p.category || 'Product',
       image: p.images && p.images.length > 0 ? p.images[0] : '/placeholder.jpg',
       url: `/products/${p.slug}`,
@@ -43,7 +68,7 @@ export async function GET(request) {
         if (curr.key && curr.value) acc[curr.key] = curr.value;
         return acc;
       }, {}) : {},
-      price: p.price ? `₹ ${p.price}` : 'Price on Request',
+      price: p.price && Number(p.price) > 1 ? `₹ ${Number(p.price).toLocaleString('en-IN')}` : 'Ask for Price',
       date: p.createdAt
     }));
 
@@ -67,9 +92,9 @@ export async function GET(request) {
       id: b._id.toString(),
       type: 'blog',
       title: b.title,
-      description: b.excerpt || b.title,
+      description: stripHtml(b.excerpt || b.content || b.title),
       category: 'Blog Article',
-      image: b.imageUrl || '/placeholder.svg',
+      image: b.imageUrl || (b.images && b.images.length > 0 ? b.images[0] : '/placeholder.svg'),
       url: `/blog/${b.slug}`,
       specifications: {
         'Read Time': `${b.readTime || 5} min read`,

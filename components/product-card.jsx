@@ -63,7 +63,14 @@ export function ProductCard({ product }) {
           <div>
             <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2">{product.name}</h3>
             <p className="text-sm text-muted-foreground line-clamp-2">
-              {product.description ? product.description.replace(/<[^>]*>?/gm, '') : ''}
+              {product.description
+                ? product.description
+                    .replace(/<[^>]*>?/gm, ' ')
+                    .replace(/&nbsp;/g, ' ')
+                    .replace(/&amp;/g, '&')
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                : ''}
             </p>
           </div>
 

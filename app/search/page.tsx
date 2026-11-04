@@ -9,6 +9,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 
+function stripHtml(text: string) {
+  if (!text) return "";
+  return text
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<br\s*\/?>/gi, " ")
+    .replace(/<\/p>/gi, " ")
+    .replace(/<\/div>/gi, " ")
+    .replace(/<[^>]*>?/gm, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function SearchPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -84,7 +103,7 @@ function SearchPageContent() {
             <h3 className="font-semibold text-lg mb-2 line-clamp-1">{result.title}</h3>
           </div>
         </div>
-        <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-1">{result.description}</p>
+        <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-1">{stripHtml(result.description)}</p>
         
         {result.specifications && Object.keys(result.specifications).length > 0 && (
           <div className={`grid gap-2 mb-4 ${isListView ? "grid-cols-2" : "grid-cols-1"}`}>
