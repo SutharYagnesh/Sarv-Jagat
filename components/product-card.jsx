@@ -40,6 +40,8 @@ export function ProductCard({ product }) {
           <img
             src={product.image || "/placeholder.svg"}
             alt={product.name}
+            loading="lazy"
+            decoding="async"
             className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
           />
           <div className="absolute top-4 left-4">
@@ -50,7 +52,9 @@ export function ProductCard({ product }) {
           </div>
           <div className="absolute top-4 right-4">
             <Badge variant="default" className="bg-primary text-primary-foreground">
-              {product.price}
+              {product.price && Number(product.price) > 1
+                ? `₹ ${Number(product.price).toLocaleString('en-IN')}`
+                : "Ask for Price"}
             </Badge>
           </div>
         </div>

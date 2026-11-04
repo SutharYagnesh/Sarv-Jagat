@@ -15,8 +15,8 @@ async function getAuth(request) {
 export async function GET(request) {
   try {
     const auth = await getAuth(request);
-    if (!auth || !['Main Admin', 'Manager', 'Product Manager'].includes(auth.role)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    if (!auth || !['Main Admin', 'Merchant Manager'].includes(auth.role)) {
+      return NextResponse.json({ error: 'Unauthorized: Only Main Admin and Merchant Manager can access Merchant controls' }, { status: 403 });
     }
 
     await connectDB();
@@ -40,7 +40,7 @@ export async function GET(request) {
         (p) => String(p.status).toLowerCase() === 'published' && p.includeInMerchant !== false
       ).length,
       totalBlogsInFeed: blogs.filter(
-        (b) => String(b.status).toLowerCase() === 'published' && b.includeInMerchant === true
+        (b) => String(b.status).toLowerCase() === 'published' && b.includeInMerchant !== false
       ).length,
       totalProducts: products.length,
       totalBlogs: blogs.length,
@@ -54,7 +54,7 @@ export async function GET(request) {
       })),
       blogs: blogs.map((b) => ({
         ...b,
-        includeInMerchant: b.includeInMerchant === true,
+        includeInMerchant: b.includeInMerchant !== false,
       })),
     });
   } catch (error) {
@@ -66,8 +66,8 @@ export async function GET(request) {
 export async function PUT(request) {
   try {
     const auth = await getAuth(request);
-    if (!auth || !['Main Admin', 'Manager', 'Product Manager'].includes(auth.role)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    if (!auth || !['Main Admin', 'Merchant Manager'].includes(auth.role)) {
+      return NextResponse.json({ error: 'Unauthorized: Only Main Admin and Merchant Manager can update Merchant settings' }, { status: 403 });
     }
 
     const { type, id, includeInMerchant, merchantPrice } = await request.json();

@@ -34,6 +34,26 @@ export async function middleware(request) {
       return NextResponse.redirect(new URL('/admin', request.url));
     }
 
+    // Google Merchant tab: strictly Main Admin and Merchant Manager ONLY
+    if (path.startsWith('/admin/merchant') && role !== 'Main Admin' && role !== 'Merchant Manager') {
+      return NextResponse.redirect(new URL('/admin', request.url));
+    }
+
+    // Merchant Manager role: only access to Google Merchant and Dashboard
+    if (role === 'Merchant Manager') {
+      if (
+        path.startsWith('/admin/products') ||
+        path.startsWith('/admin/categories') ||
+        path.startsWith('/admin/blog') ||
+        path.startsWith('/admin/catalog') ||
+        path.startsWith('/admin/dealers') ||
+        path.startsWith('/admin/settings') ||
+        path.startsWith('/admin/users')
+      ) {
+        return NextResponse.redirect(new URL('/admin/merchant', request.url));
+      }
+    }
+
     // Blogger role: only access to Blog and Dashboard
     if (role === 'Blogger') {
       if (
@@ -56,6 +76,7 @@ export async function middleware(request) {
         path.startsWith('/admin/categories') ||
         path.startsWith('/admin/catalog') ||
         path.startsWith('/admin/dealers') ||
+        path.startsWith('/admin/merchant') ||
         path.startsWith('/admin/settings') ||
         path.startsWith('/admin/users')
       ) {
@@ -63,9 +84,13 @@ export async function middleware(request) {
       }
     }
 
-    // Manager role: access to Products, Categories, Blog, Catalog (restricted from Users and Settings)
+    // Manager role: access to Products, Categories, Blog, Catalog, Dealers (restricted from Merchant, Users, Settings)
     if (role === 'Manager') {
-      if (path.startsWith('/admin/users') || path.startsWith('/admin/settings')) {
+      if (
+        path.startsWith('/admin/merchant') ||
+        path.startsWith('/admin/users') ||
+        path.startsWith('/admin/settings')
+      ) {
         return NextResponse.redirect(new URL('/admin', request.url));
       }
     }

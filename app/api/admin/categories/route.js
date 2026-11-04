@@ -6,7 +6,11 @@ export async function GET() {
   try {
     await connectDB();
     const categories = await Category.find({}).sort({ order: 1 }).lean();
-    return NextResponse.json(categories);
+    return NextResponse.json(categories, {
+      headers: {
+        'Cache-Control': 'public, max-age=300, s-maxage=1800, stale-while-revalidate=86400',
+      },
+    });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch categories' }, { status: 500 });
   }

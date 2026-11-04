@@ -6,7 +6,7 @@ import { ArrowRight, CheckCircle, Factory, Wrench, FlaskConical, Cpu, CircuitBoa
 import Link from "next/link"
 import ExploreProductsSection from "@/components/sections/explore-products"
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 // Electronics industry specific page with detailed applications and solutions
 export default async function ElectronicsPage() {

@@ -23,7 +23,15 @@ export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [user, setUser] = useState({ username: '', role: null });
+  const [user, setUser] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = sessionStorage.getItem('sj_admin_user');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return { username: '', role: null };
+  });
 
   useEffect(() => {
     if (pathname !== '/admin/login') {
@@ -32,6 +40,9 @@ export default function AdminLayout({ children }) {
         .then((data) => {
           if (data && data.role) {
             setUser({ username: data.username || '', role: data.role });
+            try {
+              sessionStorage.setItem('sj_admin_user', JSON.stringify({ username: data.username || '', role: data.role }));
+            } catch (e) {}
           }
         })
         .catch((err) => console.error('Failed to fetch user info', err));
@@ -43,6 +54,9 @@ export default function AdminLayout({ children }) {
   }
 
   const handleLogout = () => {
+    try {
+      sessionStorage.removeItem('sj_admin_user');
+    } catch (e) {}
     document.cookie = 'admin_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     router.push('/admin/login');
   };
@@ -53,6 +67,7 @@ export default function AdminLayout({ children }) {
     navItems.push({ name: 'Blog', href: '/admin/blog', icon: FileText });
   } else if (user.role === 'Product Manager') {
     navItems.push({ name: 'Products', href: '/admin/products', icon: Package });
+  } else if (user.role === 'Merchant Manager') {
     navItems.push({ name: 'Merchant Feed', href: '/admin/merchant', icon: ShoppingBag });
   } else if (user.role === 'Manager') {
     navItems.push({ name: 'Products', href: '/admin/products', icon: Package });
@@ -60,7 +75,6 @@ export default function AdminLayout({ children }) {
     navItems.push({ name: 'Blog', href: '/admin/blog', icon: FileText });
     navItems.push({ name: 'Catalogs', href: '/admin/catalog', icon: BookOpen });
     navItems.push({ name: 'Dealers', href: '/admin/dealers', icon: MapPin });
-    navItems.push({ name: 'Merchant Feed', href: '/admin/merchant', icon: ShoppingBag });
   } else {
     // Main Admin or default
     navItems.push({ name: 'Products', href: '/admin/products', icon: Package });

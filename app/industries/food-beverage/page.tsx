@@ -5,7 +5,7 @@ import { ArrowRight, CheckCircle, Droplets, Shield, Award, Phone, Package } from
 import Link from "next/link"
 import ExploreProductsSection from "@/components/sections/explore-products"
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export default async function FoodBeveragePage() {
   const applications = [

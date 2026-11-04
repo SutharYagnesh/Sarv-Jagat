@@ -6,7 +6,7 @@ import { ArrowRight, CheckCircle, Factory,Package, Wrench, Car, Paintbrush, Phon
 import Link from "next/link"
 import ExploreProductsSection from "@/components/sections/explore-products"
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 // Plastic industry specific page with detailed applications and solutions
 export default async function PlasticPetPage() {

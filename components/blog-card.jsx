@@ -20,6 +20,8 @@ export function BlogCard({ post }) {
             <img
               src={post.imageUrl || "/placeholder.svg"}
               alt={post.title}
+              loading="lazy"
+              decoding="async"
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute top-4 left-4">

@@ -3,8 +3,7 @@ import connectDB from '@/lib/db';
 import Dealer from '@/lib/models/Dealer';
 import DealerSettings from '@/lib/models/DealerSettings';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 300;
 
 const DEFAULT_SETTINGS = {
   showLocateDealerTab: false,
@@ -99,10 +98,17 @@ export async function GET() {
 
     const dealers = await Dealer.find({ isActive: true }).sort({ order: 1, createdAt: 1 }).lean();
 
-    return NextResponse.json({
-      settings,
-      dealers,
-    });
+    return NextResponse.json(
+      {
+        settings,
+        dealers,
+      },
+      {
+        headers: {
+          'Cache-Control': 'public, max-age=300, s-maxage=1800, stale-while-revalidate=86400',
+        },
+      }
+    );
   } catch (error) {
     console.error('Error in public dealers GET:', error);
     return NextResponse.json({ settings: DEFAULT_SETTINGS, dealers: INITIAL_DEALERS });

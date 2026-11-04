@@ -127,6 +127,7 @@ export default function UserManagementPage() {
                     <SelectItem value="Main Admin">Main Admin (Full Access to Everything)</SelectItem>
                     <SelectItem value="Manager">Manager (Products, Categories, Blog, Catalog)</SelectItem>
                     <SelectItem value="Product Manager">Product Manager (Products Only)</SelectItem>
+                    <SelectItem value="Merchant Manager">Merchant Manager (Google Merchant &amp; Shopping Controls Only)</SelectItem>
                     <SelectItem value="Blogger">Blogger (Blog Only)</SelectItem>
                   </SelectContent>
                 </Select>

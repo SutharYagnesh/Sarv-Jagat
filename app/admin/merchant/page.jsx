@@ -469,10 +469,10 @@ export default function MerchantAdminPage() {
         <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-xs">
           <div className="p-4 border-b bg-gray-50 flex items-center justify-between text-xs text-gray-600">
             <span>
-              Showing {filteredBlogs.length} blogs / case studies. Turn toggle ON to export supplied machinery to Google Shopping.
+              Showing {filteredBlogs.length} blogs / case studies. Included by default in Google Merchant Feed. Toggle OFF to exclude.
             </span>
             <span className="hidden md:inline text-gray-400">
-              Only enabled blogs will be submitted in the feed.
+              Technical articles and supplied machinery are submitted with full descriptions and specs.
             </span>
           </div>
 

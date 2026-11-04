@@ -2,8 +2,7 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import CompanyInfo from '@/lib/models/CompanyInfo';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 300;
 
 const DEFAULT_INFO = {
   companyName: 'Sarv Jagat Corporation',
@@ -30,10 +29,17 @@ export async function GET() {
     if (!info) {
       info = await CompanyInfo.create(DEFAULT_INFO);
     }
-    return NextResponse.json(info);
+    return NextResponse.json(info, {
+      headers: {
+        'Cache-Control': 'public, max-age=600, s-maxage=3600, stale-while-revalidate=86400',
+      },
+    });
   } catch (error) {
     console.error('Error fetching company info:', error);
-    return NextResponse.json(DEFAULT_INFO);
+    return NextResponse.json(DEFAULT_INFO, {
+      headers: {
+        'Cache-Control': 'public, max-age=60, s-maxage=300',
+      },
+    });
   }
 }
-

@@ -29,17 +29,22 @@ export const revalidate = 60;
 // Main homepage component for Sarv Jagat Air Compressor website
 export default async function HomePage() {
   await connectDB();
-  const companyInfoRaw = await CompanyInfo.findOne().lean();
+  const [companyInfoRaw, categoriesRaw, allProductsRaw, recentBlogsRaw] = await Promise.all([
+    CompanyInfo.findOne().lean(),
+    Category.find({}).sort({ order: 1 }).select('name slug description').lean(),
+    Product.find({ status: { $regex: /^published$/i } }).select('title slug category images status').lean(),
+    Blog.find({ status: { $regex: /^published$/i } }).sort({ publishedAt: -1 }).limit(4).select('title slug excerpt imageUrl images publishedAt author category').lean(),
+  ]);
   const companyInfo = companyInfoRaw ? JSON.parse(JSON.stringify(companyInfoRaw)) : null;
-  const categoriesRaw = await Category.find({}).sort({ order: 1 }).select('name slug description').lean();
-  const allProductsRaw = await Product.find({ status: { $regex: /^published$/i } })
-    .select('title slug category images status')
-    .lean();
-  const recentBlogsRaw = await Blog.find({ status: { $regex: /^published$/i } })
-    .sort({ publishedAt: -1 })
-    .limit(4)
-    .select('title slug excerpt imageUrl images publishedAt author category')
-    .lean();
+
+
+
+
+
+
+
+
+
 
   const categories = JSON.parse(JSON.stringify(categoriesRaw));
   const allProducts = JSON.parse(JSON.stringify(allProductsRaw));

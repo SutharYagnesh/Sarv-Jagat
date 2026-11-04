@@ -6,7 +6,7 @@ import { ArrowRight, CheckCircle, Factory, Wrench, Mountain, Clock, Rocket, Doll
 import Link from "next/link"
 import ExploreProductsSection from "@/components/sections/explore-products"
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 // Construction & Infrastructure industry specific page with detailed applications and solutions
 export default async function ConstructionPage() {
