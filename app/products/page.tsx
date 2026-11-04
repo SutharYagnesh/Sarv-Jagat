@@ -16,13 +16,14 @@ import connectDB from "@/lib/db"
 import Product from "@/lib/models/Product"
 import Category from "@/lib/models/Category"
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 // Main products catalog page with comprehensive product categories synced to admin drag-and-drop order
 export default async function ProductsPage() {
   await connectDB();
-  const categoriesRaw = await Category.find({}).sort({ order: 1, createdAt: 1 }).lean();
+  const categoriesRaw = await Category.find({}).sort({ order: 1, createdAt: 1 }).select('name slug order').lean();
   const allProductsRaw = await Product.find({ status: { $regex: /^published$/i } })
+    .select('title slug category images order status')
     .sort({ order: 1, createdAt: -1 })
     .lean();
 

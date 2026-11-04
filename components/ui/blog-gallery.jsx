@@ -17,6 +17,13 @@ export function BlogGallery({ images, instagramLink, youtubeLink, videos, hideHe
     return match ? match[1] : null;
   }
 
+  // Helper to extract Instagram Embed URL
+  const getInstagramEmbedUrl = (url) => {
+    if (!url) return null;
+    const match = url.match(/(?:instagram\.com\/(?:p|reel|tv)\/)([^/?#&]+)/i);
+    return match ? `https://www.instagram.com/p/${match[1]}/embed/` : null;
+  }
+
   if (!images?.length && !instagramLink && !youtubeLink && !videos?.length) {
     return null;
   }
@@ -88,16 +95,56 @@ export function BlogGallery({ images, instagramLink, youtubeLink, videos, hideHe
           </div>
         )}
 
-        {instagramLink && (
-          <div className="flex justify-center mt-8">
-            <Button asChild className="bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:opacity-90 text-white rounded-full px-8 py-6 text-lg font-medium shadow-md">
-              <a href={instagramLink} target="_blank" rel="noopener noreferrer" className="flex items-center">
-                <Instagram className="w-5 h-5 mr-2" />
-                View Original Instagram Post
-              </a>
-            </Button>
-          </div>
-        )}
+        {instagramLink && (() => {
+          const embedUrl = getInstagramEmbedUrl(instagramLink);
+          if (embedUrl) {
+            return (
+              <div className="w-full max-w-lg mx-auto rounded-xl overflow-hidden border border-gray-200 shadow-md bg-white mt-8">
+                <div className="p-3 border-b bg-gray-50 flex items-center justify-between">
+                  <span className="text-xs font-semibold text-gray-700 flex items-center">
+                    <Instagram className="w-4 h-4 mr-1.5 text-[#E4405F]" />
+                    Instagram Post Preview
+                  </span>
+                  <a
+                    href={instagramLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-red-600 hover:underline font-medium"
+                  >
+                    Open on Instagram &rarr;
+                  </a>
+                </div>
+                <div className="relative w-full aspect-[4/5] max-h-[580px] bg-gray-100">
+                  <iframe
+                    src={embedUrl}
+                    className="w-full h-full border-0"
+                    allowTransparency={true}
+                    allow="encrypted-media"
+                    title="Instagram Post"
+                  />
+                </div>
+                <div className="p-3 bg-gray-50 border-t flex justify-center">
+                  <Button asChild size="sm" className="bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:opacity-90 text-white rounded-full">
+                    <a href={instagramLink} target="_blank" rel="noopener noreferrer" className="flex items-center text-xs">
+                      <Instagram className="w-3.5 h-3.5 mr-1.5" />
+                      View Original Instagram Post
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            );
+          }
+          return (
+            <div className="flex justify-center mt-8">
+              <Button asChild className="bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:opacity-90 text-white rounded-full px-8 py-6 text-lg font-medium shadow-md">
+                <a href={instagramLink} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                  <Instagram className="w-5 h-5 mr-2" />
+                  View Original Instagram Post
+                </a>
+              </Button>
+            </div>
+          );
+        })()}
       </div>
 
       <LightboxViewer 

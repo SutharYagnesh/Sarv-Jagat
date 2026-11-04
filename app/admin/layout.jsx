@@ -15,6 +15,7 @@ import {
   BookOpen,
   ShieldCheck,
   MapPin,
+  ShoppingBag,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -52,12 +53,14 @@ export default function AdminLayout({ children }) {
     navItems.push({ name: 'Blog', href: '/admin/blog', icon: FileText });
   } else if (user.role === 'Product Manager') {
     navItems.push({ name: 'Products', href: '/admin/products', icon: Package });
+    navItems.push({ name: 'Merchant Feed', href: '/admin/merchant', icon: ShoppingBag });
   } else if (user.role === 'Manager') {
     navItems.push({ name: 'Products', href: '/admin/products', icon: Package });
     navItems.push({ name: 'Categories', href: '/admin/categories', icon: Tags });
     navItems.push({ name: 'Blog', href: '/admin/blog', icon: FileText });
     navItems.push({ name: 'Catalogs', href: '/admin/catalog', icon: BookOpen });
     navItems.push({ name: 'Dealers', href: '/admin/dealers', icon: MapPin });
+    navItems.push({ name: 'Merchant Feed', href: '/admin/merchant', icon: ShoppingBag });
   } else {
     // Main Admin or default
     navItems.push({ name: 'Products', href: '/admin/products', icon: Package });
@@ -65,6 +68,7 @@ export default function AdminLayout({ children }) {
     navItems.push({ name: 'Blog', href: '/admin/blog', icon: FileText });
     navItems.push({ name: 'Catalogs', href: '/admin/catalog', icon: BookOpen });
     navItems.push({ name: 'Dealers', href: '/admin/dealers', icon: MapPin });
+    navItems.push({ name: 'Merchant Feed', href: '/admin/merchant', icon: ShoppingBag });
     if (user.role === 'Main Admin') {
       navItems.push({ name: 'Company Info', href: '/admin/settings', icon: Building2 });
       navItems.push({ name: 'Users', href: '/admin/users', icon: Users });

@@ -7,35 +7,57 @@ import { Input } from "@/components/ui/input"
 import { Facebook, Twitter, Linkedin, Youtube, Instagram, Phone, Mail, MapPin, ArrowRight } from "lucide-react"
 import { useCompanyInfo } from "@/lib/useCompanyInfo"
 
+let cachedFooterLinks = null;
+let footerPromise = null;
+
 export function Footer() {
   const currentYear = new Date().getFullYear()
   const companyInfo = useCompanyInfo()
 
-  const [productLinks, setProductLinks] = useState([
-    { name: "Screw Compressors", href: "/products/screw" },
-    { name: "Piston Compressors", href: "/products/piston" },
-    { name: "Oil-Free Systems", href: "/products/oil-free" },
-    { name: "Specialized Solutions", href: "/products/specialized" },
-  ])
+  const [productLinks, setProductLinks] = useState(() => {
+    return cachedFooterLinks || [
+      { name: "Screw Compressors", href: "/products/screw" },
+      { name: "Piston Compressors", href: "/products/piston" },
+      { name: "Oil-Free Systems", href: "/products/oil-free" },
+      { name: "Specialized Solutions", href: "/products/specialized" },
+    ];
+  })
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await fetch('/api/admin/categories');
-        if (res.ok) {
-          const data = await res.json();
+    if (cachedFooterLinks) {
+      setProductLinks(cachedFooterLinks);
+      return;
+    }
+
+    if (!footerPromise) {
+      footerPromise = fetch('/api/admin/categories')
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
           if (Array.isArray(data) && data.length > 0) {
-            setProductLinks(data.map(c => ({
+            cachedFooterLinks = data.map(c => ({
               name: c.name,
               href: `/products/category/${c.slug}`
-            })));
+            }));
+            return cachedFooterLinks;
           }
-        }
-      } catch (error) {
-        console.error('Failed to fetch categories:', error);
-      }
+          return null;
+        })
+        .catch(err => {
+          console.error('Failed to fetch categories:', err);
+          return null;
+        });
     }
-    fetchCategories();
+
+    let isMounted = true;
+    footerPromise.then(links => {
+      if (isMounted && links) {
+        setProductLinks(links);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const industryLinks = [

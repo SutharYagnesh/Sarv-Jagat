@@ -41,6 +41,7 @@ export async function middleware(request) {
         path.startsWith('/admin/categories') ||
         path.startsWith('/admin/catalog') ||
         path.startsWith('/admin/dealers') ||
+        path.startsWith('/admin/merchant') ||
         path.startsWith('/admin/settings') ||
         path.startsWith('/admin/users')
       ) {

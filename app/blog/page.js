@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 import Link from 'next/link';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,10 @@ export const metadata = {
 
 export default async function BlogPage() {
   await connectDB();
-  const blogsRaw = await Blog.find({ status: 'published' }).sort({ order: 1, publishedAt: -1 }).lean();
+  const blogsRaw = await Blog.find({ status: { $regex: /^published$/i } })
+    .select('title slug excerpt imageUrl images publishedAt author category readTime tags status order')
+    .sort({ order: 1, publishedAt: -1 })
+    .lean();
   const blogs = JSON.parse(JSON.stringify(blogsRaw));
 
   return (

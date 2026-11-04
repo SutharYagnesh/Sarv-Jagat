@@ -1,18 +1,28 @@
-export const dynamic = 'force-dynamic';
+export const revalidate = 120;
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import connectDB from "@/lib/db";
 import Blog from "@/lib/models/Blog";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, Tag, Share2, Facebook, Twitter, Linkedin, Youtube, Instagram, Chrome } from "lucide-react";
-import { ArticleSchema, SuppliedProductSchema } from "@/components/structured-data";
+import { ArticleSchema, SuppliedProductSchema, VideoSchema } from "@/components/structured-data";
 import { BlogGallery } from "@/components/ui/blog-gallery";
 import { LightboxImage } from "@/components/ui/lightbox-image";
 
+const getBlogBySlug = cache(async (slug) => {
+  try {
+    await connectDB();
+    return await Blog.findOne({ slug }).lean();
+  } catch (err) {
+    console.error("Error fetching blog post:", err);
+    return null;
+  }
+});
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  await connectDB();
-  const blog = await Blog.findOne({ slug }).lean();
+  const blog = await getBlogBySlug(slug);
 
   if (!blog) {
     return { title: "Blog Not Found" }
@@ -64,9 +74,7 @@ export async function generateMetadata({ params }) {
 
 export default async function BlogDetailPage({ params }) {
   const { slug } = await params;
-  await connectDB();
-  
-  const blogRaw = await Blog.findOne({ slug }).lean();
+  const blogRaw = await getBlogBySlug(slug);
   if (!blogRaw) {
     notFound();
   }
@@ -77,6 +85,9 @@ export default async function BlogDetailPage({ params }) {
     <section className="py-8 bg-gray-50 min-h-screen">
       <ArticleSchema post={blog} />
       <SuppliedProductSchema item={blog} />
+      {(blog.youtubeLink || (blog.videos && blog.videos.length > 0)) && (
+        <VideoSchema post={blog} />
+      )}
       <div className="container mx-auto px-4">
         {/* Breadcrumbs */}
         <div className="text-sm text-gray-500 mb-6 flex items-center space-x-2">
@@ -221,4 +232,21 @@ function BadgeItem({ icon, text }) {
       {text}
     </div>
   )
+}
+
+export async function generateStaticParams() {
+  try {
+    await connectDB();
+    const blogs = await Blog.find({ status: { $regex: /^published$/i } })
+      .select('slug')
+      .lean();
+    return blogs
+      .filter((b) => b.slug && typeof b.slug === 'string')
+      .map((b) => ({
+        slug: b.slug.trim().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/gi, '').toLowerCase(),
+      }));
+  } catch (err) {
+    console.error("Error generating static params for blogs:", err);
+    return [];
+  }
 }

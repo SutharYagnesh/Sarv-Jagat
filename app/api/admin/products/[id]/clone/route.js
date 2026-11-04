@@ -45,7 +45,9 @@ export async function POST(request, { params }) {
       seoDescription: source.seoDescription || source.description || source.title,
       seoKeywords: Array.isArray(source.seoKeywords) ? [...source.seoKeywords] : [],
       order: targetOrder,
-      status: 'Draft',
+      status: source.status || 'Published',
+      includeInMerchant: source.includeInMerchant !== false,
+      merchantPrice: source.merchantPrice || source.price || 0,
     };
 
     const newProduct = await Product.create(duplicateData);

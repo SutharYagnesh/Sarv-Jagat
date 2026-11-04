@@ -24,16 +24,22 @@ import Category from "@/lib/models/Category"
 import Blog from "@/lib/models/Blog"
 import { BlogCard } from "@/components/blog-card"
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 // Main homepage component for Sarv Jagat Air Compressor website
 export default async function HomePage() {
   await connectDB();
   const companyInfoRaw = await CompanyInfo.findOne().lean();
   const companyInfo = companyInfoRaw ? JSON.parse(JSON.stringify(companyInfoRaw)) : null;
-  const categoriesRaw = await Category.find({}).sort({ order: 1 }).lean();
-  const allProductsRaw = await Product.find({ status: 'Published' }).lean();
-  const recentBlogsRaw = await Blog.find({ status: 'published' }).sort({ publishedAt: -1 }).limit(4).lean();
+  const categoriesRaw = await Category.find({}).sort({ order: 1 }).select('name slug description').lean();
+  const allProductsRaw = await Product.find({ status: { $regex: /^published$/i } })
+    .select('title slug category images status')
+    .lean();
+  const recentBlogsRaw = await Blog.find({ status: { $regex: /^published$/i } })
+    .sort({ publishedAt: -1 })
+    .limit(4)
+    .select('title slug excerpt imageUrl images publishedAt author category')
+    .lean();
 
   const categories = JSON.parse(JSON.stringify(categoriesRaw));
   const allProducts = JSON.parse(JSON.stringify(allProductsRaw));

@@ -1,4 +1,5 @@
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
+import { cache } from "react"
 import { notFound } from "next/navigation"
 import connectDB from "@/lib/db"
 import Product from "@/lib/models/Product"
@@ -8,10 +9,14 @@ import { Button } from "@/components/ui/button"
 import CategoryClient from "@/components/sections/category-client"
 import { ItemListSchema } from "@/components/structured-data"
 
-export async function generateMetadata({ params }) {
-  const { slug } = await params;
+const getCategoryBySlug = cache(async (slug: string) => {
   await connectDB();
-  const category = await Category.findOne({ slug }).lean();
+  return Category.findOne({ slug }).lean();
+});
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const category = await getCategoryBySlug(slug);
 
   if (!category) {
     return { title: "Category Not Found" }
@@ -42,16 +47,21 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default async function CategoryPage({ params }) {
+export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  await connectDB();
-
-  const category = await Category.findOne({ slug }).lean();
+  const category = await getCategoryBySlug(slug);
   if (!category) {
     notFound();
   }
 
-  const productsRaw = await Product.find({ category: category.name, status: "Published" }).sort({ order: 1, createdAt: -1 }).lean();
+  await connectDB();
+  const productsRaw = await Product.find({ 
+    category: category.name, 
+    status: { $regex: /^published$/i } 
+  })
+    .select('title slug category images order status price modelNumber powerRating pressureRating airFlow')
+    .sort({ order: 1, createdAt: -1 })
+    .lean();
   const products = JSON.parse(JSON.stringify(productsRaw));
 
   return (
@@ -78,4 +88,15 @@ export default async function CategoryPage({ params }) {
       </div>
     </div>
   )
+}
+
+export async function generateStaticParams() {
+  try {
+    await connectDB();
+    const categories = await Category.find({}).select('slug').lean();
+    return categories.map((c) => ({ slug: c.slug }));
+  } catch (err) {
+    console.error("Error generating static params for categories:", err);
+    return [];
+  }
 }

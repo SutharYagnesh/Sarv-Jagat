@@ -53,34 +53,56 @@ const defaultNavigation = {
   ],
 }
 
+let cachedNavCategories = null;
+let categoriesPromise = null;
+
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [navigation, setNavigation] = useState(defaultNavigation)
+  const [navigation, setNavigation] = useState(() => {
+    if (cachedNavCategories) {
+      return { ...defaultNavigation, products: cachedNavCategories };
+    }
+    return defaultNavigation;
+  })
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await fetch('/api/admin/categories');
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) {
-            setNavigation(prev => ({
-              ...prev,
-              products: data.map(c => ({
-                name: c.name,
-                href: `/products/category/${c.slug}`,
-                description: c.description || `Explore our ${c.name} solutions`
-              }))
-            }));
-          }
-        }
-      } catch (error) {
-        console.error('Failed to fetch categories:', error);
-      }
+    if (cachedNavCategories) {
+      setNavigation(prev => ({ ...prev, products: cachedNavCategories }));
+      return;
     }
-    fetchCategories();
+
+    if (!categoriesPromise) {
+      categoriesPromise = fetch('/api/admin/categories')
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (Array.isArray(data) && data.length > 0) {
+            cachedNavCategories = data.map(c => ({
+              name: c.name,
+              href: `/products/category/${c.slug}`,
+              description: c.description || `Explore our ${c.name} solutions`
+            }));
+            return cachedNavCategories;
+          }
+          return null;
+        })
+        .catch(err => {
+          console.error('Failed to fetch categories:', err);
+          return null;
+        });
+    }
+
+    let isMounted = true;
+    categoriesPromise.then(cats => {
+      if (isMounted && cats) {
+        setNavigation(prev => ({ ...prev, products: cats }));
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleSearch = (e) => {

@@ -5,7 +5,7 @@ import Category from "@/lib/models/Category"
 import Catalog from "@/lib/models/Catalog"
 import industries from "../data/industries.json"
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 function toAbsoluteUrl(url, baseUrl) {
   if (!url || typeof url !== 'string') return null;
@@ -26,16 +26,16 @@ export default async function sitemap() {
 
   try {
     await connectDB()
-    products = await Product.find({ status: "Published" })
+    products = await Product.find({ status: { $regex: /^published$/i } })
       .select("slug updatedAt createdAt images")
       .lean()
-    blogs = await Blog.find({ status: "published" })
+    blogs = await Blog.find({ status: { $regex: /^published$/i } })
       .select("slug updatedAt publishedAt createdAt imageUrl images")
       .lean()
     categories = await Category.find({})
       .select("slug updatedAt createdAt")
       .lean()
-    catalogs = await Catalog.find({ status: "Published" })
+    catalogs = await Catalog.find({ status: { $regex: /^published$/i } })
       .select("slug updatedAt createdAt coverImage")
       .lean()
   } catch (error) {

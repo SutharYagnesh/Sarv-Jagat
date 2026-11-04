@@ -103,7 +103,9 @@ export function ProductDetails({ product }) {
               
               <div className="flex flex-wrap items-center gap-4 pb-4 border-b border-gray-100">
                 <span className="text-xl font-bold text-red-600">
-                  {product.price ? `₹ ${product.price} / Piece` : "Price on Request"}
+                  {product.price && Number(product.price) > 1
+                    ? `₹ ${Number(product.price).toLocaleString('en-IN')} / Piece`
+                    : "Price on Request / Ask for Quote"}
                 </span>
                 <Button className="bg-red-600 hover:bg-red-700 text-white rounded-sm px-6 font-medium shadow-sm" onClick={() => setShowEnquiryForm(true)}>
                   Get Best Price

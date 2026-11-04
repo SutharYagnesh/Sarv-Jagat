@@ -304,3 +304,53 @@ export function ItemListSchema({ items, categoryName, url }) {
 
   return <StructuredData data={itemListData} />
 }
+
+export function VideoSchema({ post, videoUrl, title, description }) {
+  if (!post && !videoUrl) return null;
+
+  const targetTitle = title || post?.title || "Sarv Jagat Industrial Compressor Video";
+  const targetDesc = description || post?.excerpt || post?.title || "Video presentation of Sarv Jagat industrial air compressors and installations.";
+  const pageUrl = post?.slug ? `${BASE_URL}/blog/${post.slug}` : BASE_URL;
+
+  // Extract YouTube ID if applicable
+  const rawUrl = videoUrl || post?.youtubeLink || (post?.videos && post.videos[0]) || "";
+  let embedUrl = rawUrl;
+  let thumbnailUrl = getAbsoluteImageUrl(post?.imageUrl || post?.images?.[0]);
+
+  const ytMatch = rawUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|watch\?v=|watch\?.+&v=))([^&?]+)/);
+  if (ytMatch && ytMatch[1]) {
+    const ytId = ytMatch[1];
+    embedUrl = `https://www.youtube.com/embed/${ytId}`;
+    thumbnailUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+  }
+
+  const uploadDate = post?.publishedAt
+    ? new Date(post.publishedAt).toISOString()
+    : (post?.createdAt ? new Date(post.createdAt).toISOString() : new Date().toISOString());
+
+  const videoData = {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: targetTitle,
+    description: targetDesc,
+    thumbnailUrl: [thumbnailUrl],
+    uploadDate: uploadDate,
+    embedUrl: embedUrl || pageUrl,
+    contentUrl: rawUrl || pageUrl,
+    inLanguage: "en-IN",
+    publisher: {
+      "@type": "Organization",
+      name: "Sarv Jagat Corporation",
+      logo: {
+        "@type": "ImageObject",
+        url: DEFAULT_LOGO,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": pageUrl,
+    },
+  };
+
+  return <StructuredData data={videoData} />;
+}

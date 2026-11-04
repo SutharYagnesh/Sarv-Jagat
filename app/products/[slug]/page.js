@@ -1,4 +1,5 @@
-export const dynamic = 'force-dynamic';
+export const revalidate = 120;
+import { cache } from "react"
 import { notFound } from "next/navigation"
 import { ProductDetails } from "@/components/sections/product-details"
 import { RelatedProducts } from "@/components/sections/related-products"
@@ -7,15 +8,15 @@ import connectDB from "@/lib/db"
 import Product from "@/lib/models/Product"
 import Category from "@/lib/models/Category"
 
-async function getProductData(slug) {
+const getProductData = cache(async (slug) => {
   try {
     await connectDB();
-    const product = await Product.findOne({ slug, status: "Published" }).lean();
+    const product = await Product.findOne({ slug, status: { $regex: /^published$/i } }).lean();
     if (!product) return { product: null, relatedProducts: [] };
 
     let categorySlug = (product.category || 'uncategorized').toLowerCase().replace(/[^a-z0-9]+/g, '-');
     if (product.category) {
-      const categoryDoc = await Category.findOne({ name: product.category }).lean();
+      const categoryDoc = await Category.findOne({ name: product.category }).select('slug').lean();
       if (categoryDoc && categoryDoc.slug) {
         categorySlug = categoryDoc.slug;
       }
@@ -28,7 +29,7 @@ async function getProductData(slug) {
           $match: {
             _id: { $ne: product._id },
             category: product.category,
-            status: "Published"
+            status: { $regex: /^published$/i }
           }
         },
         { $sample: { size: 3 } }
@@ -42,7 +43,7 @@ async function getProductData(slug) {
           {
             $match: {
               _id: { $nin: excludeIds },
-              status: "Published"
+              status: { $regex: /^published$/i }
             }
           },
           { $sample: { size: remaining } }
@@ -54,7 +55,7 @@ async function getProductData(slug) {
       relatedProductsRaw = await Product.find({
         _id: { $ne: product._id },
         category: product.category,
-        status: "Published"
+        status: { $regex: /^published$/i }
       }).limit(3).lean();
     }
 
@@ -87,7 +88,7 @@ async function getProductData(slug) {
     console.error("Error fetching product:", error);
     return { product: null, relatedProducts: [] };
   }
-}
+});
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -155,4 +156,21 @@ export default async function ProductPage({ params }) {
       <RelatedProducts relatedProducts={relatedProducts} />
     </>
   )
+}
+
+export async function generateStaticParams() {
+  try {
+    await connectDB();
+    const products = await Product.find({ status: { $regex: /^published$/i } })
+      .select('slug')
+      .lean();
+    return products
+      .filter((p) => p.slug && typeof p.slug === 'string')
+      .map((p) => ({
+        slug: p.slug.trim().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/gi, '').toLowerCase(),
+      }));
+  } catch (err) {
+    console.error("Error generating static params for products:", err);
+    return [];
+  }
 }
