@@ -23,32 +23,34 @@ import Product from "@/lib/models/Product"
 import Category from "@/lib/models/Category"
 import Blog from "@/lib/models/Blog"
 import { BlogCard } from "@/components/blog-card"
+import { fetchWithCache } from "@/lib/memoryCache"
 
 export const revalidate = 60;
 
 // Main homepage component for Sarv Jagat Air Compressor website
 export default async function HomePage() {
-  await connectDB();
-  const [companyInfoRaw, categoriesRaw, allProductsRaw, recentBlogsRaw] = await Promise.all([
-    CompanyInfo.findOne().lean(),
-    Category.find({}).sort({ order: 1 }).select('name slug description').lean(),
-    Product.find({ status: { $regex: /^published$/i } }).select('title slug category images status').lean(),
-    Blog.find({ status: { $regex: /^published$/i } }).sort({ publishedAt: -1 }).limit(4).select('title slug excerpt imageUrl images publishedAt author category').lean(),
-  ]);
-  const companyInfo = companyInfoRaw ? JSON.parse(JSON.stringify(companyInfoRaw)) : null;
+  const data = await fetchWithCache('homepage_bundle', async () => {
+    await connectDB();
+    const [cRaw, catRaw, prodRaw, bRaw] = await Promise.all([
+      CompanyInfo.findOne().lean(),
+      Category.find({}).sort({ order: 1 }).select('name slug description').lean(),
+      Product.find({ status: { $regex: /^published$/i } }).select('title slug category images status').lean(),
+      Blog.find({ status: { $regex: /^published$/i } }).sort({ publishedAt: -1 }).limit(4).select('title slug excerpt imageUrl images publishedAt author category').lean(),
+    ]);
+    return {
+      companyInfo: cRaw ? JSON.parse(JSON.stringify(cRaw)) : null,
+      categories: JSON.parse(JSON.stringify(catRaw)),
+      allProducts: JSON.parse(JSON.stringify(prodRaw)),
+      recentBlogs: JSON.parse(JSON.stringify(bRaw)).map(p => ({...p, id: p._id})),
+    };
+  }, 120);
 
+  const { companyInfo, categories, allProducts, recentBlogs } = data;
+  return renderHomePage({ companyInfo, categories, allProducts, recentBlogs });
+}
 
-
-
-
-
-
-
-
-
-  const categories = JSON.parse(JSON.stringify(categoriesRaw));
-  const allProducts = JSON.parse(JSON.stringify(allProductsRaw));
-  const recentBlogs = JSON.parse(JSON.stringify(recentBlogsRaw)).map(p => ({...p, id: p._id}));
+function renderHomePage({ companyInfo, categories, allProducts, recentBlogs }: any) {
+  
 
   // Company statistics for credibility
   const stats = [

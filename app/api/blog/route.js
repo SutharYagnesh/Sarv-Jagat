@@ -3,6 +3,9 @@ import path from 'path';
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Blog from '@/lib/models/Blog';
+import { fetchWithCache, invalidateCache } from '@/lib/memoryCache';
+
+export const dynamic = 'force-dynamic';
 
 // Check if running in Vercel production environment
 const isVercelProduction = process.env.VERCEL_ENV === 'production';
@@ -89,6 +92,10 @@ export async function POST(request) {
 
     const newPost = await Blog.create(blogData);
 
+    invalidateCache('blogs_');
+    invalidateCache('homepage');
+    invalidateCache('public_blog');
+
     return NextResponse.json({ success: true, post: newPost });
   } catch (error) {
     console.error('Error processing blog post:', error);
@@ -98,20 +105,22 @@ export async function POST(request) {
 
 export async function GET(request) {
   try {
-    await connectDB();
     const { searchParams } = new URL(request.url);
     const includeUnpublished = searchParams.get('includeUnpublished') === 'true';
     
-    const query = includeUnpublished ? {} : { status: 'published' };
-    const posts = await Blog.find(query).sort({ order: 1, publishedAt: -1 }).lean();
-    
-    // Map _id to id for frontend
-    const mappedPosts = posts.map(p => {
-       const mapped = { ...p, id: p._id.toString() };
-       delete mapped._id;
-       return mapped;
-    });
+    const cacheKey = `blogs_list_${includeUnpublished}`;
+    const mappedPosts = await fetchWithCache(cacheKey, async () => {
+      await connectDB();
+      const query = includeUnpublished ? {} : { status: 'published' };
+      const posts = await Blog.find(query).sort({ order: 1, publishedAt: -1 }).lean();
       
+      return posts.map(p => {
+        const mapped = { ...p, id: p._id.toString() };
+        delete mapped._id;
+        return mapped;
+      });
+    }, 45);
+
     return NextResponse.json({ posts: mappedPosts });
   } catch (error) {
     console.error('Error fetching blog posts:', error);

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Product from '@/lib/models/Product';
+import { invalidateCache } from '@/lib/memoryCache';
 
 export const dynamic = 'force-dynamic';
 
@@ -52,10 +53,13 @@ export async function POST(request, { params }) {
 
     const newProduct = await Product.create(duplicateData);
 
+    invalidateCache('admin_products');
+    invalidateCache('homepage');
+    invalidateCache('public_products');
+
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
     console.error('Error cloning product:', error);
     return NextResponse.json({ error: error.message || 'Failed to clone product' }, { status: 500 });
   }
 }
-

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import CompanyInfo from '@/lib/models/CompanyInfo';
+import { invalidateCache } from '@/lib/memoryCache';
 
 export const dynamic = 'force-dynamic';
 
@@ -77,6 +78,8 @@ export async function POST(request) {
     } else {
       info = await CompanyInfo.create(data);
     }
+    invalidateCache('homepage');
+    invalidateCache('company_info');
     return NextResponse.json(info);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

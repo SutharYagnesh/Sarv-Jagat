@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Blog from '@/lib/models/Blog';
+import { invalidateCache } from '@/lib/memoryCache';
 
 export const dynamic = 'force-dynamic';
 
@@ -51,10 +52,13 @@ export async function POST(request, { params }) {
     const mapped = { ...newPost.toObject(), id: newPost._id.toString() };
     delete mapped._id;
 
+    invalidateCache('blogs_');
+    invalidateCache('homepage');
+    invalidateCache('public_blog');
+
     return NextResponse.json(mapped, { status: 201 });
   } catch (error) {
     console.error('Error cloning blog post:', error);
     return NextResponse.json({ error: error.message || 'Failed to clone blog post' }, { status: 500 });
   }
 }
-

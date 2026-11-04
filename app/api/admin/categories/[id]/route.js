@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Category from '@/lib/models/Category';
+import { invalidateCache } from '@/lib/memoryCache';
+
+export const dynamic = 'force-dynamic';
 
 export async function PUT(request, { params }) {
   try {
@@ -9,6 +12,11 @@ export async function PUT(request, { params }) {
     await connectDB();
     const category = await Category.findByIdAndUpdate(id, data, { new: true });
     if (!category) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+
+    invalidateCache('admin_categories');
+    invalidateCache('homepage');
+    invalidateCache('public_products');
+
     return NextResponse.json(category);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -21,6 +29,11 @@ export async function DELETE(request, { params }) {
     await connectDB();
     const category = await Category.findByIdAndDelete(id);
     if (!category) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+
+    invalidateCache('admin_categories');
+    invalidateCache('homepage');
+    invalidateCache('public_products');
+
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

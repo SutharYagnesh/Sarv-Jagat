@@ -95,11 +95,20 @@ const nextConfig = {
         ],
       },
       {
-        source: '/(images|icons|fonts)/(.*)',
+        source: '/(images|icons|fonts|uploads)/(.*)',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=86400, stale-while-revalidate=604800',
+            value: 'public, max-age=604800, stale-while-revalidate=2592000',
+          },
+        ],
+      },
+      {
+        source: '/Sarv%20Jagat_Logo_Red_11.png',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=2592000, immutable',
           },
         ],
       },

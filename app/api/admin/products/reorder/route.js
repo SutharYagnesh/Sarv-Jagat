@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Product from '@/lib/models/Product';
+import { invalidateCache } from '@/lib/memoryCache';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,10 +23,13 @@ export async function POST(request) {
 
     await Product.bulkWrite(bulkOps);
 
+    invalidateCache('admin_products');
+    invalidateCache('homepage');
+    invalidateCache('public_products');
+
     return NextResponse.json({ success: true, count: items.length });
   } catch (error) {
     console.error('Error reordering products:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-

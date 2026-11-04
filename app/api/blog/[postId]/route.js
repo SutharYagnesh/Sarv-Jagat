@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Blog from '@/lib/models/Blog';
+import { invalidateCache } from '@/lib/memoryCache';
 
-// Check if running in Vercel production environment
-const isVercelProduction = process.env.VERCEL_ENV === 'production';
+export const dynamic = 'force-dynamic';
 
 // GET a specific blog post by ID
 export async function GET(request, { params }) {
@@ -58,6 +58,10 @@ export async function PUT(request, { params }) {
     post.id = post._id.toString();
     delete post._id;
 
+    invalidateCache('blogs_');
+    invalidateCache('homepage');
+    invalidateCache('public_blog');
+
     return NextResponse.json({ success: true, post });
   } catch (error) {
     console.error('Error updating blog post:', error);
@@ -79,6 +83,10 @@ export async function DELETE(request, { params }) {
 
     deletedPost.id = deletedPost._id.toString();
     delete deletedPost._id;
+
+    invalidateCache('blogs_');
+    invalidateCache('homepage');
+    invalidateCache('public_blog');
 
     return NextResponse.json({ success: true, deletedPost });
   } catch (error) {
