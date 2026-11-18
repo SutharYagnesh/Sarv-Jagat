@@ -4,8 +4,6 @@ import { usePathname } from 'next/navigation';
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
-import { GoogleCustomerReviewsBadge } from "@/components/google-customer-reviews"
-
 export default function ConditionalLayoutWrapper({ children }) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith('/admin');
@@ -16,7 +14,6 @@ export default function ConditionalLayoutWrapper({ children }) {
       <main className={isAdmin ? 'bg-gray-50 min-h-screen' : ''}>{children}</main>
       {!isAdmin && <Footer />}
       {!isAdmin && <WhatsAppButton />}
-      {!isAdmin && <GoogleCustomerReviewsBadge />}
     </>
   );
 }

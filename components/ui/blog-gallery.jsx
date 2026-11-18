@@ -46,11 +46,15 @@ export function BlogGallery({ images, instagramLink, youtubeLink, videos, hideHe
                   }}
                 >
                   <Image 
-                    src={img} 
+                    src={img && img.includes('fhbtzxpqvqaq2mat') ? '/sj-screw-assemble.png' : (img || '/sj-screw-assemble.png')} 
                     alt={title ? `${title} - Industrial Equipment Installation Image ${idx+1}` : `Sarv Jagat Air Compressor Installation - Photo ${idx+1}`} 
                     title={title ? `${title} - Industrial Equipment Image ${idx+1}` : `Sarv Jagat Air Compressor - Photo ${idx+1}`}
                     fill
                     sizes="(max-width: 768px) 50vw, 33vw"
+                    onError={(e) => {
+                      e.currentTarget.srcset = '';
+                      e.currentTarget.src = '/sj-screw-assemble.png';
+                    }}
                     className="object-contain hover:scale-105 transition-transform duration-300" 
                   />
                 </div>

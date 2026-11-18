@@ -38,7 +38,7 @@ export function ProductCard({ product }) {
       <CardContent className="p-0">
         <div className="relative overflow-hidden">
           <img
-            src={product.image || "/placeholder.svg"}
+            src={product.image || "/uploads/product-10hp-8bar-1-1793802970199.png"}
             alt={product.name}
             loading="lazy"
             decoding="async"

@@ -18,7 +18,7 @@ export function BlogCard({ post }) {
         <Link href={`/blog/${post.slug}`}>
           <div className="relative overflow-hidden">
             <img
-              src={post.imageUrl || "/placeholder.svg"}
+              src={post.imageUrl || (post.images && post.images.length > 0 ? post.images[0] : "/sj-screw-assemble.png")}
               alt={post.title}
               loading="lazy"
               decoding="async"

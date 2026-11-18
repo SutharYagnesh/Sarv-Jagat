@@ -92,7 +92,15 @@ function SearchPageContent() {
       className={`bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow ${isListView ? "flex" : "flex flex-col"}`}
     >
       <div className={`${isListView ? "w-48 flex-shrink-0" : "aspect-video"}`}>
-        <img src={result.image || "/placeholder.svg"} alt={result.title} className="w-full h-full object-cover" />
+        <img 
+          src={result.image || (result.type === 'blog' ? '/sj-screw-assemble.png' : '/uploads/product-10hp-8bar-1-1793802970199.png')} 
+          alt={result.title} 
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = result.type === 'blog' ? '/sj-screw-assemble.png' : '/uploads/product-10hp-8bar-1-1793802970199.png';
+          }}
+          className="w-full h-full object-cover" 
+        />
       </div>
       <div className="p-4 flex-1 flex flex-col">
         <div className="flex items-start justify-between mb-2">

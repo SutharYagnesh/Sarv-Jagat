@@ -50,7 +50,7 @@ export default async function ExploreProductsSection({ className = '' }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product) => {
-            const image = product.images && product.images.length > 0 ? product.images[0] : '/placeholder.svg';
+            const image = product.images && product.images.length > 0 ? product.images[0] : '/uploads/product-10hp-8bar-1-1793802970199.png';
             const plainDesc = stripHtml(product.description);
 
             return (
@@ -64,6 +64,8 @@ export default async function ExploreProductsSection({ className = '' }) {
                     <img
                       src={image}
                       alt={product.title}
+                      loading="lazy"
+                      decoding="async"
                       className="max-h-full max-w-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
                     />
                   </Link>

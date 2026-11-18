@@ -15,7 +15,9 @@ export function ProductDetails({ product }) {
   const [showEnquiryForm, setShowEnquiryForm] = useState(false)
   const [lightboxOpen, setLightboxOpen] = useState(false)
 
-  const images = product.images?.length > 0 ? product.images : ["/placeholder.svg"];
+  const images = (product.images?.length > 0 ? product.images : ["/uploads/product-10hp-8bar-1-1793802970199.png"]).map(img => 
+    img && img.includes('fhbtzxpqvqaq2mat') ? '/uploads/product-10hp-8bar-1-1793802970199.png' : (img || '/uploads/product-10hp-8bar-1-1793802970199.png')
+  );
 
   // Helper to extract YouTube ID
   const getYouTubeId = (url) => {
@@ -65,6 +67,10 @@ export function ProductDetails({ product }) {
                   alt={product.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
+                  onError={(e) => {
+                    e.currentTarget.srcset = '';
+                    e.currentTarget.src = '/uploads/product-10hp-8bar-1-1793802970199.png';
+                  }}
                   className="object-contain mix-blend-multiply p-4"
                 />
                 <div onClick={(e) => e.stopPropagation()}>
@@ -89,6 +95,10 @@ export function ProductDetails({ product }) {
                         alt={`Thumbnail ${idx+1}`} 
                         fill
                         sizes="80px"
+                        onError={(e) => {
+                          e.currentTarget.srcset = '';
+                          e.currentTarget.src = '/uploads/product-10hp-8bar-1-1793802970199.png';
+                        }}
                         className="object-contain mix-blend-multiply p-1" 
                       />
                     </div>

@@ -7,8 +7,11 @@ import { fetchWithCache } from '@/lib/memoryCache';
 export const dynamic = 'force-dynamic';
 
 function getFallbackBuffer() {
-  const fallbackPath = path.join(process.cwd(), 'public', 'Sarv Jagat_Logo_Red_11.png');
-  return fs.readFile(fallbackPath);
+  const primaryPath = path.join(process.cwd(), 'public', 'uploads', 'product-10hp-8bar-1-1793802970199.png');
+  return fs.readFile(primaryPath).catch(() => {
+    const fallbackPath = path.join(process.cwd(), 'public', 'Sarv Jagat_Logo_Red_11.png');
+    return fs.readFile(fallbackPath);
+  });
 }
 
 export async function GET(request, { params }) {
