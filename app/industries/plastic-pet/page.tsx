@@ -8,6 +8,30 @@ import ExploreProductsSection from "@/components/sections/explore-products"
 
 export const revalidate = 3600;
 
+export const metadata = {
+  title: "Plastic & PET Bottle Blow Molding Air Compressors | Sarv Jagat - SJ",
+  description: "High-pressure 40 bar oil-free PET bottle blowing compressors, injection molding systems, and extrusion compressed air solutions by Sarv Jagat - SJ.",
+  alternates: {
+    canonical: "https://www.sarvjagat.com/industries/plastic-pet",
+  },
+  openGraph: {
+    title: "Plastic & PET Bottle Blow Molding Air Compressors | Sarv Jagat - SJ",
+    description: "High-pressure 40 bar compressed air solutions for PET bottle blowing by Sarv Jagat - SJ.",
+    url: "https://www.sarvjagat.com/industries/plastic-pet",
+    siteName: "Sarv Jagat - SJ",
+    type: "website",
+    locale: "en_US",
+    images: [{ url: "https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png", width: 1200, height: 630, alt: "Plastic PET Blow Molding Compressors - Sarv Jagat - SJ" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Plastic & PET Bottle Blow Molding Air Compressors | Sarv Jagat - SJ",
+    description: "High-pressure compressed air systems for PET bottle blowing by Sarv Jagat - SJ.",
+    images: ["https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png"],
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
+};
+
 // Plastic industry specific page with detailed applications and solutions
 export default async function PlasticPetPage() {
   // Plastic applications based on product descriptions

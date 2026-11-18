@@ -4,6 +4,30 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowRight, CheckCircle, Package, Truck, Shield, Phone, Clock } from "lucide-react"
 import Link from "next/link"
 
+export const metadata = {
+  title: 'Genuine Air Compressor Spare Parts & Service Kits | Sarv Jagat - SJ',
+  description: '100% genuine OEM spare parts, air filters, oil filters, air-oil separators, lubricants, and service kits for rotary screw and reciprocating compressors by Sarv Jagat - SJ.',
+  alternates: {
+    canonical: 'https://www.sarvjagat.com/services/spare-parts',
+  },
+  openGraph: {
+    title: 'Genuine Air Compressor Spare Parts & Service Kits | Sarv Jagat - SJ',
+    description: '100% genuine OEM spare parts and service kits for industrial compressors by Sarv Jagat - SJ.',
+    url: 'https://www.sarvjagat.com/services/spare-parts',
+    siteName: 'Sarv Jagat - SJ',
+    type: 'website',
+    locale: 'en_US',
+    images: [{ url: 'https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png', width: 1200, height: 630, alt: 'Compressor Spare Parts - Sarv Jagat - SJ' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Genuine Air Compressor Spare Parts & Service Kits | Sarv Jagat - SJ',
+    description: 'Genuine OEM spare parts for industrial air compressors by Sarv Jagat - SJ.',
+    images: ['https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png'],
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
+};
+
 export default function SparePartsPage() {
   const partCategories = [
     {

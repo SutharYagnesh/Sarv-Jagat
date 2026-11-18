@@ -8,16 +8,51 @@ import BlogCatalogClient from '@/components/sections/blog-catalog-client';
 import { fetchWithCache } from '@/lib/memoryCache';
 
 export const metadata = {
-  title: "Industrial Compressed Air Blog & Supplied Items | Sarv Jagat Corporation",
-  description: "Read the latest news, case studies, and supplied industrial compressor installations from Sarv Jagat Corporation.",
+  title: "Industrial Compressed Air Blog & Case Studies | Sarv Jagat - SJ",
+  description: "Read the latest engineering articles, energy efficiency guides, case studies, and supplied industrial compressor installations from Sarv Jagat - SJ.",
+  keywords: [
+    "Industrial Air Compressor Blog",
+    "Compressed Air Case Studies",
+    "Screw Compressor Maintenance",
+    "VFD Energy Saving",
+    "Sarv Jagat",
+    "SJ"
+  ],
   alternates: {
     canonical: "https://www.sarvjagat.com/blog",
   },
   openGraph: {
-    title: "Industrial Compressed Air Blog & Supplied Items | Sarv Jagat Corporation",
-    description: "Read the latest news, case studies, and supplied industrial compressor installations from Sarv Jagat Corporation.",
+    title: "Industrial Compressed Air Blog & Case Studies | Sarv Jagat - SJ",
+    description: "Read the latest engineering articles, case studies, and supplied industrial compressor installations from Sarv Jagat - SJ.",
     url: "https://www.sarvjagat.com/blog",
+    siteName: "Sarv Jagat - SJ",
     type: "website",
+    locale: "en_US",
+    images: [
+      {
+        url: "https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png",
+        width: 1200,
+        height: 630,
+        alt: "Sarv Jagat - SJ Blog",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Industrial Compressed Air Blog & Case Studies | Sarv Jagat - SJ",
+    description: "Read the latest engineering articles and installations from Sarv Jagat - SJ.",
+    images: ["https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 

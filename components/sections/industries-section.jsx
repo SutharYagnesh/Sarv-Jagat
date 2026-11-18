@@ -81,7 +81,9 @@ export function IndustriesSection() {
                       <div className="relative overflow-hidden">
                         <img
                           src={industry.image || "/placeholder.svg"}
-                          alt={`${industry.name} - Sarv Jagat Air Compressor Solutions`}
+                          alt={`${industry.name} - Sarv Jagat - SJ Air Compressor Solutions`}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-64 md:h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-foreground">

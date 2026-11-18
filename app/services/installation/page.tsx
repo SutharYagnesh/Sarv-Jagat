@@ -4,6 +4,30 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowRight, CheckCircle, Wrench, Users, Award, Phone, Settings } from "lucide-react"
 import Link from "next/link"
 
+export const metadata = {
+  title: 'Air Compressor Installation & Commissioning | Sarv Jagat - SJ',
+  description: 'Professional air compressor installation, piping, electrical integration, and commissioning services by certified engineers at Sarv Jagat - SJ.',
+  alternates: {
+    canonical: 'https://www.sarvjagat.com/services/installation',
+  },
+  openGraph: {
+    title: 'Air Compressor Installation & Commissioning | Sarv Jagat - SJ',
+    description: 'Turnkey industrial compressor installation and pipeline integration by Sarv Jagat - SJ.',
+    url: 'https://www.sarvjagat.com/services/installation',
+    siteName: 'Sarv Jagat - SJ',
+    type: 'website',
+    locale: 'en_US',
+    images: [{ url: 'https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png', width: 1200, height: 630, alt: 'Air Compressor Installation - Sarv Jagat - SJ' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Air Compressor Installation & Commissioning | Sarv Jagat - SJ',
+    description: 'Turnkey industrial compressor installation by Sarv Jagat - SJ.',
+    images: ['https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png'],
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
+};
+
 export default function InstallationPage() {
   const services = [
     {

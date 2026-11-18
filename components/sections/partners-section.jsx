@@ -47,6 +47,8 @@ export function PartnersSection() {
               <img
                 src={partner.logo || "/placeholder.svg"}
                 alt={`${partner.name} logo`}
+                loading="lazy"
+                decoding="async"
                 className="h-12 w-auto opacity-60 hover:opacity-100 transition-opacity duration-300 filter grayscale hover:grayscale-0"
               />
             </motion.div>

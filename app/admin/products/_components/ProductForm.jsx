@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Plus, Trash2, UploadCloud, X, Copy, RefreshCw } from 'lucide-react';
 import { RichTextEditor } from '@/components/admin/rich-text-editor';
+import { compressImage } from '@/lib/client-image-compressor';
 
 export default function ProductForm({ initialData = null }) {
   const router = useRouter();
@@ -79,8 +80,11 @@ export default function ProductForm({ initialData = null }) {
     setUploadingImage(true);
     for (const file of files) {
       try {
+        // Automatically compress large images to high-def WebP to protect database storage
+        const optimizedFile = await compressImage(file);
+
         const uploadData = new FormData();
-        uploadData.append('file', file);
+        uploadData.append('file', optimizedFile);
         uploadData.append('department', 'products');
         uploadData.append('subcategory', categorySlug);
 

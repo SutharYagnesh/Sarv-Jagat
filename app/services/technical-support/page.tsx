@@ -4,6 +4,30 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowRight, CheckCircle, Phone, Clock, Users, Award, Headphones, Settings } from "lucide-react"
 import Link from "next/link"
 
+export const metadata = {
+  title: '24/7 Technical Support & Breakdown Service | Sarv Jagat - SJ',
+  description: 'Round-the-clock technical helpline, field engineer on-site troubleshooting, remote diagnostics, and breakdown emergency service by Sarv Jagat - SJ.',
+  alternates: {
+    canonical: 'https://www.sarvjagat.com/services/technical-support',
+  },
+  openGraph: {
+    title: '24/7 Technical Support & Breakdown Service | Sarv Jagat - SJ',
+    description: 'Round-the-clock technical helpline and on-site troubleshooting by Sarv Jagat - SJ.',
+    url: 'https://www.sarvjagat.com/services/technical-support',
+    siteName: 'Sarv Jagat - SJ',
+    type: 'website',
+    locale: 'en_US',
+    images: [{ url: 'https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png', width: 1200, height: 630, alt: 'Technical Support - Sarv Jagat - SJ' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '24/7 Technical Support & Breakdown Service | Sarv Jagat - SJ',
+    description: 'Round-the-clock technical support for industrial compressors by Sarv Jagat - SJ.',
+    images: ['https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png'],
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
+};
+
 export default function TechnicalSupportPage() {
   const supportServices = [
     {

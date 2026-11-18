@@ -66,6 +66,8 @@ export default function ProductCatalogClient({ categories }) {
                         <img
                           src={catProdImg}
                           alt={product.name}
+                          loading="lazy"
+                          decoding="async"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
                             e.currentTarget.src = "/placeholder.svg";

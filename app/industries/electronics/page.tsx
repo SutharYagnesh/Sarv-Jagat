@@ -8,6 +8,30 @@ import ExploreProductsSection from "@/components/sections/explore-products"
 
 export const revalidate = 3600;
 
+export const metadata = {
+  title: "Electronics & Semiconductor Air Compressors | Sarv Jagat - SJ",
+  description: "Ultra-pure, Class 0 oil-free compressed air systems for PCB assembly, cleanrooms, semiconductor testing, and precision robotics by Sarv Jagat - SJ.",
+  alternates: {
+    canonical: "https://www.sarvjagat.com/industries/electronics",
+  },
+  openGraph: {
+    title: "Electronics & Semiconductor Air Compressors | Sarv Jagat - SJ",
+    description: "Ultra-pure cleanroom compressed air systems by Sarv Jagat - SJ.",
+    url: "https://www.sarvjagat.com/industries/electronics",
+    siteName: "Sarv Jagat - SJ",
+    type: "website",
+    locale: "en_US",
+    images: [{ url: "https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png", width: 1200, height: 630, alt: "Electronics Cleanroom Compressed Air - Sarv Jagat - SJ" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Electronics & Semiconductor Air Compressors | Sarv Jagat - SJ",
+    description: "Ultra-pure cleanroom compressed air systems by Sarv Jagat - SJ.",
+    images: ["https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png"],
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
+};
+
 // Electronics industry specific page with detailed applications and solutions
 export default async function ElectronicsPage() {
   // Electronics applications based on product descriptions

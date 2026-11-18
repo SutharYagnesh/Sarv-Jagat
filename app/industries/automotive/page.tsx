@@ -8,6 +8,30 @@ import ExploreProductsSection from "@/components/sections/explore-products"
 
 export const revalidate = 3600;
 
+export const metadata = {
+  title: "Automotive Industry Compressed Air Solutions | Sarv Jagat - SJ",
+  description: "High-performance, energy-efficient compressed air systems engineered for automotive paint booths, pneumatic assembly tools, tire inflation, and robotic lines by Sarv Jagat - SJ.",
+  alternates: {
+    canonical: "https://www.sarvjagat.com/industries/automotive",
+  },
+  openGraph: {
+    title: "Automotive Industry Compressed Air Solutions | Sarv Jagat - SJ",
+    description: "Compressed air systems engineered for automotive manufacturing by Sarv Jagat - SJ.",
+    url: "https://www.sarvjagat.com/industries/automotive",
+    siteName: "Sarv Jagat - SJ",
+    type: "website",
+    locale: "en_US",
+    images: [{ url: "https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png", width: 1200, height: 630, alt: "Automotive Compressed Air - Sarv Jagat - SJ" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Automotive Industry Compressed Air Solutions | Sarv Jagat - SJ",
+    description: "Compressed air systems engineered for automotive manufacturing by Sarv Jagat - SJ.",
+    images: ["https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png"],
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
+};
+
 // Automotive industry specific page with detailed applications and solutions
 export default async function AutomotivePage() {
   // Automotive applications based on product descriptions

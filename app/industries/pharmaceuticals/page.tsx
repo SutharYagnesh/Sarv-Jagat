@@ -7,6 +7,30 @@ import ExploreProductsSection from "@/components/sections/explore-products"
 
 export const revalidate = 3600;
 
+export const metadata = {
+  title: "Pharmaceutical Industry Oil-Free Compressed Air | Sarv Jagat - SJ",
+  description: "Certified clean, oil-free compressed air systems for pharmaceutical tablet compression, cleanrooms, sterile packaging, and bottling lines by Sarv Jagat - SJ.",
+  alternates: {
+    canonical: "https://www.sarvjagat.com/industries/pharmaceuticals",
+  },
+  openGraph: {
+    title: "Pharmaceutical Industry Oil-Free Compressed Air | Sarv Jagat - SJ",
+    description: "Contamination-free compressed air systems for pharmaceutical manufacturing by Sarv Jagat - SJ.",
+    url: "https://www.sarvjagat.com/industries/pharmaceuticals",
+    siteName: "Sarv Jagat - SJ",
+    type: "website",
+    locale: "en_US",
+    images: [{ url: "https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png", width: 1200, height: 630, alt: "Pharmaceutical Compressed Air - Sarv Jagat - SJ" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pharmaceutical Industry Oil-Free Compressed Air | Sarv Jagat - SJ",
+    description: "Contamination-free compressed air systems for pharmaceutical manufacturing by Sarv Jagat - SJ.",
+    images: ["https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png"],
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
+};
+
 export default async function PharmaceuticalsPage() {
   const applications = [
     {

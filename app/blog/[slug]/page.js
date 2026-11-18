@@ -28,39 +28,46 @@ export async function generateMetadata({ params }) {
   const blog = await getBlogBySlug(slug);
 
   if (!blog) {
-    return { title: "Blog Not Found" }
+    return { title: "Blog Not Found | Sarv Jagat - SJ" }
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sarvjagat.com";
+  const canonicalUrl = `${siteUrl}/blog/${slug}`;
+  const brand = "Sarv Jagat - SJ";
+  const ogImageUrl = blog.imageUrl || `${siteUrl}/Sarv%20Jagat_Logo_Red_11.png`;
+
   return {
-    title: `${blog.title} | Sarv Jagat Corporation Blog`,
+    title: `${blog.title} | ${brand}`,
     description: blog.excerpt || blog.title,
     alternates: {
-      canonical: `https://www.sarvjagat.com/blog/${slug}`,
+      canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${blog.title} | Sarv Jagat Corporation`,
+      title: `${blog.title} | ${brand}`,
       description: blog.excerpt || blog.title,
-      url: `https://www.sarvjagat.com/blog/${slug}`,
+      url: canonicalUrl,
+      siteName: brand,
       type: "article",
+      locale: "en_US",
       publishedTime: blog.publishedAt,
       modifiedTime: blog.updatedAt || blog.publishedAt,
-      authors: [blog.author?.name || "Sarv Jagat"],
-      images: blog.imageUrl ? [
+      authors: [blog.author?.name || brand],
+      images: [
         {
-          url: blog.imageUrl,
+          url: ogImageUrl,
           width: 1200,
           height: 630,
-          alt: blog.title,
+          alt: `${blog.title} - ${brand}`,
         }
-      ] : [],
+      ],
     },
     twitter: {
       card: "summary_large_image",
-      title: blog.title,
+      title: `${blog.title} | ${brand}`,
       description: blog.excerpt || blog.title,
-      images: blog.imageUrl ? [blog.imageUrl] : [],
+      images: [ogImageUrl],
     },
-    keywords: blog.tags ? blog.tags : ["Air Compressors", "Industrial Blog", "Sarv Jagat"],
+    keywords: blog.tags && blog.tags.length > 0 ? blog.tags : ["Air Compressors", "Industrial Blog", "Sarv Jagat", "SJ"],
     robots: {
       index: true,
       follow: true,

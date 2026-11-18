@@ -92,12 +92,20 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
 
   const products = await fetchWithCache(`category_products_${slug}`, async () => {
     await connectDB();
-    const escapedName = category.name.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const catNameTrimmed = (category.name || '').trim();
+    const escapedName = catNameTrimmed.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const catSlug = (category.slug || '').trim();
+    const catId = category._id ? String(category._id) : '';
+
     const productsRaw = await Product.find({ 
-      category: { $regex: new RegExp(`^${escapedName}$`, 'i') }, 
+      $or: [
+        { category: { $regex: new RegExp(`^\\s*${escapedName}\\s*$`, 'i') } },
+        { category: catSlug },
+        ...(catId ? [{ category: catId }] : [])
+      ],
       status: { $regex: /^published$/i } 
     })
-      .select('title slug category images order status price modelNumber powerRating pressureRating airFlow')
+      .select('title slug category images image order status price modelNumber powerRating pressureRating airFlow seoTitle seoDescription')
       .sort({ order: 1, createdAt: -1 })
       .lean();
     return JSON.parse(JSON.stringify(productsRaw));

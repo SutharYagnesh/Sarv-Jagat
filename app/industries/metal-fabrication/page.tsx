@@ -8,6 +8,30 @@ import ExploreProductsSection from "@/components/sections/explore-products"
 
 export const revalidate = 3600;
 
+export const metadata = {
+  title: "Metal Fabrication & CNC Machinery Air Compressors | Sarv Jagat - SJ",
+  description: "High-reliability compressed air solutions for CNC/VMC machines, laser cutting, plasma cutting, sandblasting, and metal welding shops by Sarv Jagat - SJ.",
+  alternates: {
+    canonical: "https://www.sarvjagat.com/industries/metal-fabrication",
+  },
+  openGraph: {
+    title: "Metal Fabrication & CNC Machinery Air Compressors | Sarv Jagat - SJ",
+    description: "Compressed air systems for CNC, laser cutting, and metal fabrication by Sarv Jagat - SJ.",
+    url: "https://www.sarvjagat.com/industries/metal-fabrication",
+    siteName: "Sarv Jagat - SJ",
+    type: "website",
+    locale: "en_US",
+    images: [{ url: "https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png", width: 1200, height: 630, alt: "Metal Fabrication Compressed Air - Sarv Jagat - SJ" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Metal Fabrication & CNC Machinery Air Compressors | Sarv Jagat - SJ",
+    description: "Compressed air systems for CNC, laser cutting, and metal fabrication by Sarv Jagat - SJ.",
+    images: ["https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png"],
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
+};
+
 export default async function MetalFabricationPage() {
   // Automotive applications based on product descriptions
   const applications = [

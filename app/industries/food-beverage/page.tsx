@@ -7,6 +7,30 @@ import ExploreProductsSection from "@/components/sections/explore-products"
 
 export const revalidate = 3600;
 
+export const metadata = {
+  title: "Food & Beverage Clean Compressed Air Solutions | Sarv Jagat - SJ",
+  description: "ISO 8573-1 Class 0 oil-free, hygienic compressed air solutions for food processing, dairy packaging, beverage bottling, and sorting by Sarv Jagat - SJ.",
+  alternates: {
+    canonical: "https://www.sarvjagat.com/industries/food-beverage",
+  },
+  openGraph: {
+    title: "Food & Beverage Clean Compressed Air Solutions | Sarv Jagat - SJ",
+    description: "Hygienic food-grade compressed air solutions by Sarv Jagat - SJ.",
+    url: "https://www.sarvjagat.com/industries/food-beverage",
+    siteName: "Sarv Jagat - SJ",
+    type: "website",
+    locale: "en_US",
+    images: [{ url: "https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png", width: 1200, height: 630, alt: "Food Beverage Compressed Air - Sarv Jagat - SJ" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Food & Beverage Clean Compressed Air Solutions | Sarv Jagat - SJ",
+    description: "Hygienic food-grade compressed air solutions by Sarv Jagat - SJ.",
+    images: ["https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png"],
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
+};
+
 export default async function FoodBeveragePage() {
   const applications = [
     {

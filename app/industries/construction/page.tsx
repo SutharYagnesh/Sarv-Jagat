@@ -8,6 +8,30 @@ import ExploreProductsSection from "@/components/sections/explore-products"
 
 export const revalidate = 3600;
 
+export const metadata = {
+  title: "Construction & Heavy Duty Air Compressors | Sarv Jagat - SJ",
+  description: "Rugged, heavy-duty industrial air compressors engineered for construction sites, tunneling, piling, pneumatic tools, and infrastructure projects by Sarv Jagat - SJ.",
+  alternates: {
+    canonical: "https://www.sarvjagat.com/industries/construction",
+  },
+  openGraph: {
+    title: "Construction & Heavy Duty Air Compressors | Sarv Jagat - SJ",
+    description: "Rugged compressed air systems for heavy construction by Sarv Jagat - SJ.",
+    url: "https://www.sarvjagat.com/industries/construction",
+    siteName: "Sarv Jagat - SJ",
+    type: "website",
+    locale: "en_US",
+    images: [{ url: "https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png", width: 1200, height: 630, alt: "Construction Compressed Air - Sarv Jagat - SJ" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Construction & Heavy Duty Air Compressors | Sarv Jagat - SJ",
+    description: "Rugged compressed air systems for heavy construction by Sarv Jagat - SJ.",
+    images: ["https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png"],
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
+};
+
 // Construction & Infrastructure industry specific page with detailed applications and solutions
 export default async function ConstructionPage() {
   // Construction & Infrastructure applications based on product descriptions

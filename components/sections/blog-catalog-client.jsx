@@ -49,6 +49,8 @@ export default function BlogCatalogClient({ blogs }) {
                     <img
                       src={blog.imageUrl || (blog.images && blog.images.length > 0 ? blog.images[0] : "/placeholder.svg")}
                       alt={blog.title}
+                      loading="lazy"
+                      decoding="async"
                       onError={(e) => {
                         e.currentTarget.onerror = null;
                         e.currentTarget.src = "/placeholder.svg";

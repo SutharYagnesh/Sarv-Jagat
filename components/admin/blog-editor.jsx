@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { X, Save, Eye } from "lucide-react"
 import { RichTextEditor } from "@/components/admin/rich-text-editor"
+import { compressImage } from "@/lib/client-image-compressor"
 
 export function BlogEditor({ post, onSave, onCancel }) {
   const [formData, setFormData] = useState({
@@ -38,8 +39,10 @@ export function BlogEditor({ post, onSave, onCancel }) {
 
   const uploadMedia = async (file, mediaType = 'image') => {
     try {
+      // Automatically compress images to WebP to save MongoDB storage
+      const optimizedFile = mediaType === 'video' ? file : await compressImage(file);
       const uploadData = new FormData();
-      uploadData.append('file', file);
+      uploadData.append('file', optimizedFile);
       // Organize by department + blog slug for traceability
       uploadData.append('department', 'blogs');
       uploadData.append('subcategory', formData.slug || formData.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'misc');
@@ -147,7 +150,17 @@ export function BlogEditor({ post, onSave, onCancel }) {
     }
   }
 
-  const removeGalleryImage = (index) => {
+  const removeGalleryImage = async (index) => {
+    const imageUrl = formData.images[index];
+    if (imageUrl && imageUrl.startsWith('/api/media/')) {
+      try {
+        await fetch(`/api/admin/upload?url=${encodeURIComponent(imageUrl)}`, {
+          method: 'DELETE',
+        });
+      } catch (err) {
+        console.error('Failed to delete image from storage:', err);
+      }
+    }
     setFormData(prev => ({
       ...prev,
       images: prev.images.filter((_, i) => i !== index)

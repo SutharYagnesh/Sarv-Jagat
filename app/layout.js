@@ -5,9 +5,9 @@ import { Toaster } from "@/components/ui/toaster"
 import { Analytics } from "@vercel/analytics/next"
 import ConditionalLayoutWrapper from "./ConditionalLayoutWrapper"
 export const metadata = {
-  title: "Sarv Jagat Corporation | Global Industrial Air Compressor Manufacturer & Worldwide Exporter",
+  title: "Sarv Jagat - SJ | Global Industrial Air Compressor Manufacturer & Exporter",
   description:
-    "Leading manufacturer and worldwide exporter of industrial air compressors, Refrigerated Air Dryers, and turnkey compressed air solutions. Serving heavy-duty industries worldwide with premium quality and 24/7 global support. Contact us at +919157487233 or contact@sarvjagat.com",
+    "Leading manufacturer and worldwide exporter of industrial air compressors, rotary screw compressors, VFD systems, and compressed air equipment by Sarv Jagat - SJ. Serving heavy-duty industries worldwide with 24/7 global support. Contact us at +919157487233 or connect@sarvjagat.com",
   generator: "Next.js",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://www.sarvjagat.com"),
   alternates: {
@@ -161,25 +161,25 @@ export const metadata = {
     type: "website",
     locale: "en_US",
     url: "https://www.sarvjagat.com",
-    title: "Sarv Jagat Corporation | Premium Industrial Air Compressor Solutions",
+    title: "Sarv Jagat - SJ | Premium Industrial Air Compressor Solutions",
     description:
-      "Leading manufacturer of industrial air compressors, pneumatic tools, and compressed air solutions. Trusted by industries worldwide. Contact us at +919157487233 or contact@sarvjagat.com",
-    siteName: "Sarv Jagat Corporation",
+      "Leading manufacturer of industrial air compressors, rotary screw systems, and compressed air equipment by Sarv Jagat - SJ. Trusted by industries worldwide. Contact us at +919157487233 or connect@sarvjagat.com",
+    siteName: "Sarv Jagat - SJ",
     images: [
       {
         url: "/Sarv Jagat_Logo_Red_11.png",
         width: 1200,
         height: 630,
-        alt: "Sarv Jagat Corporation - Industrial Air Compressor Solutions",
+        alt: "Sarv Jagat - SJ - Industrial Air Compressor Solutions",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sarv Jagat Corporation | Premium Industrial Air Compressor Solutions",
+    title: "Sarv Jagat - SJ | Premium Industrial Air Compressor Solutions",
     description:
-      "Leading manufacturer of industrial air compressors, pneumatic tools, and compressed air solutions. Trusted by industries worldwide. Contact us at +919157487233 or contact@sarvjagat.com",
-    images: ["/og-image.jpg"],
+      "Leading manufacturer of industrial air compressors and compressed air solutions by Sarv Jagat - SJ. Contact +919157487233 or connect@sarvjagat.com",
+    images: ["/Sarv Jagat_Logo_Red_11.png"],
     creator: "@sarvjagat",
   },
   verification: {

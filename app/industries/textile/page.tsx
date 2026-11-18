@@ -7,6 +7,30 @@ import ExploreProductsSection from "@/components/sections/explore-products"
 
 export const revalidate = 3600;
 
+export const metadata = {
+  title: "Textile Industry Compressed Air Solutions | Sarv Jagat - SJ",
+  description: "Clean, dry, continuous-duty compressed air systems engineered for textile mills, air jet looms, spinning, texturizing, and garment manufacturing by Sarv Jagat - SJ.",
+  alternates: {
+    canonical: "https://www.sarvjagat.com/industries/textile",
+  },
+  openGraph: {
+    title: "Textile Industry Compressed Air Solutions | Sarv Jagat - SJ",
+    description: "Compressed air systems engineered for textile air jet looms and spinning by Sarv Jagat - SJ.",
+    url: "https://www.sarvjagat.com/industries/textile",
+    siteName: "Sarv Jagat - SJ",
+    type: "website",
+    locale: "en_US",
+    images: [{ url: "https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png", width: 1200, height: 630, alt: "Textile Compressed Air - Sarv Jagat - SJ" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Textile Industry Compressed Air Solutions | Sarv Jagat - SJ",
+    description: "Compressed air systems engineered for textile manufacturing by Sarv Jagat - SJ.",
+    images: ["https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png"],
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
+};
+
 export default async function TextilePage() {
   const applications = [
     {

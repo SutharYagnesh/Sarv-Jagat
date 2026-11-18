@@ -8,6 +8,30 @@ import ExploreProductsSection from "@/components/sections/explore-products"
 
 export const revalidate = 3600;
 
+export const metadata = {
+  title: "Mining & Quarry High Pressure Air Compressors | Sarv Jagat - SJ",
+  description: "High-pressure, heavy-duty industrial compressed air systems engineered for rock drilling, blasting, pneumatic tools, and ventilation in mines and quarries by Sarv Jagat - SJ.",
+  alternates: {
+    canonical: "https://www.sarvjagat.com/industries/mining",
+  },
+  openGraph: {
+    title: "Mining & Quarry High Pressure Air Compressors | Sarv Jagat - SJ",
+    description: "High-pressure compressed air systems for mining and quarries by Sarv Jagat - SJ.",
+    url: "https://www.sarvjagat.com/industries/mining",
+    siteName: "Sarv Jagat - SJ",
+    type: "website",
+    locale: "en_US",
+    images: [{ url: "https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png", width: 1200, height: 630, alt: "Mining Quarry Compressed Air - Sarv Jagat - SJ" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mining & Quarry High Pressure Air Compressors | Sarv Jagat - SJ",
+    description: "High-pressure compressed air systems for mining and quarries by Sarv Jagat - SJ.",
+    images: ["https://www.sarvjagat.com/Sarv%20Jagat_Logo_Red_11.png"],
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
+};
+
 // Mining & Quarry industry specific page with detailed applications and solutions
 export default async function MiningPage() {
   // Mining & Quarry applications based on product descriptions
