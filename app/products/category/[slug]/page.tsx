@@ -8,10 +8,13 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import CategoryClient from "@/components/sections/category-client"
 import { ItemListSchema } from "@/components/structured-data"
+import { fetchWithCache } from "@/lib/memoryCache"
 
 const getCategoryBySlug = cache(async (slug: string) => {
-  await connectDB();
-  return Category.findOne({ slug }).lean();
+  return await fetchWithCache(`category_doc_${slug}`, async () => {
+    await connectDB();
+    return await Category.findOne({ slug }).lean();
+  }, 300);
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -54,15 +57,17 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  await connectDB();
-  const productsRaw = await Product.find({ 
-    category: category.name, 
-    status: { $regex: /^published$/i } 
-  })
-    .select('title slug category images order status price modelNumber powerRating pressureRating airFlow')
-    .sort({ order: 1, createdAt: -1 })
-    .lean();
-  const products = JSON.parse(JSON.stringify(productsRaw));
+  const products = await fetchWithCache(`category_products_${slug}`, async () => {
+    await connectDB();
+    const productsRaw = await Product.find({ 
+      category: category.name, 
+      status: { $regex: /^published$/i } 
+    })
+      .select('title slug category images order status price modelNumber powerRating pressureRating airFlow')
+      .sort({ order: 1, createdAt: -1 })
+      .lean();
+    return JSON.parse(JSON.stringify(productsRaw));
+  }, 300);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 overflow-x-hidden max-w-full">

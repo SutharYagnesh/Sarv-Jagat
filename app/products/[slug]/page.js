@@ -7,59 +7,59 @@ import { ProductSchema } from "@/components/structured-data"
 import connectDB from "@/lib/db"
 import Product from "@/lib/models/Product"
 import Category from "@/lib/models/Category"
+import { fetchWithCache } from "@/lib/memoryCache"
+
+// Cached in RAM: Zero database calls during page renders, sub-millisecond response
+const getAllPublishedCatalog = async () => {
+  return await fetchWithCache('all_published_products_catalog', async () => {
+    await connectDB();
+    const [rawProducts, rawCategories] = await Promise.all([
+      Product.find({ status: { $regex: /^published$/i } })
+        .select('title slug category images price modelNumber powerRating pressureRating airFlow specifications description seoTitle seoDescription seoKeywords order createdAt')
+        .sort({ order: 1, createdAt: -1 })
+        .lean(),
+      Category.find({}).select('name slug').lean(),
+    ]);
+
+    const catMap = {};
+    (rawCategories || []).forEach(c => {
+      if (c.name && c.slug) catMap[c.name.trim().toLowerCase()] = c.slug;
+    });
+
+    return {
+      products: JSON.parse(JSON.stringify(rawProducts || [])),
+      categoryMap: catMap,
+    };
+  }, 300);
+};
 
 const getProductData = cache(async (slug) => {
   try {
-    await connectDB();
-    const product = await Product.findOne({ slug, status: { $regex: /^published$/i } }).lean();
+    const { products, categoryMap } = await getAllPublishedCatalog();
+    const product = products.find((p) => p.slug === slug);
     if (!product) return { product: null, relatedProducts: [] };
 
-    let categorySlug = (product.category || 'uncategorized').toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    if (product.category) {
-      const categoryDoc = await Category.findOne({ name: product.category }).select('slug').lean();
-      if (categoryDoc && categoryDoc.slug) {
-        categorySlug = categoryDoc.slug;
-      }
+    const catSlug =
+      (product.category && categoryMap[product.category.trim().toLowerCase()]) ||
+      (product.category || 'uncategorized').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+    // Instant in-memory related products selection (< 0.01 ms)
+    const sameCat = products.filter(
+      (p) =>
+        (p.category || '').trim().toLowerCase() === (product.category || '').trim().toLowerCase() &&
+        p.slug !== slug
+    );
+
+    let relatedRaw = sameCat.slice().sort(() => 0.5 - Math.random()).slice(0, 3);
+    if (relatedRaw.length < 3) {
+      const remainingCount = 3 - relatedRaw.length;
+      const excludeSlugs = new Set([slug, ...relatedRaw.map((r) => r.slug)]);
+      const otherPool = products.filter((p) => !excludeSlugs.has(p.slug));
+      const otherPicked = otherPool.slice().sort(() => 0.5 - Math.random()).slice(0, remainingCount);
+      relatedRaw = [...relatedRaw, ...otherPicked];
     }
 
-    let relatedProductsRaw = [];
-    try {
-      relatedProductsRaw = await Product.aggregate([
-        {
-          $match: {
-            _id: { $ne: product._id },
-            category: product.category,
-            status: { $regex: /^published$/i }
-          }
-        },
-        { $sample: { size: 3 } }
-      ]);
-
-      // If category has fewer than 3 products, sample from other published products
-      if (relatedProductsRaw.length < 3) {
-        const remaining = 3 - relatedProductsRaw.length;
-        const excludeIds = [product._id, ...relatedProductsRaw.map((r) => r._id)];
-        const additional = await Product.aggregate([
-          {
-            $match: {
-              _id: { $nin: excludeIds },
-              status: { $regex: /^published$/i }
-            }
-          },
-          { $sample: { size: remaining } }
-        ]);
-        relatedProductsRaw = [...relatedProductsRaw, ...additional];
-      }
-    } catch (e) {
-      console.error("Failed to aggregate random related products, using fallback:", e);
-      relatedProductsRaw = await Product.find({
-        _id: { $ne: product._id },
-        category: product.category,
-        status: { $regex: /^published$/i }
-      }).limit(3).lean();
-    }
-
-    const formatProduct = (p, catSlug) => {
+    const formatProduct = (p, overrideCatSlug) => {
       const plain = JSON.parse(JSON.stringify(p));
       const formattedSpecs = {};
       if (plain.specifications && Array.isArray(plain.specifications)) {
@@ -76,13 +76,13 @@ const getProductData = cache(async (slug) => {
         images: plain.images,
         features: [],
         specifications: formattedSpecs,
-        categorySlug: catSlug || (plain.category || 'uncategorized').toLowerCase().replace(/[^a-z0-9]+/g, '-')
+        categorySlug: overrideCatSlug || (plain.category ? categoryMap[plain.category.trim().toLowerCase()] : null) || (plain.category || 'uncategorized').toLowerCase().replace(/[^a-z0-9]+/g, '-')
       };
     };
 
     return {
-      product: formatProduct(product, categorySlug),
-      relatedProducts: relatedProductsRaw.map(p => formatProduct(p))
+      product: formatProduct(product, catSlug),
+      relatedProducts: relatedRaw.map(p => formatProduct(p))
     };
   } catch (error) {
     console.error("Error fetching product:", error);

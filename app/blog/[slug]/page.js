@@ -9,11 +9,14 @@ import { Calendar, User, Tag, Share2, Facebook, Twitter, Linkedin, Youtube, Inst
 import { ArticleSchema, SuppliedProductSchema, VideoSchema } from "@/components/structured-data";
 import { BlogGallery } from "@/components/ui/blog-gallery";
 import { LightboxImage } from "@/components/ui/lightbox-image";
+import { fetchWithCache } from "@/lib/memoryCache";
 
 const getBlogBySlug = cache(async (slug) => {
   try {
-    await connectDB();
-    return await Blog.findOne({ slug }).lean();
+    return await fetchWithCache(`blog_post_${slug}`, async () => {
+      await connectDB();
+      return await Blog.findOne({ slug }).lean();
+    }, 300);
   } catch (err) {
     console.error("Error fetching blog post:", err);
     return null;

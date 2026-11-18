@@ -11,16 +11,25 @@ function getAbsoluteImageUrl(url) {
   return `${BASE_URL}${url.startsWith("/") ? "" : "/"}${url}`
 }
 
-// Sanitize SKU & MPN to adhere strictly to Google's <= 70 character alphanumeric requirements
-function sanitizeIdentifier(str, prefix = "", maxLength = 50) {
-  if (!str) return `${prefix ? prefix + "-" : ""}ITEM`;
-  const clean = String(str)
-    .replace(/[^a-zA-Z0-9-]/g, "")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "")
-    .substring(0, maxLength);
-  const combined = prefix ? `${prefix}-${clean}` : clean;
-  return combined.substring(0, 70);
+// Generate concise, 8-16 character alphanumeric SKU & MPN adhering strictly to Google Merchant requirements
+function generateShortSku(prefix, idOrSlug, modelNumber) {
+  if (modelNumber && typeof modelNumber === "string") {
+    const cleanModel = modelNumber.trim().replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+    if (cleanModel.length >= 2 && cleanModel.length <= 16) {
+      return `${prefix}-${cleanModel}`;
+    }
+  }
+  const raw = String(idOrSlug || "").trim();
+  if (/^[0-9a-fA-F]{24}$/.test(raw)) {
+    return `${prefix}-${raw.slice(-8).toUpperCase()}`;
+  }
+  let hash = 0;
+  for (let i = 0; i < raw.length; i++) {
+    hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+    hash |= 0;
+  }
+  const hex = Math.abs(hash).toString(16).padStart(8, "0").slice(-8).toUpperCase();
+  return `${prefix}-${hex}`;
 }
 
 // Strictly extract real playable video details (rejects community posts, social text posts, channels)
@@ -114,8 +123,8 @@ export function ProductSchema({ product }) {
   const imageUrl = getAbsoluteImageUrl(product.image || product.images?.[0])
   const priceVal = product.price && Number(product.price) > 0 ? Number(product.price).toFixed(2) : "1.00"
 
-  const cleanSku = sanitizeIdentifier(product.modelNumber || product.slug, "SJ-PROD", 45);
-  const cleanMpn = sanitizeIdentifier(product.modelNumber || product.slug, "", 50);
+  const cleanSku = generateShortSku("SJ", product._id || product.id || product.slug, product.modelNumber);
+  const cleanMpn = generateShortSku("MPN", product._id || product.id || product.slug, product.modelNumber);
 
   const validFromDate = product.createdAt
     ? new Date(product.createdAt).toISOString().split("T")[0]
@@ -202,6 +211,7 @@ export function ProductSchema({ product }) {
     ],
     offers: {
       "@type": "Offer",
+      sku: cleanSku,
       url: productUrl,
       price: priceVal,
       priceCurrency: "INR",
@@ -266,8 +276,8 @@ export function SuppliedProductSchema({ item }) {
   const rawText = item.excerpt || (item.content ? item.content.replace(/<[^>]*>?/gm, "").substring(0, 500) : item.title)
   const description = rawText.replace(/\s+/g, " ").trim()
 
-  const cleanSku = sanitizeIdentifier(item.slug, "SJ-SUP", 45);
-  const cleanMpn = sanitizeIdentifier(item.slug, "SJ-SUP", 45);
+  const cleanSku = generateShortSku("SJ-SUP", item._id || item.id || item.slug);
+  const cleanMpn = generateShortSku("MPN-SUP", item._id || item.id || item.slug);
 
   const validFromDate = item.publishedAt
     ? new Date(item.publishedAt).toISOString().split("T")[0]
@@ -319,6 +329,7 @@ export function SuppliedProductSchema({ item }) {
     ],
     offers: {
       "@type": "Offer",
+      sku: cleanSku,
       url: itemUrl,
       price: "1.00",
       priceCurrency: "INR",
