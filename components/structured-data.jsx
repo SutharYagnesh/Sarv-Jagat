@@ -32,6 +32,15 @@ function generateShortSku(prefix, idOrSlug, modelNumber) {
   return `${prefix}-${hex}`;
 }
 
+function formatSpecValue(val, unit) {
+  if (!val) return "";
+  const str = String(val).trim();
+  if (unit && !str.toLowerCase().includes(unit.toLowerCase())) {
+    return `${str} ${unit}`;
+  }
+  return str;
+}
+
 // Strictly extract real playable video details (rejects community posts, social text posts, channels)
 function extractVideoDetails(rawUrl) {
   if (!rawUrl || typeof rawUrl !== "string") return null;
@@ -136,34 +145,88 @@ export function ProductSchema({ product }) {
     additionalProperty.push({
       "@type": "PropertyValue",
       name: "Power Rating",
-      value: `${product.powerRating} HP`,
+      value: formatSpecValue(product.powerRating, "HP"),
     })
   }
   if (product.pressureRating) {
     additionalProperty.push({
       "@type": "PropertyValue",
       name: "Pressure Rating",
-      value: `${product.pressureRating} Bar`,
+      value: formatSpecValue(product.pressureRating, "Bar"),
     })
   }
   if (product.airFlow) {
     additionalProperty.push({
       "@type": "PropertyValue",
       name: "Air Flow Capacity",
-      value: `${product.airFlow} CFM`,
+      value: formatSpecValue(product.airFlow, "CFM"),
     })
   }
-  if (product.specifications && typeof product.specifications === "object") {
-    Object.entries(product.specifications).forEach(([k, v]) => {
-      if (k && v) {
-        additionalProperty.push({
-          "@type": "PropertyValue",
-          name: k,
-          value: String(v),
-        })
-      }
-    })
+  if (product.specifications) {
+    if (Array.isArray(product.specifications)) {
+      product.specifications.forEach((s) => {
+        if (s && s.key && s.value) {
+          additionalProperty.push({
+            "@type": "PropertyValue",
+            name: s.key,
+            value: String(s.value),
+          })
+        }
+      })
+    } else if (typeof product.specifications === "object") {
+      Object.entries(product.specifications).forEach(([k, v]) => {
+        if (k && v) {
+          additionalProperty.push({
+            "@type": "PropertyValue",
+            name: k,
+            value: String(v),
+          })
+        }
+      })
+    }
   }
+
+  // Compulsory Industrial Trust & Performance Attributes
+  additionalProperty.push({
+    "@type": "PropertyValue",
+    name: "Brand",
+    value: "Sarv Jagat - SJ",
+  })
+  additionalProperty.push({
+    "@type": "PropertyValue",
+    name: "Quality",
+    value: "Premium Industrial Grade (Continuous 24x7 Operation)",
+  })
+  additionalProperty.push({
+    "@type": "PropertyValue",
+    name: "Energy Efficiency",
+    value: "Energy Optimised (Low Power Consumption / High CFM)",
+  })
+  additionalProperty.push({
+    "@type": "PropertyValue",
+    name: "Build",
+    value: "Heavy-Duty Customizable Steel Frame & Soundproof Enclosure",
+  })
+  additionalProperty.push({
+    "@type": "PropertyValue",
+    name: "Spare Parts",
+    value: "24/7 Readily Available Nationwide",
+  })
+  additionalProperty.push({
+    "@type": "PropertyValue",
+    name: "Location & Delivery",
+    value: "Direct Factory Dispatch Across India (Near You)",
+  })
+  additionalProperty.push({
+    "@type": "PropertyValue",
+    name: "Service & Support",
+    value: "24/7 Pan-India Technical Consultation, Installation & AMC",
+  })
+  additionalProperty.push({
+    "@type": "PropertyValue",
+    name: "Warranty",
+    value: "1-Year Comprehensive Manufacturer Warranty",
+  })
 
   const productData = {
     "@context": "https://schema.org",
@@ -176,7 +239,8 @@ export function ProductSchema({ product }) {
     mpn: cleanMpn,
     brand: {
       "@type": "Brand",
-      name: "Sarv Jagat",
+      name: "Sarv Jagat - SJ",
+      alternateName: ["Sarv Jagat", "SJ", "SJ Air Compressors", "Sarv Jagat Corporation"],
       logo: DEFAULT_LOGO,
     },
     manufacturer: {
@@ -294,7 +358,8 @@ export function SuppliedProductSchema({ item }) {
     mpn: cleanMpn,
     brand: {
       "@type": "Brand",
-      name: "Sarv Jagat",
+      name: "Sarv Jagat - SJ",
+      alternateName: ["Sarv Jagat", "SJ", "SJ Air Compressors", "Sarv Jagat Corporation"],
       logo: DEFAULT_LOGO,
     },
     manufacturer: {
@@ -378,6 +443,43 @@ export function SuppliedProductSchema({ item }) {
         merchantReturnLink: `${BASE_URL}/return-policy`,
       },
     },
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Brand",
+        value: "Sarv Jagat - SJ",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Quality",
+        value: "Premium Industrial Grade",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Energy Efficiency",
+        value: "Optimised High Efficiency",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Build",
+        value: "Heavy-Duty Customizable Steel Frame",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Spare Parts",
+        value: "24/7 Readily Available Nationwide",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Location & Delivery",
+        value: "Direct Factory Dispatch Across India (Near You)",
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Service & Support",
+        value: "24/7 Pan-India Technical Consultation & Maintenance",
+      },
+    ],
   }
 
   return <StructuredData data={suppliedData} />
