@@ -55,7 +55,7 @@ export default async function PlasticPetPage() {
         "Reduced energy consumption",
       ],
       icon: Factory,
-      image: "/plastic-pet-bottle-blowing.jpg",
+      image: "/sj-ind-pet-water-bottle-production.jpg",
     },
     {
       title: "Plastic Molding & Injection",
@@ -76,7 +76,7 @@ export default async function PlasticPetPage() {
         "Lower operational costs",
       ],
       icon: Factory,
-      image: "/plastic-molding.jpg",
+      image: "/sj-ind-pet-water-bottle-production.jpg",
     },
     {
       title: "Pneumatic Conveying",
@@ -97,7 +97,7 @@ export default async function PlasticPetPage() {
         "Reduced manual labor",
       ],
       icon: Package,
-      image: "/plastic-pneumatic-conveying.jpg",
+      image: "/sj-ind-pet-water-bottle-production.jpg",
     },
     {
       title: "Recycling & Reprocessing",
@@ -118,7 +118,7 @@ export default async function PlasticPetPage() {
         "Sustainable operations",
       ],
       icon: Factory,
-      image: "/plastic-recycling.jpg",
+      image: "/sj-ind-pet-water-bottle-production.jpg",
     },
   ]
 
@@ -130,7 +130,7 @@ export default async function PlasticPetPage() {
       solution: "Implemented SJ's high-pressure PET compressors with energy recovery systems.",
       results: "Reduced energy costs by 35%, improved bottle consistency by 20%, and increased production speed.",
       savings: "₹2.0 Crore annually",
-      image: "/case-study-bottleblow.jpg",
+      image: "/sj-ind-pet-water-bottle-production.jpg",
     },
     {
       company: "PolyMolding Solutions",
@@ -138,7 +138,7 @@ export default async function PlasticPetPage() {
       solution: "Installed SJ's oil-free rotary screw compressors with advanced Pet treatment systems.",
       results: "Achieved 99% reduction in product defects, extended mold lifespan by 25%, and reduced maintenance costs.",
       savings: "₹1.0 Crore annually",
-      image: "/case-study-polymolding.jpg",
+      image: "/sj-ind-pet-water-bottle-production.jpg",
     },
   ]
 
@@ -153,7 +153,7 @@ export default async function PlasticPetPage() {
         "Available in various capacities to match production needs",
       ],
       powerRange: "15 kW - 400 kW",
-      image: "/high-pressure-pet-compressor.png",
+      image: "/SJ_COM_MULTISTAGE_AIR-WATER COOLED_1.jpg",
       href: "/products/high-pressure-pet-compressors",
     },
     {
@@ -165,7 +165,7 @@ export default async function PlasticPetPage() {
         "Energy-efficient operation for reduced costs",
       ],
       powerRange: "15 kW - 250 kW",
-      image: "/oil-free-rotary-screw-compressor.png",
+      image: "/sj-p-screw.jpg",
       href: "/products/oil-free-rotary-screw-compressors",
     },
     {
@@ -177,7 +177,7 @@ export default async function PlasticPetPage() {
         "Available in various types including desiccant and refrigerated",
       ],
       powerRange: "10 CFM - 5000 CFM",
-      image: "/high-pressure-Pet-dryer.png",
+      image: "/sj-filter.png",
       href: "/products/high-pressure-Pet-dryers",
     },
     {
@@ -189,7 +189,7 @@ export default async function PlasticPetPage() {
         "Available in various sizes and pressure ratings",
       ],
       powerRange: "300 L - 10,000 L",
-      image: "/Pet-receiver.png",
+      image: "/sj-p-screw.jpg",
       href: "/products/Pet-receivers",
     },
   ]

@@ -7,24 +7,35 @@ import Category from "@/lib/models/Category"
 
 export async function generateMetadata() {
   return {
-    title: "Sitemap | Sarv Jagat",
-    description: "Navigate through all pages and sections of the Sarv Jagat Corporation website. Find exactly what you're looking for.",
-    keywords: ["sitemap", "website structure", "navigation", "Sarv Jagat pages"],
+    title: "Sitemap & Complete Directory | Sarv Jagat - SJ",
+    description: "Navigate through all products, categories, technical blogs, services, and industrial solutions on the Sarv Jagat - SJ website.",
+    alternates: {
+      canonical: "https://www.sarvjagat.com/sitemap",
+    },
+    keywords: ["sitemap", "website structure", "navigation", "Sarv Jagat - SJ pages", "compressor directory"],
     openGraph: {
-      title: "Sitemap | Sarv Jagat",
-      description: "Complete website structure and navigation for Sarv Jagat Corporation.",
+      title: "Sitemap & Complete Directory | Sarv Jagat - SJ",
+      description: "Complete website structure and navigation for Sarv Jagat - SJ.",
       url: "https://www.sarvjagat.com/sitemap",
-      siteName: "Sarv Jagat",
+      siteName: "Sarv Jagat - SJ",
       images: [
         {
-          url: "/og-sitemap.jpg",
+          url: "/Sarv Jagat_Logo_Red_11.png",
           width: 1200,
           height: 630,
+          alt: "Sarv Jagat - SJ Sitemap",
         },
       ],
       locale: "en_US",
       type: "website",
     },
+    twitter: {
+      card: "summary_large_image",
+      title: "Sitemap & Directory | Sarv Jagat - SJ",
+      description: "Complete website directory for Sarv Jagat - SJ.",
+      images: ["/Sarv Jagat_Logo_Red_11.png"],
+    },
+    robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large' } },
   }
 }
 

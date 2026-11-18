@@ -55,7 +55,7 @@ export default async function ElectronicsPage() {
         "Compliance with industry standards",
       ],
       icon: FlaskConical,
-      image: "/electronics-cleanroom.jpg",
+      image: "/sj-semiconductor-ind.jpg",
     },
     {
       title: "Semiconductor Manufacturing",
@@ -76,7 +76,7 @@ export default async function ElectronicsPage() {
         "Extended lifespan of sensitive equipment",
       ],
       icon: Cpu,
-      image: "/electronics-semiconductor-manufacturing.jpg",
+      image: "/sj-semiconductor-ind.jpg",
     },
     {
       title: "Electronic Component Assembly",
@@ -97,7 +97,7 @@ export default async function ElectronicsPage() {
         "Increased production throughput",
       ],
       icon: CircuitBoard,
-      image: "/electronics-component-assembly.jpg",
+      image: "/sj-semiconductor-ind.jpg",
     },
     {
       title: "Testing & Quality Control",
@@ -118,7 +118,7 @@ export default async function ElectronicsPage() {
         "Reduced testing cycle times",
       ],
       icon: TestTube,
-      image: "/electronics-testing.jpg",
+      image: "/sj-semiconductor-ind.jpg",
     },
   ]
 
@@ -130,7 +130,7 @@ export default async function ElectronicsPage() {
       solution: "Implemented SJ's ultra-clean, oil-free compressed air system with advanced filtration and drying.",
       results: ["Achieved a 95% reduction in contamination-related defects and a 15% increase in product yield."],
       savings: "₹2.5 Crore annually",
-      image: "/case-study-silicon-innovations.jpg",
+      image: "/sj-semiconductor-ind.jpg",
     },
     {
       company: "ElectroTech Solutions",
@@ -138,7 +138,7 @@ export default async function ElectronicsPage() {
       solution: "Installed SJ's Variable Speed Drive (VSD) compressors and precise pressure regulation systems.",
       results: ["Improved assembly accuracy by 20%", "Reduced energy consumption by 30%", "Increased production throughput."],
       savings: "₹1.2 Crore annually",
-      image: "/case-study-electrotech.jpg",
+      image: "/sj-semiconductor-ind.jpg",
     },
   ]
 
@@ -153,7 +153,7 @@ export default async function ElectronicsPage() {
         "Compact design for easy integration",
       ],
       powerRange: "0.75 kW - 22 kW",
-      image: "/oil-free-scroll-compressor.png",
+      image: "/sj-p-screw.jpg",
       href: "/products/oil-free-scroll-compressors",
     },
     {
@@ -165,7 +165,7 @@ export default async function ElectronicsPage() {
         "Available with various control options",
       ],
       powerRange: "10 CFM - 5000 CFM",
-      image: "/heatless-desiccant-dryer.png",
+      image: "/sj-filter.png",
       href: "/products/heatless-desiccant-dryers",
     },
     {
@@ -177,7 +177,7 @@ export default async function ElectronicsPage() {
         "Minimizes product contamination",
       ],
       powerRange: "Various flow rates",
-      image: "/high-efficiency-particulate-filter.png",
+      image: "/sj-filter.png",
       href: "/products/high-efficiency-particulate-filters",
     },
     {
@@ -189,7 +189,7 @@ export default async function ElectronicsPage() {
         "Suitable for various laboratory and industrial applications",
       ],
       powerRange: "0.5 kW - 15 kW",
-      image: "/oil-free-piston-compressor.png",
+      image: "/two-stage-piston-compressor.png",
       href: "/products/oil-free-piston-compressors",
     },
   ]

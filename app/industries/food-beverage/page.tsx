@@ -40,8 +40,8 @@ export default async function FoodBeveragePage() {
       requirements: ["ISO 8573-1 Class 0 air", "Hygienic design", "Moisture-free", "Reliable supply"],
       products: ["Oil-Free Rotary Screw Compressors", "Oil-Free Scroll Compressors", "Sterile Filters"],
       benefits: ["Ensures food safety", "Maintains product integrity", "Meets regulatory standards"],
-      icon: "/icons/food-processing.svg",
-      image: "/applications/food-beverage/food-processing-packaging.jpg",
+      icon: "/placeholder-logo.svg",
+      image: "/sj-ind-food-processing-industry.jpg",
     },
     {
       title: "Beverage Production & Bottling",
@@ -50,8 +50,8 @@ export default async function FoodBeveragePage() {
       requirements: ["Oil-free air", "Consistent pressure", "Dry air", "High purity"],
       products: ["High Pressure PET Compressors", "Oil-Free Piston Compressors", "Adsorption Dryers"],
       benefits: ["Optimizes bottling efficiency", "Ensures beverage quality", "Prevents contamination"],
-      icon: "/icons/beverage-production.svg",
-      image: "/applications/food-beverage/beverage-production-bottling.jpg",
+      icon: "/placeholder-logo.svg",
+      image: "/sj-ind-food-processing-industry.jpg",
     },
     {
       title: "Dairy & Brewing",
@@ -60,8 +60,8 @@ export default async function FoodBeveragePage() {
       requirements: ["100% Oil-free air", "Sterile filtration", "Consistent dew point", "Reliable operation"],
       products: ["Oil-Free Rotary Screw Compressors", "Centrifugal Compressors", "Sterile Filters"],
       benefits: ["Prevents bacterial growth", "Ensures product purity", "Reduces spoilage"],
-      icon: "/icons/dairy-brewing.svg",
-      image: "/applications/food-beverage/dairy-brewing.jpg",
+      icon: "/placeholder-logo.svg",
+      image: "/sj-ind-food-processing-industry.jpg",
     },
     {
       title: "Pneumatic Conveying",
@@ -70,8 +70,8 @@ export default async function FoodBeveragePage() {
       requirements: ["High volume air", "Contamination-free", "Energy efficient", "Low noise"],
       products: ["Low Pressure Blowers", "Rotary Screw Compressors", "Air Receivers"],
       benefits: ["Reduces manual handling", "Improves hygiene", "Increases operational efficiency"],
-      icon: "/icons/conveying.svg",
-      image: "/applications/food-beverage/pneumatic-conveying.jpg",
+      icon: "/placeholder-logo.svg",
+      image: "/sj-ind-food-processing-industry.jpg",
     },
   ]
 
@@ -108,7 +108,7 @@ export default async function FoodBeveragePage() {
       results:
         "PureFoods Inc. achieved full compliance with stringent food safety regulations, eliminated contamination risks, and significantly improved product shelf life. The new system also led to a 15% reduction in energy consumption due to optimized compressor efficiency.",
       savings: "20% reduction in product recalls and waste.",
-      image: "/case-studies/food-beverage/purefoods-inc.jpg",
+      image: "/sj-food-ind.jpg",
     },
     {
       company: "AquaVita Beverages",
@@ -119,7 +119,7 @@ export default async function FoodBeveragePage() {
       results:
         "AquaVita Beverages saw a remarkable 25% decrease in energy costs and a 10% increase in bottling line efficiency. The reliable air supply minimized downtime, allowing them to meet increased market demand and improve overall profitability.",
       savings: "$75,000 annual energy savings.",
-      image: "/case-studies/food-beverage/aquavita-beverages.jpg",
+      image: "/sj-food-ind.jpg",
     },
   ]
 
@@ -133,7 +133,7 @@ export default async function FoodBeveragePage() {
         "Hygienic stainless steel construction",
       ],
       powerRange: "7.5-350 HP",
-      image: "/products/food-grade-compressors.jpg",
+      image: "/sj-p-screw.jpg",
       href: "/products/food-grade-compressors",
     },
     {
@@ -145,7 +145,7 @@ export default async function FoodBeveragePage() {
         "Low maintenance design",
       ],
       powerRange: "15-500 HP",
-      image: "/products/pet-bottle-blowers.jpg",
+      image: "/sj-ind-pet-water-bottle-production.jpg",
       href: "/products/pet-bottle-blowers",
     },
     {
@@ -157,7 +157,7 @@ export default async function FoodBeveragePage() {
         "Automated monitoring",
       ],
       powerRange: "All capacities",
-      image: "/products/sterile-air-systems.jpg",
+      image: "/sj-filter.png",
       href: "/products/sterile-air-systems",
     },
     {
@@ -169,7 +169,7 @@ export default async function FoodBeveragePage() {
         "Low noise operation",
       ],
       powerRange: "10-250 HP",
-      image: "/products/dairy-processing-compressors.jpg",
+      image: "/sj-ind-food-processing-industry.jpg",
       href: "/products/dairy-processing-compressors",
     },
   ]
@@ -179,25 +179,25 @@ export default async function FoodBeveragePage() {
       title: "Food Safety Compliance",
       value: "100%",
       description: "Achieve and maintain the highest food safety standards (HACCP, FDA, ISO 22000) with certified oil-free air.",
-      icon: "/icons/compliance.svg",
+      icon: "/placeholder-logo.svg",
     },
     {
       title: "Energy Cost Reduction",
       value: "Up to 30%",
       description: "Significant savings on operational costs through energy-efficient compressor technologies and optimized air systems.",
-      icon: "/icons/energy-savings.svg",
+      icon: "/placeholder-logo.svg",
     },
     {
       title: "Product Shelf Life Extension",
       value: "15%",
       description: "Extend the freshness and quality of perishable goods by preventing contamination from compressed air.",
-      icon: "/icons/shelf-life.svg",
+      icon: "/placeholder-logo.svg",
     },
     {
       title: "Production Uptime Improvement",
       value: "20%",
       description: "Minimize downtime and ensure continuous operation with reliable, robust, and low-maintenance air solutions.",
-      icon: "/icons/uptime.svg",
+      icon: "/placeholder-logo.svg",
     },
   ]
 

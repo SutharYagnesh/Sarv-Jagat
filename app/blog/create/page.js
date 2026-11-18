@@ -9,7 +9,7 @@ export const metadata = {
     title: "Share Your Industrial Insights | Sarv Jagat Corporation Blog",
     description:
       "Share your thoughts and insights about industrial air compressors and manufacturing processes with the community.",
-    images: ["/blog-create-hero.png"],
+    images: ["/sj-blog.png"],
   },
 }
 

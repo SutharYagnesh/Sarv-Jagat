@@ -44,7 +44,7 @@ export default async function AutomotivePage() {
       products: ["Oil-Free Screw Compressors", "Refrigerated Air Dryers", "Multi-stage Filtration"],
       benefits: ["Perfect paint finish", "Reduced defects", "Lower rework costs"],
       icon: Paintbrush,
-      image: "/automotive-spray-painting.png",
+      image: "/sj-automotive-ind.jpg",
     },
     {
       title: "Pneumatic Tools Operation",
@@ -53,7 +53,7 @@ export default async function AutomotivePage() {
       products: ["Fixed Speed Screw Compressors", "Air Receiver Tanks", "Inline Filters"],
       benefits: ["Consistent tool performance", "Reduced maintenance", "Higher productivity"],
       icon: Wrench,
-      image: "/automotive-pneumatic-tools.png",
+      image: "/sj-automotive-ind.jpg",
     },
     {
       title: "Assembly Line Operations",
@@ -62,7 +62,7 @@ export default async function AutomotivePage() {
       products: ["Variable Speed Drive Compressors", "Smart Control Systems", "Duplex Systems"],
       benefits: ["Energy savings up to 35%", "Reduced downtime", "Flexible operation"],
       icon: Factory,
-      image: "/automotive-assembly-line.png",
+      image: "/SJ_welding-arm-on-automobile-production-_AUTOMOTIVE.jpg.webp",
     },
     {
       title: "Tire Inflation & Testing",
@@ -71,7 +71,7 @@ export default async function AutomotivePage() {
       products: ["Multi-stage High Pressure Compressors", "Booster Systems", "Pressure Control Valves"],
       benefits: ["Faster testing cycles", "Improved safety", "Accurate pressure control"],
       icon: Car,
-      image: "/automotive-tire-testing.png",
+      image: "/sj-automotive-ind.jpg",
     },
   ]
 

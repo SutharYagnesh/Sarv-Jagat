@@ -103,7 +103,7 @@ export function ReciprocatingCompressors() {
             </div>
             <div className="text-center">
               <img
-                src="/placeholder-kd5bp.png"
+                src="/two-stage-piston-compressor.png"
                 alt="Reciprocating Air Compressor"
                 className="rounded-lg shadow-md mx-auto"
               />

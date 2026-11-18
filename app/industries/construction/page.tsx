@@ -44,7 +44,7 @@ export default async function ConstructionPage() {
       products: ["Portable Diesel Compressors", "High Pressure Piston Compressors", "Air Receiver Tanks"],
       benefits: ["Consistent power for tools", "Reduced downtime", "Enhanced operational efficiency"],
       icon: Wrench,
-      image: "/construction-heavy-equipment.png",
+      image: "/sj-ind-civil-infrastructure.jpg",
     },
     {
       title: "Concrete Batching & Mixing",
@@ -53,7 +53,7 @@ export default async function ConstructionPage() {
       products: ["Fixed Speed Screw Compressors", "Refrigerated Air Dryers", "Inline Filters"],
       benefits: ["Accurate material proportioning", "Improved concrete quality", "Reduced waste"],
       icon: Factory,
-      image: "/construction-concrete-mixing.png",
+      image: "/sj-ind-civil-infrastructure.jpg",
     },
     {
       title: "Road Construction & Paving",
@@ -62,7 +62,7 @@ export default async function ConstructionPage() {
       products: ["Portable Diesel Compressors", "High Pressure Compressors", "Air Tools"],
       benefits: ["Faster project completion", "Durable equipment performance", "Cost-effective operation"],
       icon: Mountain,
-      image: "/construction-road-paving.png",
+      image: "/sj-ind-civil-infrastructure.jpg",
     },
     {
       title: "Tunneling & Mining Support",
@@ -71,7 +71,7 @@ export default async function ConstructionPage() {
       products: ["High Pressure Screw Compressors", "Booster Compressors", "Specialized Air Treatment"],
       benefits: ["Efficient excavation", "Improved air quality in confined spaces", "Enhanced safety"],
       icon: Mountain,
-      image: "/construction-tunneling.png",
+      image: "/sj-ind-civil-infrastructure.jpg",
     },
   ]
 
@@ -86,7 +86,7 @@ export default async function ConstructionPage() {
       results:
         "MegaBuild Construction reduced equipment downtime by 30%, improved project completion times by 15%, and significantly lowered their operational expenses by extending the lifespan of their tools.",
       savings: "30% equipment downtime reduction",
-      image: "/construction-casestudy-1.png",
+      image: "/sj-ind-civil-infrastructure.jpg",
     },
     {
       company: "Urban Infrastructure Developers",
@@ -97,7 +97,7 @@ export default async function ConstructionPage() {
       results:
         "Urban Infrastructure Developers achieved a 20% improvement in concrete consistency, reduced material waste by 10%, and enhanced overall plant efficiency, leading to higher quality structures and cost savings.",
       savings: "20% concrete consistency improvement",
-      image: "/construction-casestudy-2.png",
+      image: "/sj-ind-civil-infrastructure.jpg",
     },
   ]
 
@@ -112,7 +112,7 @@ export default async function ConstructionPage() {
         "Fuel-efficient operation",
       ],
       powerRange: "50 CFM - 1600 CFM",
-      image: "/portable-diesel-compressor.png",
+      image: "/sj-p-screw.jpg",
       href: "/products/portable-diesel-compressors",
     },
     {
@@ -124,7 +124,7 @@ export default async function ConstructionPage() {
         "Long service life",
       ],
       powerRange: "2.2 kW - 15 kW",
-      image: "/high-pressure-piston-compressor.png",
+      image: "/two-stage-piston-compressor.png",
       href: "/products/high-pressure-piston-compressors",
     },
     {
@@ -136,7 +136,7 @@ export default async function ConstructionPage() {
         "Low pressure drop",
       ],
       powerRange: "10 CFM - 2000 CFM",
-      image: "/refrigerated-air-dryer.png",
+      image: "/sj-filter.png",
       href: "/products/refrigerated-air-dryers",
     },
     {
@@ -148,7 +148,7 @@ export default async function ConstructionPage() {
         "Enhances system efficiency and longevity",
       ],
       powerRange: "300 L - 10,000 L",
-      image: "/air-receiver.png",
+      image: "/sj-p-screw.jpg",
       href: "/products/air-receivers",
     },
   ]

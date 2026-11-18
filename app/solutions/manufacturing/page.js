@@ -11,7 +11,7 @@ export const metadata = {
     title: "Manufacturing Solutions | Sarv Jagat Corporation",
     description:
       "Specialized compressed air solutions for manufacturing industries with reliable performance and energy efficiency.",
-    images: ["/manufacturing-facility.png"],
+    images: ["/sj-process implement-metal fabrication-ind.jpg"],
   },
 }
 
@@ -24,7 +24,7 @@ export default function ManufacturingSolutionPage() {
         title="Manufacturing Solutions"
         description="Powering production lines with reliable compressed air solutions. Our industrial-grade compressors ensure consistent performance for assembly operations, pneumatic tools, and automated systems."
         breadcrumbItems={breadcrumbItems}
-        backgroundImage="/manufacturing-production-line.png"
+        backgroundImage="/sj-process implement-metal fabrication-ind.jpg"
       />
       <ManufacturingSolution />
       <CaseStudies industry="manufacturing" />

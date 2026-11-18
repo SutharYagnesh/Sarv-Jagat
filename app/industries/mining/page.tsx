@@ -44,7 +44,7 @@ export default async function MiningPage() {
       products: ["High Pressure Screw Compressors", "Portable Diesel Compressors", "Booster Compressors"],
       benefits: ["Efficient rock excavation", "Faster drilling cycles", "Reduced operational costs"],
       icon: Drill,
-      image: "/mining-drilling.png",
+      image: "/SJ-MINING-PHOTO.jpg",
     },
     {
       title: "Material Handling & Conveying",
@@ -53,7 +53,7 @@ export default async function MiningPage() {
       products: ["Fixed Speed Screw Compressors", "Variable Speed Drive Compressors", "Dust Collectors"],
       benefits: ["Efficient material movement", "Improved air quality", "Reduced manual labor"],
       icon: Loader,
-      image: "/mining-material-handling.png",
+      image: "/SJ-MINING-PHOTO.jpg",
     },
     {
       title: "Ventilation & Safety",
@@ -62,7 +62,7 @@ export default async function MiningPage() {
       products: ["Oil-Free Compressors", "High Pressure Compressors", "Air Treatment Systems"],
       benefits: ["Enhanced worker safety", "Improved air quality in confined spaces", "Compliance with regulations"],
       icon: AirVent,
-      image: "/mining-ventilation.png",
+      image: "/SJ-MINING-PHOTO.jpg",
     },
     {
       title: "Crushing & Screening",
@@ -71,7 +71,7 @@ export default async function MiningPage() {
       products: ["Heavy-Duty Piston Compressors", "Fixed Speed Screw Compressors", "Air Receivers"],
       benefits: ["Efficient material processing", "Reduced wear and tear on equipment", "Consistent output"],
       icon: Hammer,
-      image: "/mining-crushing.png",
+      image: "/SJ-MINING-PHOTO.jpg",
     },
   ]
 
@@ -86,7 +86,7 @@ export default async function MiningPage() {
       results:
         "RockSolid Mining achieved a 25% increase in drilling efficiency, reduced fuel consumption by 15%, and extended the lifespan of their pneumatic tools by 30%, leading to substantial cost savings and improved productivity.",
       savings: "25% drilling efficiency increase",
-      image: "/mining-casestudy-1.png",
+      image: "/SJ-MINING-PHOTO.jpg",
     },
     {
       company: "QuarryKing Aggregates",
@@ -97,7 +97,7 @@ export default async function MiningPage() {
       results:
         "QuarryKing Aggregates improved material consistency by 20%, reduced airborne dust by 40%, and enhanced overall plant safety, resulting in higher quality aggregates and a healthier working environment.",
       savings: "20% material consistency improvement",
-      image: "/mining-casestudy-2.png",
+      image: "/SJ-MINING-PHOTO.jpg",
     },
   ]
 
@@ -111,7 +111,7 @@ export default async function MiningPage() {
         "Available in various capacities",
       ],
       powerRange: "75 kW - 355 kW",
-      image: "/high-pressure-screw-compressor.png",
+      image: "/SJ_COM_MULTISTAGE_AIR-WATER COOLED_1.jpg",
       href: "/products/high-pressure-screw-compressors",
     },
     {
@@ -123,7 +123,7 @@ export default async function MiningPage() {
         "Easy to maintain and service",
       ],
       powerRange: "50 CFM - 1600 CFM",
-      image: "/portable-diesel-compressor.png",
+      image: "/sj-p-screw.jpg",
       href: "/products/portable-diesel-compressors",
     },
     {
@@ -135,7 +135,7 @@ export default async function MiningPage() {
         "Enhances productivity and efficiency",
       ],
       powerRange: "15 kW - 45 kW",
-      image: "/booster-compressor.png",
+      image: "/SJ_COM_BOOSTER_DO NOT KNOW.jpg",
       href: "/products/booster-compressors",
     },
     {
@@ -147,7 +147,7 @@ export default async function MiningPage() {
         "Extends equipment lifespan",
       ],
       powerRange: "Various flow rates",
-      image: "/air-treatment-system.png",
+      image: "/sj-filter.png",
       href: "/products/air-treatment-systems",
     },
   ]

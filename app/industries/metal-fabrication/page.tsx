@@ -43,7 +43,7 @@ export default async function MetalFabricationPage() {
       products: ["Oil-Free Screw Compressors", "Refrigerated Air Dryers", "Precision Filters"],
       benefits: ["Enhanced machining accuracy", "Reduced tool wear", "Extended machine lifespan"],
       icon: Wrench,
-      image: "/metal-cnc-vmc.png",
+      image: "/sj-process implement-metal fabrication-ind.jpg",
     },
     {
       title: "Sandblasting & Shot Peening",
@@ -52,7 +52,7 @@ export default async function MetalFabricationPage() {
       products: ["High Pressure Piston Compressors", "Desiccant Air Dryers", "Heavy-Duty Filters"],
       benefits: ["Efficient surface treatment", "Improved material strength", "Reduced processing time"],
       icon: Factory,
-      image: "/metal-sandblasting.png",
+      image: "/sj-process implement-metal fabrication-ind.jpg",
     },
     {
       title: "Plasma and Laser Cutting",
@@ -61,7 +61,7 @@ export default async function MetalFabricationPage() {
       products: ["Oil-Free Compressors", "High Pressure Screw Compressors", "Nitrogen Generators"],
       benefits: ["Superior cut quality", "Increased cutting speed", "Reduced dross and slag"],
       icon: Wrench,
-      image: "/metal-cutting.png",
+      image: "/sj-process implement-metal fabrication-ind.jpg",
     },
     {
       title: "Pneumatic Tools & Automation",
@@ -70,7 +70,7 @@ export default async function MetalFabricationPage() {
       products: ["Variable Speed Drive Compressors", "Air Receiver Tanks", "Inline Filters"],
       benefits: ["Optimized tool performance", "Reduced energy consumption", "Enhanced automation efficiency"],
       icon: Factory,
-      image: "/metal-pneumatic-tools.png",
+      image: "/sj-process implement-metal fabrication-ind.jpg",
     },
   ]
 
@@ -85,7 +85,7 @@ export default async function MetalFabricationPage() {
       results:
         "Precision Metalworks achieved a 15% improvement in machining accuracy, extended tool life by 25%, and reduced maintenance costs by 20%, leading to higher quality products and increased profitability.",
       savings: "20% maintenance cost reduction",
-      image: "/metal-casestudy-1.png",
+      image: "/sj-process implement-metal fabrication-ind.jpg",
     },
     {
       company: "Surface Solutions Inc.",
@@ -96,7 +96,7 @@ export default async function MetalFabricationPage() {
       results:
         "Surface Solutions Inc. saw a 30% increase in sandblasting efficiency, achieved more consistent and superior surface finishes, and reduced abrasive material consumption by 10%.",
       savings: "30% efficiency increase",
-      image: "/metal-casestudy-2.png",
+      image: "/sj-process implement-metal fabrication-ind.jpg",
     },
   ]
 
@@ -111,7 +111,7 @@ export default async function MetalFabricationPage() {
         "Reduced maintenance costs",
       ],
       powerRange: "15 kW - 250 kW",
-      image: "/oil-free-rotary-screw-compressor.png",
+      image: "/sj-p-screw.jpg",
       href: "/products/oil-free-rotary-screw-compressors",
     },
     {
@@ -123,7 +123,7 @@ export default async function MetalFabricationPage() {
         "Reliable performance in demanding environments",
       ],
       powerRange: "2.2 kW - 15 kW",
-      image: "/high-pressure-piston-compressor.png",
+      image: "/two-stage-piston-compressor.png",
       href: "/products/high-pressure-piston-compressors",
     },
     {
@@ -135,7 +135,7 @@ export default async function MetalFabricationPage() {
         "Low pressure drop",
       ],
       powerRange: "10 CFM - 2000 CFM",
-      image: "/refrigerated-air-dryer.png",
+      image: "/sj-filter.png",
       href: "/products/refrigerated-air-dryers",
     },
     {
@@ -147,7 +147,7 @@ export default async function MetalFabricationPage() {
         "Minimizes pressure drop",
       ],
       powerRange: "Various flow rates",
-      image: "/precision-filters.png",
+      image: "/sj-filter.png",
       href: "/products/precision-filters",
     },
   ]

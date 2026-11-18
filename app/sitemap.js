@@ -148,7 +148,12 @@ export default async function sitemap() {
 
   // Product pages (High Priority for Google Search, Lens & Shopping) with image extensions
   const productPages = products.map((product) => {
-    const rawImages = Array.isArray(product.images) ? product.images : [];
+    const rawImages = Array.isArray(product.images) 
+      ? product.images.filter(img => img && !img.includes('blob.vercel-storage')) 
+      : [];
+    if (rawImages.length === 0 && product.image && !product.image.includes('blob.vercel-storage')) {
+      rawImages.push(product.image);
+    }
     const validImages = rawImages
       .map((img) => toAbsoluteUrl(img, baseUrl))
       .filter(Boolean);
@@ -180,7 +185,8 @@ export default async function sitemap() {
 
   // Blog pages (Supplied items & case studies - High Priority for Google Search, Images & Shopping)
   const blogPages = blogs.map((post) => {
-    const rawList = [post.imageUrl, ...(Array.isArray(post.images) ? post.images : [])];
+    const rawList = [post.imageUrl, ...(Array.isArray(post.images) ? post.images : [])]
+      .filter(img => img && !img.includes('blob.vercel-storage'));
     const uniqueRaw = Array.from(new Set(rawList));
     const validImages = uniqueRaw
       .map((img) => toAbsoluteUrl(img, baseUrl))

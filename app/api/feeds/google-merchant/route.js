@@ -125,16 +125,19 @@ export async function GET() {
     const desc = cleanDescription(descText, rawTitle);
 
     const link = `${baseUrl}/products/${product.slug}`;
-    const primaryImage = `${baseUrl}/images/products/${product.slug}.png`;
+    const rawProdImg = (product.images && product.images.length > 0 && !product.images[0].includes('blob.vercel-storage'))
+      ? product.images[0]
+      : (product.image && !product.image.includes('blob.vercel-storage') ? product.image : null);
+    const primaryImage = rawProdImg ? getAbsoluteImageUrl(rawProdImg, baseUrl) : `${baseUrl}/Sarv%20Jagat_Logo_Red_11.png`;
     const category = product.category || "Air Compressors";
     const mpn = (product.modelNumber || product.slug || "SJ-PROD").substring(0, 70);
 
-    // Additional Images with SEO-friendly URLs
+    // Additional Images with direct URLs
     let additionalImagesXml = "";
     if (product.images && product.images.length > 1) {
-      product.images.slice(1, 10).forEach((img, idx) => {
-        if (img && !img.toLowerCase().includes('.svg')) {
-          const addImgUrl = `${baseUrl}/images/products/${product.slug}-img-${idx + 2}.png`;
+      product.images.slice(1, 10).forEach((img) => {
+        if (img && !img.toLowerCase().includes('.svg') && !img.includes('blob.vercel-storage')) {
+          const addImgUrl = getAbsoluteImageUrl(img, baseUrl);
           additionalImagesXml += `\n        <g:additional_image_link>${escapeXml(addImgUrl)}</g:additional_image_link>`;
         }
       });
@@ -241,15 +244,18 @@ export async function GET() {
     const desc = cleanDescription(fullBlogContent, rawTitle);
 
     const link = `${baseUrl}/blog/${blog.slug}`;
-    const primaryImage = `${baseUrl}/images/blog/${blog.slug}.jpg`;
+    const rawBlogImg = (blog.imageUrl && !blog.imageUrl.includes('blob.vercel-storage'))
+      ? blog.imageUrl
+      : (blog.images && blog.images.length > 0 && !blog.images[0].includes('blob.vercel-storage') ? blog.images[0] : null);
+    const primaryImage = rawBlogImg ? getAbsoluteImageUrl(rawBlogImg, baseUrl) : `${baseUrl}/Sarv%20Jagat_Logo_Red_11.png`;
     const category = blog.category || "Supplied Industrial Air Compressors";
 
-    // Additional Images with SEO-friendly URLs
+    // Additional Images with direct URLs
     let additionalImagesXml = "";
     if (blog.images && blog.images.length > 1) {
-      blog.images.slice(1, 10).forEach((img, idx) => {
-        if (img && !img.toLowerCase().includes('.svg')) {
-          const addImgUrl = `${baseUrl}/images/blog/${blog.slug}-img-${idx + 2}.jpg`;
+      blog.images.slice(1, 10).forEach((img) => {
+        if (img && !img.toLowerCase().includes('.svg') && !img.includes('blob.vercel-storage')) {
+          const addImgUrl = getAbsoluteImageUrl(img, baseUrl);
           additionalImagesXml += `\n        <g:additional_image_link>${escapeXml(addImgUrl)}</g:additional_image_link>`;
         }
       });

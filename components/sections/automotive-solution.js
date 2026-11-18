@@ -188,7 +188,7 @@ export function AutomotiveSolution() {
                 </ul>
                 <div className="mt-6">
                   <img
-                    src="/automotive-compressed-air.png"
+                    src="/sj-automotive-ind.jpg"
                     alt="Automotive Manufacturing Plant"
                     className="w-full h-48 object-cover rounded-lg"
                   />

@@ -62,10 +62,14 @@ export function HeroSection() {
           >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="/placeholder-ttai9.png"
+                src="/sj-main-page.png"
                 alt="Sarv Jagat - SJ - Modern Industrial Air Compressor Manufacturing Facility"
                 fetchPriority="high"
                 decoding="async"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/placeholder.jpg";
+                }}
                 className="w-full h-auto"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>

@@ -40,8 +40,8 @@ export default async function TextilePage() {
       requirements: ["High pressure", "Oil-free air", "Dry air", "Consistent flow"],
       products: ["High Pressure Compressors", "Adsorption Dryers", "Precision Filters"],
       benefits: ["Increased weaving speed", "Reduced fabric defects", "Lower maintenance for looms"],
-      icon: "/icons/loom.svg",
-      image: "/applications/textile/air-jet-looms.jpg",
+      icon: "/placeholder-logo.svg",
+      image: "/sj-textile-ind.jpg",
     },
     {
       title: "Spinning & Texturizing",
@@ -50,8 +50,8 @@ export default async function TextilePage() {
       requirements: ["Stable pressure", "Clean air", "Energy efficiency", "Reliability"],
       products: ["Rotary Screw Compressors", "Refrigerated Air Dryers", "Line Filters"],
       benefits: ["Improved yarn quality", "Reduced energy consumption", "Consistent production"],
-      icon: "/icons/spinning.svg",
-      image: "/applications/textile/spinning-texturizing.jpg",
+      icon: "/placeholder-logo.svg",
+      image: "/sj-textile-ind.jpg",
     },
     {
       title: "Dyeing & Finishing",
@@ -60,8 +60,8 @@ export default async function TextilePage() {
       requirements: ["Oil-free air", "Dry air", "Precise pressure control", "Contamination-free"],
       products: ["Oil-Free Scroll Compressors", "Membrane Dryers", "Sterile Filters"],
       benefits: ["Flawless color application", "Prevention of fabric stains", "Enhanced product appeal"],
-      icon: "/icons/dyeing.svg",
-      image: "/applications/textile/dyeing-finishing.jpg",
+      icon: "/placeholder-logo.svg",
+      image: "/sj-textile-ind.jpg",
     },
     {
       title: "Pneumatic Conveying",
@@ -70,8 +70,8 @@ export default async function TextilePage() {
       requirements: ["High volume air", "Reliable operation", "Energy efficiency", "Low noise"],
       products: ["Centrifugal Compressors", "Low Pressure Blowers", "Air Receivers"],
       benefits: ["Efficient material handling", "Reduced labor costs", "Improved plant cleanliness"],
-      icon: "/icons/conveying.svg",
-      image: "/applications/textile/pneumatic-conveying.jpg",
+      icon: "/placeholder-logo.svg",
+      image: "/sj-textile-ind.jpg",
     },
   ]
 
@@ -82,7 +82,7 @@ export default async function TextilePage() {
       solution: "Installed SJ High Pressure Compressors with advanced filtration and adsorption dryers, ensuring stable and clean air supply.",
       results: "Reduced loom downtime by 40% and improved fabric quality, leading to a 15% increase in production efficiency.",
       savings: "Annual savings of ₹12 Lakhs from reduced maintenance and increased output.",
-      image: "/case-studies/textile-weavemaster.jpg",
+      image: "/sj-textile-ind.jpg",
     },
     {
       company: "DyeTech Solutions",
@@ -90,7 +90,7 @@ export default async function TextilePage() {
       solution: "Implemented SJ 100% Oil-Free Compressors and sterile filters for all dyeing and finishing processes.",
       results: "Eliminated fabric contamination, resulting in zero defects related to air quality and a 20% improvement in color consistency.",
       savings: "Saved ₹8 Lakhs annually in reduced rework and material waste.",
-      image: "/case-studies/textile-dyetech.jpg",
+      image: "/sj-textile-ind.jpg",
     },
   ];
 
@@ -123,7 +123,7 @@ export default async function TextilePage() {
       description: "Essential for air jet looms, providing the high pressure and consistent flow required for efficient weaving.",
       features: ["Up to 40 bar pressure", "Energy-efficient", "Reliable operation"],
       powerRange: "15-75 HP",
-      image: "/products/high-pressure-compressor.png",
+      image: "/SJ_COM_MULTISTAGE_AIR-WATER COOLED_1.jpg",
       href: "/products/high-pressure-compressors",
     },
     {
@@ -131,7 +131,7 @@ export default async function TextilePage() {
       description: "Delivers 100% oil-free air, crucial for preventing contamination in dyeing, finishing, and spinning processes.",
       features: ["ISO 8573-1 Class 0 certified", "Low maintenance", "Quiet operation"],
       powerRange: "15-300 HP",
-      image: "/products/oil-free-rotary-screw-compressor.png",
+      image: "/sj-p-screw.jpg",
       href: "/products/oil-free-compressors",
     },
     {
@@ -139,7 +139,7 @@ export default async function TextilePage() {
       description: "Ensures ultra-dry air with very low dew points, vital for preventing moisture-related issues in textile production.",
       features: ["Pressure dew point -40°C to -70°C", "Energy saving options", "Compact design"],
       powerRange: "Various",
-      image: "/products/adsorption-dryer.png",
+      image: "/sj-filter.png",
       href: "/products/air-dryers",
     },
     {
@@ -147,7 +147,7 @@ export default async function TextilePage() {
       description: "Provides large volumes of oil-free air for major textile mills and pneumatic conveying systems.",
       features: ["High flow rates", "Exceptional efficiency", "Minimal vibration"],
       powerRange: "200-2000 HP",
-      image: "/products/centrifugal-compressor.png",
+      image: "/sj-screw-assemble.png",
       href: "/products/centrifugal-compressors",
     },
   ];
@@ -157,25 +157,25 @@ export default async function TextilePage() {
       metric: "Production Efficiency Increase",
       value: "15%+",
       description: "Through optimized air supply for looms and spinning machines",
-      icon: "/icons/efficiency.svg",
+      icon: "/placeholder-logo.svg",
     },
     {
       metric: "Energy Cost Reduction",
       value: "25%+",
       description: "With energy-efficient compressors and smart controls",
-      icon: "/icons/energy-savings.svg",
+      icon: "/placeholder-logo.svg",
     },
     {
       metric: "Fabric Quality Improvement",
       value: "20%+",
       description: "By ensuring oil-free and dry air for dyeing and finishing",
-      icon: "/icons/quality.svg",
+      icon: "/placeholder-logo.svg",
     },
     {
       metric: "Downtime Reduction",
       value: "30%+",
       description: "Due to reliable compressed air systems and proactive maintenance",
-      icon: "/icons/downtime.svg",
+      icon: "/placeholder-logo.svg",
     },
   ];
 

@@ -29,7 +29,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
     readTime: 5,
     author: {
       name: "Admin User",
-      avatar: "/professional-woman-diverse.png",
+      avatar: "/placeholder-user.jpg",
       bio: "Content administrator",
     },
   })

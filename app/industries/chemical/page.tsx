@@ -43,8 +43,8 @@ export default async function ChemicalPage() {
         requirements: ["High pressure", "Consistent flow", "Oil-free air (for sensitive materials)", "Reliability"],
         products: ["High Pressure Compressors", "Rotary Screw Compressors", "Air Receivers"],
         benefits: ["Reduced material handling costs", "Improved safety", "Minimized product contamination"],
-        icon: "/icons/conveying.svg",
-        image: "/applications/chemical/pneumatic-conveying.jpg",
+        icon: "/placeholder-logo.svg",
+        image: "/SJ-CHEMICAL-ind-oil-refinery-plant-tower-column-refinery-petrochemistry.jpg",
       },
       {
         title: "Instrumentation Air",
@@ -53,8 +53,8 @@ export default async function ChemicalPage() {
         requirements: ["Oil-free air", "Pressure dew point -40°C or lower", "Particulate-free", "Stable pressure"],
         products: ["Oil-Free Scroll Compressors", "Adsorption Dryers", "Precision Filters"],
         benefits: ["Accurate process control", "Reduced instrument maintenance", "Prevention of system corrosion"],
-        icon: "/icons/instrumentation.svg",
-        image: "/applications/chemical/instrumentation-air.jpg",
+        icon: "/placeholder-logo.svg",
+        image: "/SJ-CHEMICAL-ind-oil-refinery-plant-tower-column-refinery-petrochemistry.jpg",
       },
       {
         title: "Process Air",
@@ -63,8 +63,8 @@ export default async function ChemicalPage() {
         requirements: ["100% Oil-free air", "High purity", "Consistent quality", "Reliable supply"],
         products: ["Oil-Free Rotary Screw Compressors", "Centrifugal Compressors", "Sterile Filters"],
         benefits: ["Ensures product integrity", "Prevents batch contamination", "Meets regulatory standards"],
-        icon: "/icons/process-air.svg",
-        image: "/applications/chemical/process-air.jpg",
+        icon: "/placeholder-logo.svg",
+        image: "/SJ-CHEMICAL-ind-oil-refinery-plant-tower-column-refinery-petrochemistry.jpg",
       },
       {
         title: "Nitrogen Generation",
@@ -73,8 +73,8 @@ export default async function ChemicalPage() {
         requirements: ["Stable pressure", "Consistent flow", "Dry air", "Energy efficiency"],
         products: ["Rotary Screw Compressors", "Membrane Nitrogen Generators", "PSA Nitrogen Generators"],
         benefits: ["Cost-effective nitrogen supply", "Increased safety", "Reduced reliance on cylinders"],
-        icon: "/icons/nitrogen-generation.svg",
-        image: "/applications/chemical/nitrogen-generation.jpg",
+        icon: "/placeholder-logo.svg",
+        image: "/SJ-CHEMICAL-ind-oil-refinery-plant-tower-column-refinery-petrochemistry.jpg",
       },
     ];
 
@@ -86,7 +86,7 @@ export default async function ChemicalPage() {
         solution: "Implemented SJ 100% Oil-Free Compressors with multi-stage filtration and adsorption dryers.",
         results: "Achieved ISO 8573-1 Class 0 air quality, eliminating contamination risks and improving product yield by 15%.",
         savings: "Reduced product wastage and compliance costs by ₹20 Lakhs annually.",
-        image: "/case-studies/chemical-plant-purity.jpg",
+        image: "/SJ-CHEMICAL-ind-oil-refinery-plant-tower-column-refinery-petrochemistry.jpg",
       },
       {
         company: "ProcessFlow Innovations",
@@ -94,7 +94,7 @@ export default async function ChemicalPage() {
         solution: "Replaced old fixed-speed compressors with SJ Variable Speed Drive (VSD) Compressors and optimized air distribution.",
         results: "Reduced energy costs by 35% and increased system uptime by 90%, leading to smoother material handling.",
         savings: "Annual energy savings of ₹18 Lakhs and significant reduction in maintenance expenses.",
-        image: "/case-studies/chemical-conveying-efficiency.jpg",
+        image: "/SJ-CHEMICAL-ind-oil-refinery-plant-tower-column-refinery-petrochemistry.jpg",
       },
     ];
 
@@ -105,7 +105,7 @@ export default async function ChemicalPage() {
         description: "Provides 100% oil-free air crucial for sensitive chemical processes and instrumentation.",
         features: ["ISO 8573-1 Class 0 certified", "High efficiency", "Low maintenance"],
         powerRange: "15-300 HP",
-        image: "/products/oil-free-rotary-screw-compressor.png",
+        image: "/sj-p-screw.jpg",
         href: "/products/oil-free-compressors",
       },
       {
@@ -113,7 +113,7 @@ export default async function ChemicalPage() {
         description: "Ideal for pneumatic conveying and other applications requiring high pressure air.",
         features: ["Up to 40 bar pressure", "Robust design", "Continuous operation"],
         powerRange: "15-75 HP",
-        image: "/products/high-pressure-compressor.png",
+        image: "/SJ_COM_MULTISTAGE_AIR-WATER COOLED_1.jpg",
         href: "/products/high-pressure-compressors",
       },
       {
@@ -121,7 +121,7 @@ export default async function ChemicalPage() {
         description: "Ensures ultra-dry air with pressure dew points as low as -70°C, essential for instrumentation and process air.",
         features: ["Low dew point", "Energy saving options", "Reliable performance"],
         powerRange: "Various",
-        image: "/products/adsorption-dryer.png",
+        image: "/sj-filter.png",
         href: "/products/air-dryers",
       },
       {
@@ -129,7 +129,7 @@ export default async function ChemicalPage() {
         description: "Offers large volumes of oil-free air for major chemical plants and continuous processes.",
         features: ["High flow rates", "Exceptional efficiency", "Minimal vibration"],
         powerRange: "200-2000 HP",
-        image: "/products/centrifugal-compressor.png",
+        image: "/sj-screw-assemble.png",
         href: "/products/centrifugal-compressors",
       },
     ];
@@ -140,25 +140,25 @@ export default async function ChemicalPage() {
         metric: "Purity Achievement",
         value: "ISO Class 0",
         description: "For critical process air applications",
-        icon: "/icons/purity.svg",
+        icon: "/placeholder-logo.svg",
       },
       {
         metric: "Energy Savings",
         value: "30%+",
         description: "Average with VSD and oil-free systems",
-        icon: "/icons/energy-savings.svg",
+        icon: "/placeholder-logo.svg",
       },
       {
         metric: "Uptime Improvement",
         value: "99.9%",
         description: "Ensured by robust and reliable solutions",
-        icon: "/icons/uptime.svg",
+        icon: "/placeholder-logo.svg",
       },
       {
         metric: "Maintenance Cost Reduction",
         value: "25%",
         description: "Through extended service intervals and fewer breakdowns",
-        icon: "/icons/maintenance.svg",
+        icon: "/placeholder-logo.svg",
       },
     ];
 

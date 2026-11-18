@@ -10,7 +10,7 @@ export const metadata = {
   openGraph: {
     title: "Automotive Solutions | Sarv Jagat Corporation",
     description: "Compressed air solutions for automotive manufacturing, service centers, and repair shops.",
-    images: ["/automotive-manufacturing.png"],
+    images: ["/sj-automotive-ind.jpg"],
   },
 }
 
@@ -23,7 +23,7 @@ export default function AutomotiveSolutionPage() {
         title="Automotive Solutions"
         description="Comprehensive compressed air solutions for automotive manufacturing, painting operations, assembly lines, and service centers. Engineered for precision and reliability."
         breadcrumbItems={breadcrumbItems}
-        backgroundImage="/automotive-assembly-line.png"
+        backgroundImage="/SJ_welding-arm-on-automobile-production-_AUTOMOTIVE.jpg.webp"
       />
       <AutomotiveSolution />
       <CaseStudies industry="automotive" />

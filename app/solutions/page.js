@@ -38,7 +38,7 @@ export default function SolutionsPage() {
         title="Industry Solutions"
         description="Tailored compressed air solutions designed to meet the unique requirements of diverse industries. From manufacturing to pharmaceuticals, we deliver reliable, efficient, and cost-effective solutions."
         breadcrumbItems={breadcrumbItems}
-        backgroundImage="/industrial-facility-wide.png"
+        backgroundImage="/sj-main-page.png"
       />
       <IndustrySolutions />
       <SolutionsBenefits />

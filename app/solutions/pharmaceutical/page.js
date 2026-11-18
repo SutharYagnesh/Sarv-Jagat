@@ -11,7 +11,7 @@ export const metadata = {
     title: "Pharmaceutical Solutions | Sarv Jagat Corporation",
     description:
       "Medical-grade oil-free compressed air solutions for pharmaceutical manufacturing meeting FDA standards.",
-    images: ["/pharmaceutical-facility.png"],
+    images: ["/SJ-pharmaceutical-company-ind.jpg"],
   },
 }
 
@@ -24,7 +24,7 @@ export default function PharmaceuticalSolutionPage() {
         title="Pharmaceutical Solutions"
         description="Medical-grade oil-free compressed air systems designed for pharmaceutical manufacturing. Meeting FDA, cGMP, and ISO standards for clean air requirements in drug production and packaging."
         breadcrumbItems={breadcrumbItems}
-        backgroundImage="/pharmaceutical-clean-room.png"
+        backgroundImage="/SJ-pharmaceutical-company-ind.jpg"
       />
       <PharmaceuticalSolution />
       <CaseStudies industry="pharmaceutical" />
