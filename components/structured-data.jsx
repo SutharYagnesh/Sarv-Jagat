@@ -120,7 +120,7 @@ export function ProductSchema({ product }) {
   if (!product) return null
 
   const productUrl = `${BASE_URL}/products/${product.slug}`
-  const imageUrl = getAbsoluteImageUrl(product.image || product.images?.[0])
+  const imageUrl = product.slug ? `${BASE_URL}/images/products/${product.slug}.png` : getAbsoluteImageUrl(product.image || product.images?.[0])
   const priceVal = product.price && Number(product.price) > 0 ? Number(product.price).toFixed(2) : "1.00"
 
   const cleanSku = generateShortSku("SJ", product._id || product.id || product.slug, product.modelNumber);
@@ -270,7 +270,7 @@ export function SuppliedProductSchema({ item }) {
   if (!item) return null
 
   const itemUrl = `${BASE_URL}/blog/${item.slug}`
-  const imageUrl = getAbsoluteImageUrl(item.imageUrl || item.images?.[0])
+  const imageUrl = item.slug ? `${BASE_URL}/images/blog/${item.slug}.jpg` : getAbsoluteImageUrl(item.imageUrl || item.images?.[0])
 
   // Extract clean text from HTML content or excerpt
   const rawText = item.excerpt || (item.content ? item.content.replace(/<[^>]*>?/gm, "").substring(0, 500) : item.title)

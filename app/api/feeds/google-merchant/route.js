@@ -116,16 +116,17 @@ export async function GET() {
     const desc = cleanDescription(descText, rawTitle);
 
     const link = `${baseUrl}/products/${product.slug}`;
-    const primaryImage = getAbsoluteImageUrl(product.images?.[0] || product.image, baseUrl);
+    const primaryImage = `${baseUrl}/images/products/${product.slug}.png`;
     const category = product.category || "Air Compressors";
     const mpn = (product.modelNumber || product.slug || "SJ-PROD").substring(0, 70);
 
-    // Additional Images
+    // Additional Images with SEO-friendly URLs
     let additionalImagesXml = "";
     if (product.images && product.images.length > 1) {
-      product.images.slice(1, 10).forEach((img) => {
+      product.images.slice(1, 10).forEach((img, idx) => {
         if (img && !img.toLowerCase().includes('.svg')) {
-          additionalImagesXml += `\n        <g:additional_image_link>${escapeXml(getAbsoluteImageUrl(img, baseUrl))}</g:additional_image_link>`;
+          const addImgUrl = `${baseUrl}/images/products/${product.slug}-img-${idx + 2}.png`;
+          additionalImagesXml += `\n        <g:additional_image_link>${escapeXml(addImgUrl)}</g:additional_image_link>`;
         }
       });
     }
@@ -219,14 +220,16 @@ export async function GET() {
     const desc = cleanDescription(fullBlogContent, rawTitle);
 
     const link = `${baseUrl}/blog/${blog.slug}`;
-    const primaryImage = getAbsoluteImageUrl(blog.imageUrl || blog.images?.[0], baseUrl);
+    const primaryImage = `${baseUrl}/images/blog/${blog.slug}.jpg`;
     const category = blog.category || "Supplied Industrial Air Compressors";
 
+    // Additional Images with SEO-friendly URLs
     let additionalImagesXml = "";
     if (blog.images && blog.images.length > 1) {
-      blog.images.slice(1, 10).forEach((img) => {
+      blog.images.slice(1, 10).forEach((img, idx) => {
         if (img && !img.toLowerCase().includes('.svg')) {
-          additionalImagesXml += `\n        <g:additional_image_link>${escapeXml(getAbsoluteImageUrl(img, baseUrl))}</g:additional_image_link>`;
+          const addImgUrl = `${baseUrl}/images/blog/${blog.slug}-img-${idx + 2}.jpg`;
+          additionalImagesXml += `\n        <g:additional_image_link>${escapeXml(addImgUrl)}</g:additional_image_link>`;
         }
       });
     }
