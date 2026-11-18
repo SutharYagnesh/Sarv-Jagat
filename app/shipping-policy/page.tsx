@@ -53,7 +53,7 @@ export default function ShippingPolicyPage() {
               <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600 mb-2">
                 <Truck className="w-5 h-5" />
               </div>
-              <CardTitle className="text-lg">Pan-India Transit</CardTitle>
+              <CardTitle className="text-lg">Domestic Transit</CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-gray-600">
               <strong>2 to 15 Working Days</strong>: Domestic road freight across India depending on geographical corridor, state borders, and industrial hub proximity.
@@ -68,7 +68,7 @@ export default function ShippingPolicyPage() {
               <CardTitle className="text-lg">Worldwide Export</CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-gray-600">
-              <strong>25 to 35 Working Days</strong>: Global maritime and multimodal export logistics, subject to destination port schedules and customs clearance.
+              <strong>25 to 35 Working Days</strong>: Global maritime and multimodal export logistics, serving industrial clients worldwide with international customs clearance.
             </CardContent>
           </Card>
         </div>
@@ -97,7 +97,7 @@ export default function ShippingPolicyPage() {
 
           <section>
             <h2 className="text-xl font-serif font-bold text-gray-800 border-b border-gray-200 pb-3 mb-4">
-              2. Domestic Transit Schedules (Pan-India: 2 to 15 Working Days)
+              2. Domestic Transit Schedules (2 to 15 Working Days)
             </h2>
             <p className="text-gray-600 leading-relaxed text-sm mb-3">
               Road transportation across India is managed in collaboration with established industrial transport networks (such as V-Trans, TCI Freight, Safexpress, or dedicated full-truckload carriers):

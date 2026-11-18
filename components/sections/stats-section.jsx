@@ -18,9 +18,9 @@ const stats = [
   },
   {
     icon: Globe,
-    value: "15+",
-    label: "States Served",
-    description: "Pan-India presence",
+    value: "25+",
+    label: "Global Reach",
+    description: "Worldwide export & service",
   },
   {
     icon: Zap,
@@ -43,7 +43,7 @@ export function StatsSection() {
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Trusted by Industry Leaders</h2>
           <p className="text-lg text-primary-foreground/80 max-w-3xl mx-auto">
-            Sarv Jagat Corporation's commitment to excellence has earned us the trust of companies across India. Here
+            Sarv Jagat Corporation's commitment to engineering excellence has earned us the trust of manufacturing companies worldwide. Here
             are the numbers that speak to our success and reliability.
           </p>
         </motion.div>

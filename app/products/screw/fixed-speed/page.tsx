@@ -97,7 +97,7 @@ export default function FixedSpeedScrewPage() {
     "100% SJBrand design, engineering & manufacturing",
     "Supported by ISO 9001:2015 certified quality systems",
     "Energy-efficient and cost-effective for stable air demand",
-    "After-sales support, AMC, and spares across India",
+    "After-sales support, AMC, and genuine spare parts worldwide",
     "Proven in rugged field conditions across industries",
     "Ready for 24x7 operation with reliable air delivery",
   ]

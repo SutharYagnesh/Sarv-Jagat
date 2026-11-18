@@ -118,7 +118,7 @@ export default function TermsOfServicePage() {
                 <div>
                   <h3 className="text-lg font-semibold mb-3">Dispatch &amp; Freight Transportation</h3>
                   <p className="text-gray-700">
-                    Shipments are scheduled for dispatch on the day material becomes available upon completion of quality assurance and factory load testing. Pan-India road transport transit spans <strong>2 to 15 working days</strong>, and international worldwide freight requires <strong>25 to 35 working days</strong>, subject to shipping schedules and regional customs clearance.
+                    Shipments are scheduled for dispatch on the day material becomes available upon completion of quality assurance and factory load testing. Domestic road transport transit spans <strong>2 to 15 working days</strong>, and international worldwide export freight requires <strong>25 to 35 working days</strong>, subject to shipping schedules and regional customs clearance.
                   </p>
                 </div>
               </CardContent>

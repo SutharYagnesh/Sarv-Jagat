@@ -29,7 +29,7 @@ const benefits = [
   {
     icon: Clock,
     title: "24/7 Support",
-    description: "Round-the-clock technical support and emergency service across India.",
+    description: "Round-the-clock technical support, genuine spare parts dispatch, and emergency service worldwide.",
   },
   {
     icon: CheckCircle,

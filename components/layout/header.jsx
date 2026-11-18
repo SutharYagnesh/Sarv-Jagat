@@ -47,7 +47,7 @@ const defaultNavigation = {
   ],
   company: [
     { name: "About Us", href: "/about", description: "Our company story and values" },
-    { name: "Authorized Dealers", href: "/dealers", description: "Find our authorized dealers and partner network across India" },
+    { name: "Authorized Dealers & Global Network", href: "/dealers", description: "Find our authorized dealers and worldwide partner network" },
     { name: "Careers", href: "/careers", description: "Join our growing team" },
     { name: "Contact", href: "/contact", description: "Get in touch with us" },
   ],

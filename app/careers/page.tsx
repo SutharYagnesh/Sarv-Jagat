@@ -67,7 +67,7 @@ export default function CareersPage() {
       id: 2,
       title: "Service Technician",
       department: "Service",
-      location: "Pan India",
+      location: "India & Global",
       type: "Full-time",
       experience: "2-5 years",
       salary: "₹4-7 LPA",
@@ -231,7 +231,7 @@ export default function CareersPage() {
               Join <span className="text-red-400">Sarv Jagat</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed">
-              Build your career with India's leading compressed air solutions provider. Grow with us and make a
+              Build your career with a leading compressed air solutions manufacturer & worldwide exporter. Grow with us and make a
               difference in industrial innovation.
             </p>
             <div className="flex flex-wrap justify-center gap-6 text-lg">

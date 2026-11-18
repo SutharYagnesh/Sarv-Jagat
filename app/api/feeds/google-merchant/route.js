@@ -26,7 +26,7 @@ function formatSpecValue(val, unit) {
 
 function cleanDescription(text, fallbackTitle = "Industrial Air Compressor") {
   if (!text) {
-    return `${fallbackTitle} by Sarv Jagat Corporation. High-performance, energy-efficient industrial air compressor engineered for continuous heavy-duty industrial operation with ISO-standard quality, factory warranty, and nationwide support.`;
+    return `${fallbackTitle} by Sarv Jagat Corporation. High-performance, energy-efficient industrial air compressor engineered for continuous heavy-duty industrial operation with ISO-standard quality, factory warranty, and worldwide international export support.`;
   }
   // Strip HTML tags, script, style, and normalize whitespace
   const clean = text
@@ -167,22 +167,22 @@ export async function GET() {
     }
 
     // Compulsory Industrial Trust & Performance Details
-    addDetail("Industrial Trust & Quality", "Quality", "Premium Industrial Grade (Continuous Heavy-Duty 24x7 Operation)");
+    addDetail("Industrial Trust & Quality", "Quality", "Premium Industrial Grade (Continuous Heavy-Duty 24x7 Operation Worldwide)");
     addDetail("Industrial Trust & Quality", "Energy", "Optimised High Efficiency (Low Specific Power Consumption / IE3 Motor)");
     addDetail("Industrial Trust & Quality", "Build", "Heavy-Duty Customizable Steel Frame & Soundproof Enclosure");
-    addDetail("Industrial Trust & Quality", "Spare Parts", "24/7 Readily Available Nationwide (Genuine Parts & Consumables)");
-    addDetail("Industrial Trust & Quality", "Location & Delivery", "Direct Factory Dispatch Across India (Fast Delivery Near You)");
-    addDetail("Industrial Trust & Quality", "Service & Support", "24/7 Pan-India Technical Consultation, Installation & AMC Support");
-    addDetail("Industrial Trust & Quality", "Warranty", "1-Year Comprehensive Manufacturer Warranty with Factory Service Support");
+    addDetail("Industrial Trust & Quality", "Spare Parts", "24/7 Readily Available Worldwide (Global Genuine Spares & Consumables)");
+    addDetail("Industrial Trust & Quality", "Location & Delivery", "Direct Factory Dispatch & Worldwide Export (Global Delivery Near You)");
+    addDetail("Industrial Trust & Quality", "Service & Support", "24/7 Worldwide Technical Consultation, International Installation & AMC Support");
+    addDetail("Industrial Trust & Quality", "Warranty", "1-Year Comprehensive Manufacturer Warranty with Global Service Support");
 
     // Product Highlights (Up to 6 Google Shopping bullet points)
     const highlights = [];
-    highlights.push("Brand: Sarv Jagat - SJ (Industrial Air Compressors Manufacturer)");
-    highlights.push("Quality: Premium heavy-duty industrial compressor engineered for 24/7 continuous operation");
+    highlights.push("Brand: Sarv Jagat - SJ (Global Industrial Air Compressors Manufacturer & Exporter)");
+    highlights.push("Quality: Premium heavy-duty industrial compressor engineered for 24/7 continuous operation worldwide");
     highlights.push("Energy: Optimised low power consumption with maximum Free Air Delivery (CFM)");
     highlights.push("Build: Robust customizable industrial steel enclosure with low vibration and quiet operation");
-    highlights.push("Spare Parts: 24/7 readily available genuine spare parts and maintenance consumables nationwide");
-    highlights.push("Location: Direct factory dispatch pan-India with fast delivery near you and 24/7 AMC service");
+    highlights.push("Spare Parts: 24/7 readily available genuine spare parts and maintenance consumables worldwide");
+    highlights.push("Location: Direct factory dispatch & worldwide export with global delivery near you and 24/7 AMC service");
 
     let highlightsXml = "";
     highlights.slice(0, 6).forEach((h) => {
@@ -208,10 +208,10 @@ export async function GET() {
         <g:custom_label_1>${escapeXml(category)}</g:custom_label_1>
         <g:custom_label_2>${escapeXml(product.modelNumber || (product.powerRating ? `${product.powerRating} HP` : "Industrial"))}</g:custom_label_2>
         <g:custom_label_3>Sarv Jagat - SJ</g:custom_label_3>
-        <g:custom_label_4>B2B Industrial Equipment</g:custom_label_4>
+        <g:custom_label_4>B2B Global Industrial Equipment</g:custom_label_4>
         <g:shipping>
           <g:country>IN</g:country>
-          <g:service>Standard Industrial Freight (Roadways Express)</g:service>
+          <g:service>Direct Factory Dispatch &amp; Worldwide Global Freight (Domestic &amp; Export)</g:service>
           <g:price>0.00 INR</g:price>
         </g:shipping>
         <g:tax>
@@ -271,17 +271,17 @@ export async function GET() {
     blogDetailsXml += `\n        <g:product_detail>\n          <g:section_name>Industrial Trust &amp; Quality</g:section_name>\n          <g:attribute_name>Quality</g:attribute_name>\n          <g:attribute_value>Premium Industrial Grade</g:attribute_value>\n        </g:product_detail>`;
     blogDetailsXml += `\n        <g:product_detail>\n          <g:section_name>Industrial Trust &amp; Quality</g:section_name>\n          <g:attribute_name>Energy</g:attribute_name>\n          <g:attribute_value>Optimised High Efficiency</g:attribute_value>\n        </g:product_detail>`;
     blogDetailsXml += `\n        <g:product_detail>\n          <g:section_name>Industrial Trust &amp; Quality</g:section_name>\n          <g:attribute_name>Build</g:attribute_name>\n          <g:attribute_value>Heavy-Duty Customizable Steel Frame</g:attribute_value>\n        </g:product_detail>`;
-    blogDetailsXml += `\n        <g:product_detail>\n          <g:section_name>Industrial Trust &amp; Quality</g:section_name>\n          <g:attribute_name>Spare Parts</g:attribute_name>\n          <g:attribute_value>24/7 Readily Available Nationwide</g:attribute_value>\n        </g:product_detail>`;
-    blogDetailsXml += `\n        <g:product_detail>\n          <g:section_name>Industrial Trust &amp; Quality</g:section_name>\n          <g:attribute_name>Location &amp; Delivery</g:attribute_name>\n          <g:attribute_value>Direct Factory Dispatch Across India (Near You)</g:attribute_value>\n        </g:product_detail>`;
-    blogDetailsXml += `\n        <g:product_detail>\n          <g:section_name>Industrial Trust &amp; Quality</g:section_name>\n          <g:attribute_name>Service &amp; Support</g:attribute_name>\n          <g:attribute_value>24/7 Pan-India Technical Consultation &amp; Maintenance</g:attribute_value>\n        </g:product_detail>`;
+    blogDetailsXml += `\n        <g:product_detail>\n          <g:section_name>Industrial Trust &amp; Quality</g:section_name>\n          <g:attribute_name>Spare Parts</g:attribute_name>\n          <g:attribute_value>24/7 Readily Available Worldwide</g:attribute_value>\n        </g:product_detail>`;
+    blogDetailsXml += `\n        <g:product_detail>\n          <g:section_name>Industrial Trust &amp; Quality</g:section_name>\n          <g:attribute_name>Location &amp; Delivery</g:attribute_name>\n          <g:attribute_value>Direct Factory Dispatch &amp; Worldwide Export (Near You)</g:attribute_value>\n        </g:product_detail>`;
+    blogDetailsXml += `\n        <g:product_detail>\n          <g:section_name>Industrial Trust &amp; Quality</g:section_name>\n          <g:attribute_name>Service &amp; Support</g:attribute_name>\n          <g:attribute_value>24/7 Global Technical Consultation &amp; International Maintenance</g:attribute_value>\n        </g:product_detail>`;
 
     // Highlights for Blogs
     const blogHighlights = [
-      "Brand: Sarv Jagat - SJ (Industrial Air Compressors Manufacturer)",
-      "Supplied and Commissioned by Sarv Jagat Corporation",
-      "Quality: Premium industrial-grade compressed air system",
+      "Brand: Sarv Jagat - SJ (Global Industrial Air Compressors Manufacturer & Exporter)",
+      "Supplied and Commissioned by Sarv Jagat Corporation Worldwide",
+      "Quality: Premium industrial-grade compressed air system for global duty",
       "Build: Tailored and customized for specific industrial plant requirements",
-      "Parts & Service: 24/7 spare parts availability and responsive pan-India support",
+      "Parts & Service: 24/7 spare parts availability and responsive worldwide international support",
     ];
     let blogHighlightsXml = "";
     blogHighlights.forEach((h) => {
@@ -310,7 +310,7 @@ export async function GET() {
         <g:custom_label_4>Commissioned Projects</g:custom_label_4>
         <g:shipping>
           <g:country>IN</g:country>
-          <g:service>Standard Industrial Freight (Roadways Express)</g:service>
+          <g:service>Direct Factory Dispatch &amp; Worldwide Global Freight (Domestic &amp; Export)</g:service>
           <g:price>0.00 INR</g:price>
         </g:shipping>
         <g:tax>
@@ -327,7 +327,7 @@ export async function GET() {
   <channel>
     <title>Sarv Jagat Corporation - Industrial Air Compressors &amp; Equipment Product Feed</title>
     <link>${baseUrl}</link>
-    <description>Official real-time product and supplied industrial compressor feed for Google Shopping, Google Merchant Center, Meta Commerce, and B2B industrial marketplaces with detailed technical specifications and nationwide delivery.</description>
+    <description>Official real-time product and supplied industrial compressor feed for Google Shopping, Google Merchant Center, Meta Commerce, and global B2B industrial marketplaces with detailed technical specifications and worldwide delivery.</description>
     ${itemsXml.join("\n")}
   </channel>
 </rss>`;

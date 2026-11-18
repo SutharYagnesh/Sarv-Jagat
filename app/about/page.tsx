@@ -19,7 +19,7 @@ export default function AboutPage() {
   const milestones = [
     { year: "2024", event: "Sarv Jagat founded with vision to provide quality compressed air solutions" },
     { year: "2011", event: "Launched first indigenous screw air compressor series" },
-    { year: "2014", event: "Expanded to serve 500+ industrial clients across India" },
+    { year: "2014", event: "Expanded to serve 500+ industrial clients and established worldwide export channels" },
     { year: "2017", event: "Introduced oil-free compressor technology for pharmaceutical industry" },
     { year: "2020", event: "Achieved ISO 9001:2015 certification for quality management" },
     { year: "2022", event: "Launched energy-efficient VSD compressor range" },
@@ -119,8 +119,7 @@ export default function AboutPage() {
                   <CardContent>
                     <p className="text-gray-600 leading-relaxed">
                       To provide innovative, energy-efficient compressed air solutions that empower industries to
-                      achieve operational excellence while contributing to sustainable manufacturing practices across
-                      India.
+                      achieve operational excellence while contributing to sustainable manufacturing practices worldwide.
                     </p>
                   </CardContent>
                 </Card>
@@ -134,7 +133,7 @@ export default function AboutPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 leading-relaxed">
-                      To be India's most trusted partner in compressed air technology, recognized for innovation,
+                      To be a globally trusted partner in compressed air technology, recognized worldwide for innovation,
                       quality, and customer-centric solutions that drive industrial growth and environmental
                       sustainability.
                     </p>
@@ -215,8 +214,8 @@ export default function AboutPage() {
                     },
                     {
                       icon: <Building2 className="h-8 w-8 text-blue-600" />,
-                      title: "Pan-India Presence",
-                      description: "Service network across major industrial hubs in India",
+                      title: "Worldwide Reach & Global Export",
+                      description: "Direct worldwide export and global service network across international industrial hubs",
                     },
                     {
                       icon: <CheckCircle className="h-8 w-8 text-blue-600" />,

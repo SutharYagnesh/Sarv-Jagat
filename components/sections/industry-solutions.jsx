@@ -69,7 +69,7 @@ export function IndustrySolutions() {
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
             Sarv Jagat Corporation delivers tailored compressed air solutions designed to meet the unique requirements
-            and challenges of diverse industries across India.
+            and operational challenges of diverse industries worldwide.
           </p>
         </motion.div>
 

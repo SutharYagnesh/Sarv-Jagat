@@ -41,7 +41,7 @@ export default function ServicesPage() {
         "Proper system integration",
         "Warranty compliance",
       ],
-      coverage: "Pan-India",
+      coverage: "Worldwide",
       timeline: "2-5 days",
       href: "/services/installation",
       color: "bg-primary",
@@ -79,7 +79,7 @@ export default function ServicesPage() {
         "Performance restoration",
       ],
       benefits: ["Minimal downtime", "Cost-effective repairs", "Restored performance", "Extended equipment life"],
-      coverage: "All Over India",
+      coverage: "Worldwide",
       timeline: "Same day response",
       href: "/services/",
       color: "bg-accent",
@@ -117,7 +117,7 @@ export default function ServicesPage() {
         "Warranty coverage",
       ],
       benefits: ["Guaranteed compatibility", "Quick availability", "Competitive pricing", "Quality assurance"],
-      coverage: "Pan-India Delivery",
+      coverage: "Worldwide Export & Delivery",
       timeline: "24-48 hours",
       href: "/services/spare-parts",
       color: "bg-primary",
@@ -422,10 +422,10 @@ export default function ServicesPage() {
                 <div className="mx-auto w-16 h-16 bg-muted-foreground rounded-full flex items-center justify-center mb-4">
                   <MapPin className="h-8 w-8 text-white" />
                 </div>
-                <CardTitle>Pan-India Network</CardTitle>
+                <CardTitle>Worldwide Export & Service Network</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-professional">50+ service centers across India for quick response and support</p>
+                <p className="text-professional">Comprehensive global support and service network for rapid worldwide response</p>
               </CardContent>
             </Card>
           </div>

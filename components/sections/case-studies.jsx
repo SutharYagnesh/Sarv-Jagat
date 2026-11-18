@@ -87,8 +87,8 @@ export function CaseStudies({ industry = "manufacturing" }) {
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">Success Stories</h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Discover how Sarv Jagat air compressor solutions have transformed operations for companies across India,
-            delivering measurable improvements in efficiency and reliability.
+            Discover how Sarv Jagat air compressor solutions have transformed operations for industrial companies worldwide,
+            delivering measurable improvements in energy efficiency, continuous productivity, and global reliability.
           </p>
         </motion.div>
 

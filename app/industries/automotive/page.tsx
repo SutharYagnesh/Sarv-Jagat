@@ -104,7 +104,7 @@ export default async function AutomotivePage() {
   // Industry statistics
   const industryStats = [
     { metric: "Automotive Companies", value: "500+", description: "Trust SJ compressors" },
-    { metric: "Installations", value: "2000+", description: "Across India" },
+    { metric: "Installations", value: "2000+", description: "Worldwide" },
     { metric: "Energy Savings", value: "35%", description: "Average with VSD systems" },
     { metric: "Uptime", value: "99.5%", description: "Average system availability" },
   ]

@@ -355,7 +355,7 @@ export default function IndustriesPage() {
                 <CardTitle>Complete Support</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-professional">Installation, maintenance, and 24/7 technical support nationwide</p>
+                <p className="text-professional">Installation, maintenance, and 24/7 technical support worldwide</p>
               </CardContent>
             </Card>
 

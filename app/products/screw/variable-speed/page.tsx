@@ -78,10 +78,10 @@ export default function VariableSpeedScrewPage() {
   const benefits = [
     "Energy Savings of up to 35% on electricity",
     "Low Starting Current reduces stress on electrical infrastructure",
-    "Designed and manufactured fully by Sarv Jagat in India",
+    "Engineered to international standards and manufactured by Sarv Jagat for worldwide export",
     "Uses SJBrand Airend and VFD Control Logic",
     "Backed by ISO 9001:2015 compliance",
-    "Technical support, spares & AMC available pan-India",
+    "Technical support, genuine spares & AMC available worldwide",
     "Available in base-mounted, tank-mounted, or full skid units",
   ]
 

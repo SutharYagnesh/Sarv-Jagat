@@ -47,7 +47,7 @@ export function TestimonialsSection() {
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">What Our Clients Say</h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Don't just take our word for it. Here's what industry leaders across India have to say about Sarv Jagat
+            Don't just take our word for it. Here's what industry leaders worldwide have to say about Sarv Jagat
             Corporation's products and services.
           </p>
         </motion.div>

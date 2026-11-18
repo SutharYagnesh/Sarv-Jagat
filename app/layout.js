@@ -5,16 +5,19 @@ import { Toaster } from "@/components/ui/toaster"
 import { Analytics } from "@vercel/analytics/next"
 import ConditionalLayoutWrapper from "./ConditionalLayoutWrapper"
 export const metadata = {
-  title: "Sarv Jagat Corporation | Premium Industrial Air Compressor Solutions",
+  title: "Sarv Jagat Corporation | Global Industrial Air Compressor Manufacturer & Worldwide Exporter",
   description:
-    "Leading manufacturer of industrial air compressors, Refrigerated Air Dryers, and compressed air solutions. Trusted by industries worldwide. Contact us at +919157487233 or contact@sarvjagat.com",
+    "Leading manufacturer and worldwide exporter of industrial air compressors, Refrigerated Air Dryers, and turnkey compressed air solutions. Serving heavy-duty industries worldwide with premium quality and 24/7 global support. Contact us at +919157487233 or contact@sarvjagat.com",
   generator: "Next.js",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://www.sarvjagat.com"),
   alternates: {
     canonical: "./",
   },
   keywords: [
-    "industrial air compressor",
+    "global air compressor exporter",
+    "worldwide industrial air compressor",
+    "industrial air compressor manufacturer",
+    "screw air compressor exporter",
     "air compressor manufacturer in india",
     "best industrial air compressor",
     "reciprocating air compressor",

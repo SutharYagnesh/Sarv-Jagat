@@ -93,7 +93,7 @@ export function OrganizationSchema() {
     url: BASE_URL,
     logo: DEFAULT_LOGO,
     description:
-      "Leading manufacturer of industrial air compressors, screw compressors, reciprocating compressors, refrigerated air dryers, and compressed air solutions for diverse industries across India.",
+      "Leading manufacturer and worldwide exporter of high-performance industrial air compressors, screw compressors, reciprocating compressors, refrigerated air dryers, and compressed air solutions for diverse industries worldwide.",
     address: {
       "@type": "PostalAddress",
       streetAddress:
@@ -107,7 +107,7 @@ export function OrganizationSchema() {
       "@type": "ContactPoint",
       telephone: "+91-9157487233",
       contactType: "sales and customer service",
-      areaServed: "IN",
+      areaServed: ["Worldwide", "Global", "IN"],
       availableLanguage: ["English", "Hindi", "Gujarati"],
     },
     sameAs: [
@@ -210,17 +210,17 @@ export function ProductSchema({ product }) {
   additionalProperty.push({
     "@type": "PropertyValue",
     name: "Spare Parts",
-    value: "24/7 Readily Available Nationwide",
+    value: "24/7 Readily Available Worldwide (Global Genuine Spares)",
   })
   additionalProperty.push({
     "@type": "PropertyValue",
     name: "Location & Delivery",
-    value: "Direct Factory Dispatch Across India (Near You)",
+    value: "Direct Factory Dispatch & Worldwide Export (Global Delivery Near You)",
   })
   additionalProperty.push({
     "@type": "PropertyValue",
     name: "Service & Support",
-    value: "24/7 Pan-India Technical Consultation, Installation & AMC",
+    value: "24/7 Worldwide Technical Consultation, International Installation & AMC",
   })
   additionalProperty.push({
     "@type": "PropertyValue",
@@ -467,17 +467,17 @@ export function SuppliedProductSchema({ item }) {
       {
         "@type": "PropertyValue",
         name: "Spare Parts",
-        value: "24/7 Readily Available Nationwide",
+        value: "24/7 Readily Available Worldwide",
       },
       {
         "@type": "PropertyValue",
         name: "Location & Delivery",
-        value: "Direct Factory Dispatch Across India (Near You)",
+        value: "Direct Factory Dispatch & Worldwide Export (Near You)",
       },
       {
         "@type": "PropertyValue",
         name: "Service & Support",
-        value: "24/7 Pan-India Technical Consultation & Maintenance",
+        value: "24/7 Global Technical Consultation & International Maintenance",
       },
     ],
   }

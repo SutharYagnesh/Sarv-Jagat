@@ -170,12 +170,12 @@ export default function DealersPage() {
     showLocateDealerTab: false,
     heroTitle: "Dealer Network",
     heroSubtitle:
-      "Find authorized Sarv Jagat dealers and service centers across India. Get expert support, genuine parts, and professional service from our trusted partners.",
+      "Find authorized Sarv Jagat dealers, worldwide distribution partners, and international service centers. Get expert support, genuine parts, and professional service from our trusted partners.",
     dealersCount: "200+ Dealers",
-    coverageText: "Pan-India Coverage",
+    coverageText: "Worldwide Network & Global Export",
     certifiedPartnersText: "Certified Partners",
     networkDescription:
-      "Our nationwide dealer network spans across all major industrial belts to provide prompt sales, installation, and after-sales support.",
+      "Our global distribution and dealer network spans across major industrial belts and international markets to provide prompt sales, installation, and after-sales support.",
     regionalCoverage: [
       { region: "North India", states: "Delhi, Punjab, Haryana, UP, Rajasthan", dealers: "45+" },
       { region: "West India", states: "Maharashtra, Gujarat, MP, Goa", dealers: "60+" },
@@ -224,7 +224,7 @@ export default function DealersPage() {
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed">
               {networkSettings.heroSubtitle ||
-                "Find authorized Sarv Jagat dealers and service centers across India. Get expert support, genuine parts, and professional service from our trusted partners."}
+                "Find authorized Sarv Jagat dealers, worldwide distribution partners, and international service centers. Get expert support, genuine parts, and professional service from our trusted partners."}
             </p>
             <div className="flex flex-wrap justify-center gap-6 text-lg">
               <div className="flex items-center gap-2">
@@ -233,7 +233,7 @@ export default function DealersPage() {
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-5 w-5 text-red-400" />
-                <span>{networkSettings.coverageText || "Pan-India Coverage"}</span>
+                <span>{networkSettings.coverageText || "Worldwide Network & Global Export"}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Award className="h-5 w-5 text-red-400" />
@@ -433,7 +433,7 @@ export default function DealersPage() {
               <div className="text-center mb-12">
                 <h3 className="text-3xl font-bold mb-4">Our Dealer Network</h3>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Comprehensive coverage across India with certified partners providing expert service and support
+                  Comprehensive global coverage with certified partners providing expert service and support worldwide
                 </p>
               </div>
 
@@ -566,7 +566,7 @@ export default function DealersPage() {
                 <CardHeader>
                   <CardTitle className="text-2xl text-center">Regional Coverage</CardTitle>
                   <CardDescription className="text-center">
-                    Our dealer network spans across all major industrial regions in India
+                    Our dealer and global export network spans across major industrial regions and international markets
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -601,7 +601,7 @@ export default function DealersPage() {
               <div className="text-center mb-12">
                 <h3 className="text-3xl font-bold mb-4">Become a Sarv Jagat Partner</h3>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Join India's leading compressed air solutions network and grow your business with our support
+                  Join our leading compressed air solutions network and expand your business worldwide with our support
                 </p>
               </div>
 
@@ -618,7 +618,7 @@ export default function DealersPage() {
                           icon: <Target className="h-6 w-6 text-blue-600" />,
                           title: "Market Leadership",
                           description:
-                            "Associate with India's trusted compressed air solutions brand with 25+ years of excellence",
+                            "Associate with a trusted global compressed air solutions brand with 25+ years of engineering excellence",
                         },
                         {
                           icon: <TrendingUp className="h-6 w-6 text-blue-600" />,

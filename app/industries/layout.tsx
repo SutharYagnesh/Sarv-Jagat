@@ -6,7 +6,7 @@ export const metadata = {
   },
   openGraph: {
     title: 'Industries | Sarv Jagat Corporation',
-    description: 'Explore how Sarv Jagat provides tailored compressed air solutions for various industries across India.',
+    description: 'Explore how Sarv Jagat provides tailored compressed air solutions for various industries worldwide.',
     url: 'https://www.sarvjagat.com/industries',
     type: 'website',
   },

@@ -19,7 +19,7 @@ const industries = [
   {
     name: "Automotive",
     description:
-      "Specialized air compressor equipment for automotive manufacturing, painting booths, tire inflation, and service centers across India.",
+      "Specialized air compressor equipment for automotive manufacturing, painting booths, tire inflation, and global industrial service centers worldwide.",
     icon: Car,
     href: "/solutions/automotive",
     image: "/placeholder.svg?key=auto01",
@@ -58,7 +58,7 @@ export function IndustriesSection() {
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">Industries We Serve</h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Trusted by leading companies across diverse industries in India. Our SJ air compressor solutions are
+            Trusted by leading manufacturing enterprises across diverse industries worldwide. Our SJ air compressor solutions are
             tailored to meet the unique compressed air requirements of each sector with reliable performance and energy
             efficiency.
           </p>

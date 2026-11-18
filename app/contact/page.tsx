@@ -144,7 +144,7 @@ export default function ContactPage() {
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-5 w-5 text-red-400" />
-                <span>Pan-India Presence</span>
+                <span>Worldwide Reach & Global Export</span>
               </div>
             </div>
           </div>
@@ -440,7 +440,7 @@ export default function ContactPage() {
                       {
                         question: "Do you provide on-site installation services?",
                         answer:
-                          "Yes, we provide complete installation and commissioning services by our certified technicians across India.",
+                          "Yes, we provide complete installation, commissioning, and technical setup services by our certified technicians and authorized global support partners worldwide.",
                       },
                       {
                         question: "What warranty do you offer on your products?",

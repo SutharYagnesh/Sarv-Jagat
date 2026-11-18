@@ -30,12 +30,12 @@ export default function AdminDealersPage() {
     showLocateDealerTab: false,
     heroTitle: 'Dealer Network',
     heroSubtitle:
-      'Find authorized Sarv Jagat dealers and service centers across India. Get expert support, genuine parts, and professional service from our trusted partners.',
+      'Find authorized Sarv Jagat dealers, worldwide distribution partners, and international service centers. Get expert support, genuine parts, and professional service from our trusted partners.',
     dealersCount: '200+ Dealers',
-    coverageText: 'Pan-India Coverage',
+    coverageText: 'Worldwide Network & Global Export',
     certifiedPartnersText: 'Certified Partners',
     networkDescription:
-      'Our nationwide dealer network spans across all major industrial belts to provide prompt sales, installation, and after-sales support.',
+      'Our global distribution and dealer network spans across major industrial belts and international markets to provide prompt sales, installation, and after-sales support.',
     regionalCoverage: [
       { region: 'North India', states: 'Delhi, Punjab, Haryana, UP, Rajasthan', dealers: '45+' },
       { region: 'West India', states: 'Maharashtra, Gujarat, MP, Goa', dealers: '60+' },
@@ -397,7 +397,7 @@ export default function AdminDealersPage() {
               type="text"
               value={settings.coverageText || ''}
               onChange={(e) => setSettings((prev) => ({ ...prev, coverageText: e.target.value }))}
-              placeholder="Pan-India Coverage"
+              placeholder="Worldwide Network & Global Export"
               className="w-full px-3 py-2 border rounded-lg text-sm font-semibold text-gray-800 focus:ring-2 focus:ring-red-500"
             />
           </div>

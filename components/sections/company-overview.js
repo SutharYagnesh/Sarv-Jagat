@@ -12,12 +12,12 @@ export function CompanyOverview() {
     {
       icon: Users,
       title: "Expert Team",
-      description: "50+ skilled engineers and technicians across India",
+      description: "50+ skilled engineers and industrial technicians worldwide",
     },
     {
       icon: Globe,
-      title: "Pan-India Reach",
-      description: "Serving customers across 15+ states with reliable service network",
+      title: "Global Reach & Worldwide Export",
+      description: "Serving industrial clients worldwide with reliable export logistics and global support",
     },
     {
       icon: CheckCircle,
@@ -47,10 +47,10 @@ export function CompanyOverview() {
               Building Industrial Excellence Since 1999
             </h2>
             <p className="text-lg text-gray-600 leading-relaxed">
-              Founded with a vision to provide reliable compressed air solutions to Indian industries, Sarv Jagat
-              Corporation has grown from a small workshop in Gujarat to a trusted name in industrial air compressors.
-              Our commitment to innovation, quality, and customer satisfaction has driven us to develop cutting-edge air
-              compression technologies that power industries across India.
+              Founded with a vision to provide world-class compressed air engineering, Sarv Jagat
+              Corporation has grown into a globally recognized manufacturer and exporter of heavy-duty industrial air compressors.
+              Our commitment to innovation, precision quality, and customer satisfaction drives us to develop cutting-edge
+              compression technologies that power manufacturing plants and heavy industries worldwide.
             </p>
           </div>
 
@@ -103,12 +103,12 @@ export function CompanyOverview() {
                 <div className="text-sm text-gray-600">Team Members</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-red-600 mb-2">15+</div>
-                <div className="text-sm text-gray-600">States Served</div>
+                <div className="text-3xl font-bold text-red-600 mb-2">25+</div>
+                <div className="text-sm text-gray-600">Countries & Regions Reached</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-red-600 mb-2">500+</div>
-                <div className="text-sm text-gray-600">Happy Customers</div>
+                <div className="text-3xl font-bold text-red-600 mb-2">2000+</div>
+                <div className="text-sm text-gray-600">Industrial Clients</div>
               </div>
             </div>
           </div>
