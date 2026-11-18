@@ -23,8 +23,6 @@ const defaultNavigation = {
       href: "/products",
       description: "Explore our complete range of industrial air compressors",
     },
-    { name: "Oil-Free Systems", href: "/products/oil-free", description: "Contamination-free air solutions" },
-    { name: "Specialized Solutions", href: "/products/specialized", description: "Custom engineered systems" },
   ],
   industries: [
     { name: "Automotive Industry", href: "/industries/automotive", description: "Comprehensive air solutions for automotive" },

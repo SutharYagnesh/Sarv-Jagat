@@ -36,8 +36,6 @@ export default async function SitemapPage() {
     ? categories.map(c => ({ title: c.name, href: `/products/category/${c.slug}` }))
     : [
       { title: "All Products", href: "/products" },
-      { title: "Oil-Free Systems", href: "/products/oil-free" },
-      { title: "Specialized Solutions", href: "/products/specialized" },
     ]
 
   const siteStructure = [

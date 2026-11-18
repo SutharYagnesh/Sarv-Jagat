@@ -45,9 +45,9 @@ export function Navigation() {
     {
       title: "Specialized Compressors",
       items: [
-        { name: "Booster High Pressure", href: "/products/specialized/booster" },
-        { name: "Vacuum Pumps", href: "/products/specialized/vacuum-pumps" },
-        { name: "Fully Assembled Systems", href: "/products/specialized/assembled-systems" },
+        { name: "Booster High Pressure", href: "/products" },
+        { name: "Vacuum Pumps", href: "/products" },
+        { name: "Fully Assembled Systems", href: "/products" },
       ],
     },
     {

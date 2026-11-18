@@ -33,7 +33,7 @@ export default async function sitemap() {
       .select("slug updatedAt publishedAt createdAt imageUrl images")
       .lean()
     categories = await Category.find({})
-      .select("slug updatedAt createdAt")
+      .select("slug updatedAt createdAt ogImage")
       .lean()
     catalogs = await Catalog.find({ status: { $regex: /^published$/i } })
       .select("slug updatedAt createdAt coverImage")
@@ -166,13 +166,17 @@ export default async function sitemap() {
     };
   });
 
-  // Category pages
-  const categoryPages = categories.map((category) => ({
-    url: `${baseUrl}/products/category/${category.slug}`,
-    lastModified: category.updatedAt ? new Date(category.updatedAt).toISOString() : currentDate,
-    changeFrequency: "weekly",
-    priority: 0.85,
-  }))
+  // Category pages (Live categories from Admin Panel synced to Google Search)
+  const categoryPages = categories.map((category) => {
+    const validOg = category.ogImage ? toAbsoluteUrl(category.ogImage, baseUrl) : null;
+    return {
+      url: `${baseUrl}/products/category/${category.slug}`,
+      lastModified: category.updatedAt ? new Date(category.updatedAt).toISOString() : currentDate,
+      changeFrequency: "weekly",
+      priority: 0.85,
+      ...(validOg ? { images: [validOg] } : {}),
+    };
+  });
 
   // Blog pages (Supplied items & case studies - High Priority for Google Search, Images & Shopping)
   const blogPages = blogs.map((post) => {

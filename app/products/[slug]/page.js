@@ -96,37 +96,49 @@ export async function generateMetadata({ params }) {
 
   if (!product) {
     return {
-      title: "Product Not Found",
+      title: "Product Not Found | Sarv Jagat - SJ",
     }
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sarvjagat.com";
+  const canonicalUrl = `${siteUrl}/products/${product.slug}`;
+  const brand = product.brand || 'Sarv Jagat - SJ';
+  
+  const title = product.seoTitle
+    ? (product.seoTitle.includes('Sarv Jagat') ? product.seoTitle : `${product.seoTitle} | ${brand}`)
+    : `${product.name} | ${brand}`;
+
+  const description = product.seoDescription || product.description || 
+    `Buy ${product.name} by ${brand}. High-performance industrial air compressor engineered for maximum reliability and efficiency.`;
+
   return {
-    title: product.seoTitle || `${product.name} | Industrial Equipment`,
-    description: product.seoDescription || product.description,
+    title,
+    description,
     alternates: {
-      canonical: `https://www.sarvjagat.com/products/${product.slug}`,
+      canonical: canonicalUrl,
     },
     openGraph: {
-      title: product.seoTitle || product.name,
-      description: product.seoDescription || product.description,
-      url: `https://www.sarvjagat.com/products/${product.slug}`,
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: brand,
       images: [
         {
           url: product.image,
           width: 800,
           height: 600,
-          alt: product.name,
+          alt: `${product.name} - ${brand}`,
         },
       ],
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: product.seoTitle || product.name,
-      description: product.seoDescription || product.description,
+      title,
+      description,
       images: [product.image],
     },
-    keywords: Array.isArray(product.seoKeywords) ? product.seoKeywords : (typeof product.seoKeywords === 'string' && product.seoKeywords ? product.seoKeywords.split(',') : [product.name, product.category, "Air Compressor", "Industrial Equipment", "Sarv Jagat"]),
+    keywords: Array.isArray(product.seoKeywords) ? product.seoKeywords : (typeof product.seoKeywords === 'string' && product.seoKeywords ? product.seoKeywords.split(',') : [product.name, product.category, "Air Compressor", "Industrial Equipment", "Sarv Jagat", "SJ"]),
     robots: {
       index: true,
       follow: true,
@@ -149,8 +161,47 @@ export default async function ProductPage({ params }) {
     notFound()
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sarvjagat.com";
+  const productUrl = `${siteUrl}/products/${product.slug}`;
+  const categoryUrl = product.categorySlug ? `${siteUrl}/products/category/${product.categorySlug}` : `${siteUrl}/products`;
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": siteUrl
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Products",
+        "item": `${siteUrl}/products`
+      },
+      ...(product.category ? [{
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.category,
+        "item": categoryUrl
+      }] : []),
+      {
+        "@type": "ListItem",
+        "position": product.category ? 4 : 3,
+        "name": product.name,
+        "item": productUrl
+      }
+    ]
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <ProductSchema product={product} />
       <ProductDetails product={product} />
       <RelatedProducts relatedProducts={relatedProducts} />

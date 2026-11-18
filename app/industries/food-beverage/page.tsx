@@ -205,7 +205,7 @@ export default async function FoodBeveragePage() {
                 variant="outline"
                 className="text-white border-white hover:bg-white hover:text-slate-900 bg-transparent"
               >
-                <Link href="/products/oil-free">View Food Grade Systems</Link>
+                <Link href="/products">View Products</Link>
               </Button>
             </div>
           </div>
