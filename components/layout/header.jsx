@@ -19,11 +19,10 @@ import { useRouter } from "next/navigation"
 const defaultNavigation = {
   products: [
     {
-      name: "Screw Air Compressors",
-      href: "/products/screw",
-      description: "High-efficiency rotary screw compressors",
+      name: "All Products",
+      href: "/products",
+      description: "Explore our complete range of industrial air compressors",
     },
-    { name: "Piston Compressors", href: "/products/piston", description: "Robust reciprocating compressors" },
     { name: "Oil-Free Systems", href: "/products/oil-free", description: "Contamination-free air solutions" },
     { name: "Specialized Solutions", href: "/products/specialized", description: "Custom engineered systems" },
   ],

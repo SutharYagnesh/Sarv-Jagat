@@ -183,7 +183,7 @@ export default async function TextilePage() {
                 variant="outline"
                 className="text-white border-white hover:bg-white hover:text-slate-900 bg-transparent"
               >
-                <Link href="/products/screw">View Screw Compressors</Link>
+                <Link href="/products">View Products</Link>
               </Button>
             </div>
           </div>

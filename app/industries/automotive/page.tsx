@@ -90,7 +90,7 @@ export default async function AutomotivePage() {
       description: "Ideal for assembly lines with varying air demand, providing significant energy savings",
       features: ["Up to 35% energy savings", "Smart load matching", "Soft start technology", "Remote monitoring"],
       powerRange: "10-200 HP",
-      href: "/products/screw/variable-speed",
+      href: "/products",
     },
     {
       name: "SJ High Pressure Systems",

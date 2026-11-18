@@ -35,8 +35,7 @@ export default async function SitemapPage() {
   const productChildren = categories.length > 0
     ? categories.map(c => ({ title: c.name, href: `/products/category/${c.slug}` }))
     : [
-      { title: "Screw Air Compressors", href: "/products/screw" },
-      { title: "Piston Compressors", href: "/products/piston" },
+      { title: "All Products", href: "/products" },
       { title: "Oil-Free Systems", href: "/products/oil-free" },
       { title: "Specialized Solutions", href: "/products/specialized" },
     ]
@@ -195,9 +194,9 @@ export default async function SitemapPage() {
             <CardContent>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <Button asChild variant="outline" className="h-auto p-4 flex flex-col gap-2 bg-transparent">
-                  <Link href="/products/screw">
+                  <Link href="/products">
                     <Package className="h-6 w-6" />
-                    <span>Screw Compressors</span>
+                    <span>All Products</span>
                   </Link>
                 </Button>
                 <Button asChild variant="outline" className="h-auto p-4 flex flex-col gap-2 bg-transparent">

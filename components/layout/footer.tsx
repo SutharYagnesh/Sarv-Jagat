@@ -16,8 +16,7 @@ export function Footer() {
 
   const [productLinks, setProductLinks] = useState(() => {
     return cachedFooterLinks || [
-      { name: "Screw Compressors", href: "/products/screw" },
-      { name: "Piston Compressors", href: "/products/piston" },
+      { name: "All Products", href: "/products" },
       { name: "Oil-Free Systems", href: "/products/oil-free" },
       { name: "Specialized Solutions", href: "/products/specialized" },
     ];
