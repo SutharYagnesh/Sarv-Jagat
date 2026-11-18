@@ -33,12 +33,16 @@ export function ProductCard({ product }) {
     }
   }
 
+  const displayImage = (product.images && product.images.length > 0 && !product.images[0].includes('blob.vercel-storage'))
+    ? product.images[0]
+    : (product.image && !product.image.includes('blob.vercel-storage') ? product.image : "/placeholder.svg");
+
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md overflow-hidden">
       <CardContent className="p-0">
         <div className="relative overflow-hidden">
           <img
-            src={product.image || "/placeholder.svg"}
+            src={displayImage}
             alt={product.name}
             loading="lazy"
             decoding="async"

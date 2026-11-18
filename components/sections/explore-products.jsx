@@ -50,7 +50,9 @@ export default async function ExploreProductsSection({ className = '' }) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product) => {
-            const image = product.images && product.images.length > 0 ? product.images[0] : (product.image || '/placeholder.svg');
+            const image = (product.images && product.images.length > 0 && !product.images[0].includes('blob.vercel-storage'))
+              ? product.images[0]
+              : (product.image && !product.image.includes('blob.vercel-storage') ? product.image : '/placeholder.svg');
             const plainDesc = stripHtml(product.description);
 
             return (

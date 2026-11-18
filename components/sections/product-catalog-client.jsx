@@ -54,12 +54,17 @@ export default function ProductCatalogClient({ categories }) {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
-                {visibleProducts.map((product, idx) => (
+                {visibleProducts.map((product, idx) => {
+                  const catProdImg = (product.images && product.images.length > 0 && !product.images[0].includes('blob.vercel-storage'))
+                    ? product.images[0]
+                    : (product.image && !product.image.includes('blob.vercel-storage') ? product.image : "/placeholder.svg");
+
+                  return (
                   <Card key={idx} className="flex flex-col hover:shadow-lg transition-shadow duration-300 w-full max-w-full overflow-hidden">
                     <div className="relative aspect-square p-4 flex items-center justify-center bg-gray-50 border-b">
                       <Link href={`/products/${product.slug}`} className="w-full h-full flex items-center justify-center">
                         <img
-                          src={product.image || "/placeholder.svg"}
+                          src={catProdImg}
                           alt={product.name}
                           onError={(e) => {
                             e.currentTarget.onerror = null;
@@ -81,7 +86,8 @@ export default function ProductCatalogClient({ categories }) {
                       </div>
                     </CardContent>
                   </Card>
-                ))}
+                  );
+                })}
               </div>
 
               {hasMore && (
