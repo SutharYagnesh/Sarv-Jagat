@@ -1,32 +1,21 @@
-import fs from 'fs/promises';
-import path from 'path';
-import mongoose from 'mongoose';
+import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Product from '@/lib/models/Product';
-import { getGridFSBucket } from '@/lib/gridfs';
 import { fetchWithCache } from '@/lib/memoryCache';
 
 export const dynamic = 'force-dynamic';
-
-function getFallbackBuffer() {
-  const fallbackPath = path.join(process.cwd(), 'public', 'Sarv Jagat_Logo_Red_11.png');
-  return fs.readFile(fallbackPath);
-}
 
 export async function GET(request, { params }) {
   try {
     const { filename } = await params;
     if (!filename) {
-      const fb = await getFallbackBuffer();
-      return new Response(fb, {
-        headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' },
-      });
+      return NextResponse.redirect(new URL('/Sarv Jagat_Logo_Red_11.png', request.url), 307);
     }
 
     // Strip extension (.png, .jpg, .jpeg, .webp, etc.)
     const cleanName = filename.replace(/\.(png|jpe?g|webp|gif|svg)$/i, '');
 
-    // Parse base slug and image index (e.g. "my-product-img-2" -> baseSlug: "my-product", index: 1)
+    // Parse base slug and image index
     let baseSlug = cleanName;
     let imageIndex = 0;
     const imgMatch = cleanName.match(/-img-(\d+)$/i);
@@ -36,31 +25,24 @@ export async function GET(request, { params }) {
     }
 
     // Fast in-memory cached product lookup
-    const product = await fetchWithCache(`seo_img_prod_${baseSlug}`, async () => {
+    const prod = await fetchWithCache(`seo_img_prod_${baseSlug}`, async () => {
       await connectDB();
       return await Product.findOne({ slug: baseSlug })
-        .select('images image title')
+        .select('image images title')
         .lean();
     }, 300);
 
     let rawImageUrl = null;
-    if (product) {
-      if (Array.isArray(product.images) && product.images.length > 0) {
-        rawImageUrl = product.images[imageIndex] || product.images[0];
-      } else if (product.image) {
-        rawImageUrl = product.image;
+    if (prod) {
+      if (imageIndex > 0 && Array.isArray(prod.images) && prod.images.length >= imageIndex) {
+        rawImageUrl = prod.images[imageIndex - 1] || prod.image;
+      } else {
+        rawImageUrl = prod.image || (Array.isArray(prod.images) && prod.images.length > 0 ? prod.images[0] : null);
       }
     }
 
-    // If no product image found, serve corporate high-res logo
     if (!rawImageUrl) {
-      const fb = await getFallbackBuffer();
-      return new Response(fb, {
-        headers: {
-          'Content-Type': 'image/png',
-          'Cache-Control': 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400',
-        },
-      });
+      return NextResponse.redirect(new URL('/Sarv Jagat_Logo_Red_11.png', request.url), 307);
     }
 
     // Case 1: Remote external HTTPS image URL
@@ -79,75 +61,14 @@ export async function GET(request, { params }) {
       }
     }
 
-    // Case 2: MongoDB GridFS media
-    if (rawImageUrl.startsWith('/api/media/')) {
-      try {
-        const match = rawImageUrl.match(/\/api\/media\/([a-fA-F0-9]{24})/);
-        if (match) {
-          const fileId = new mongoose.Types.ObjectId(match[1]);
-          await connectDB();
-          const fileDoc = await mongoose.connection.db.collection('mediaFiles.files').findOne({ _id: fileId });
-          if (fileDoc) {
-            const bucket = await getGridFSBucket();
-            const downloadStream = bucket.openDownloadStream(fileId);
-            const chunks = [];
-            for await (const chunk of downloadStream) {
-              chunks.push(chunk);
-            }
-            const buffer = Buffer.concat(chunks);
-            const contentType = fileDoc.metadata?.contentType || 'image/png';
-            return new Response(buffer, {
-              headers: {
-                'Content-Type': contentType,
-                'Cache-Control': 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400',
-                'Content-Disposition': 'inline',
-              },
-            });
-          }
-        }
-      } catch (gridfsErr) {
-        console.error('GridFS stream error in product SEO image route:', gridfsErr);
-      }
+    // Case 2: Local relative image in public directory -> clean redirect
+    if (rawImageUrl.startsWith('/')) {
+      return NextResponse.redirect(new URL(rawImageUrl, request.url), 307);
     }
 
-    // Case 3: Local relative image in public directory
-    const cleanLocalPath = rawImageUrl.replace(/^\//, '');
-    const localFilePath = path.join(process.cwd(), 'public', cleanLocalPath);
-    try {
-      const fileBuffer = await fs.readFile(localFilePath);
-      let localContentType = 'image/png';
-      if (/\.jpe?g$/i.test(localFilePath)) localContentType = 'image/jpeg';
-      else if (/\.webp$/i.test(localFilePath)) localContentType = 'image/webp';
-      else if (/\.gif$/i.test(localFilePath)) localContentType = 'image/gif';
-
-      return new Response(fileBuffer, {
-        headers: {
-          'Content-Type': localContentType,
-          'Cache-Control': 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400',
-          'Content-Disposition': 'inline',
-        },
-      });
-    } catch {
-      // Local file read failed, fallback
-    }
-
-    const fb = await getFallbackBuffer();
-    return new Response(fb, {
-      headers: {
-        'Content-Type': 'image/png',
-        'Cache-Control': 'public, max-age=86400',
-      },
-    });
+    return NextResponse.redirect(new URL('/Sarv Jagat_Logo_Red_11.png', request.url), 307);
   } catch (error) {
     console.error('Error serving product SEO image:', error);
-    try {
-      const fb = await getFallbackBuffer();
-      return new Response(fb, {
-        headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=3600' },
-      });
-    } catch {
-      return new Response('Image not found', { status: 404 });
-    }
+    return NextResponse.redirect(new URL('/Sarv Jagat_Logo_Red_11.png', request.url), 307);
   }
 }
-
