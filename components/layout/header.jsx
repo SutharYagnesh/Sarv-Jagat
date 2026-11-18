@@ -137,7 +137,7 @@ export function Header() {
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center space-x-3">
             <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sarv%20Jagat_Logo_Red_11-pHspqmQqNQEdHljrRKg6n4A8tu4sYR.png"
+              src="/Sarv Jagat_Logo_Red_11.png"
               alt="Sarv Jagat Corporation Logo"
               className="h-10 w-10"
             />
@@ -313,7 +313,7 @@ function MobileNav({ navigation, onClose }) {
     <div className="flex flex-col space-y-4">
       <Link href="/" onClick={onClose} className="flex items-center space-x-3">
         <img
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sarv%20Jagat_Logo_Red_11-pHspqmQqNQEdHljrRKg6n4A8tu4sYR.png"
+          src="/Sarv Jagat_Logo_Red_11.png"
           alt="Sarv Jagat Corporation Logo"
           className="h-8 w-8"
         />

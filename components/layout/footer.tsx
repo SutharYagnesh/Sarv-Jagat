@@ -127,7 +127,7 @@ export function Footer() {
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center space-x-3">
               <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Sarv%20Jagat_Logo_Red_11-8HaQnVr31xklzE7FwiaKSujTe7UnXM.png"
+                src="/Sarv Jagat_Logo_Red_11.png"
                 alt="Sarv Jagat Corporation Logo"
                 className="h-12 w-12"
               />

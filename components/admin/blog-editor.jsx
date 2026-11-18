@@ -36,7 +36,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
   const [preview, setPreview] = useState(false)
   const [uploadingMedia, setUploadingMedia] = useState(false)
 
-  const uploadToBlob = async (file) => {
+  const uploadMedia = async (file) => {
     try {
       const uploadData = new FormData();
       uploadData.append('file', file);
@@ -114,7 +114,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
     const file = e.target.files?.[0]
     if (file) {
       setUploadingMedia(true)
-      const url = await uploadToBlob(file)
+      const url = await uploadMedia(file)
       if (url) {
         setFormData((prev) => ({
           ...prev,
@@ -132,7 +132,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
     if (files.length) {
       setUploadingMedia(true)
       for (const file of files) {
-        const url = await uploadToBlob(file)
+        const url = await uploadMedia(file)
         if (url) {
           setFormData(prev => ({
             ...prev,
@@ -155,7 +155,7 @@ export function BlogEditor({ post, onSave, onCancel }) {
     const file = e.target.files?.[0]
     if (file) {
       setUploadingMedia(true)
-      const url = await uploadToBlob(file)
+      const url = await uploadMedia(file)
       if (url) {
         setFormData((prev) => ({
           ...prev,

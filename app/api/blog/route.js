@@ -37,21 +37,30 @@ export async function POST(request) {
       }
 
       if (image && image.name) {
-        if (isVercelProduction) {
-          // Use Vercel Blob Storage in production
-          const { put } = await import('@vercel/blob');
+        try {
+          const { getGridFSBucket } = await import('@/lib/gridfs');
+          const { Readable } = await import('stream');
+          const bucket = await getGridFSBucket();
           const filename = `${Date.now()}-${image.name}`;
-          const blob = await put(filename, image, {
-            access: 'public',
+          const arrayBuffer = await image.arrayBuffer();
+          const buffer = Buffer.from(arrayBuffer);
+          const uploadStream = bucket.openUploadStream(filename, {
+            metadata: {
+              contentType: image.type || 'image/jpeg',
+              uploadedAt: new Date(),
+              size: buffer.length,
+            },
           });
-          imageUrl = blob.url;
-        } else {
-          // Use local file system in development
+          await new Promise((resolve, reject) => {
+            const readable = Readable.from(buffer);
+            readable.pipe(uploadStream).on('finish', resolve).on('error', reject);
+          });
+          imageUrl = `/api/media/${uploadStream.id}/${encodeURIComponent(filename)}`;
+        } catch (uploadErr) {
+          console.error('GridFS upload failed, fallback to local file:', uploadErr);
           const buffer = Buffer.from(await image.arrayBuffer());
           const filename = `${Date.now()}-${image.name}`;
           const imagePath = path.join(process.cwd(), 'public', 'uploads', 'blog', filename);
-
-          // Ensure the directory exists
           await fs.mkdir(path.dirname(imagePath), { recursive: true });
           await fs.writeFile(imagePath, buffer);
           imageUrl = `/uploads/blog/${filename}`;
