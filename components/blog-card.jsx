@@ -1,3 +1,5 @@
+"use client"
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
@@ -16,12 +18,16 @@ export function BlogCard({ post }) {
     <Card className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md overflow-hidden">
       <CardContent className="p-0">
         <Link href={`/blog/${post.slug}`}>
-          <div className="relative overflow-hidden">
+          <div className="relative overflow-hidden bg-gray-50">
             <img
-              src={post.imageUrl || (post.images && post.images.length > 0 ? post.images[0] : "/placeholder.svg")}
+              src={post.imageUrl || (post.images && post.images.length > 0 ? post.images[0] : "/Sarv Jagat_Logo_Red_11.png")}
               alt={post.title}
               loading="lazy"
               decoding="async"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = "/Sarv Jagat_Logo_Red_11.png";
+              }}
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute top-4 left-4">
