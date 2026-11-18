@@ -93,11 +93,11 @@ function SearchPageContent() {
     >
       <div className={`${isListView ? "w-48 flex-shrink-0" : "aspect-video"}`}>
         <img 
-          src={result.image || (result.type === 'blog' ? '/sj-screw-assemble.png' : '/uploads/product-10hp-8bar-1-1793802970199.png')} 
+          src={result.image || "/placeholder.svg"} 
           alt={result.title} 
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = result.type === 'blog' ? '/sj-screw-assemble.png' : '/uploads/product-10hp-8bar-1-1793802970199.png';
+            e.currentTarget.src = "/placeholder.svg";
           }}
           className="w-full h-full object-cover" 
         />

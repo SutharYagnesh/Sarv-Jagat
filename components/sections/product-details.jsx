@@ -15,9 +15,7 @@ export function ProductDetails({ product }) {
   const [showEnquiryForm, setShowEnquiryForm] = useState(false)
   const [lightboxOpen, setLightboxOpen] = useState(false)
 
-  const images = (product.images?.length > 0 ? product.images : ["/uploads/product-10hp-8bar-1-1793802970199.png"]).map(img => 
-    img && img.includes('fhbtzxpqvqaq2mat') ? '/uploads/product-10hp-8bar-1-1793802970199.png' : (img || '/uploads/product-10hp-8bar-1-1793802970199.png')
-  );
+  const images = product.images?.length > 0 ? product.images : ["/placeholder.svg"];
 
   // Helper to extract YouTube ID
   const getYouTubeId = (url) => {
@@ -69,7 +67,7 @@ export function ProductDetails({ product }) {
                   sizes="(max-width: 768px) 100vw, 33vw"
                   onError={(e) => {
                     e.currentTarget.srcset = '';
-                    e.currentTarget.src = '/uploads/product-10hp-8bar-1-1793802970199.png';
+                    e.currentTarget.src = '/placeholder.svg';
                   }}
                   className="object-contain mix-blend-multiply p-4"
                 />
@@ -97,7 +95,7 @@ export function ProductDetails({ product }) {
                         sizes="80px"
                         onError={(e) => {
                           e.currentTarget.srcset = '';
-                          e.currentTarget.src = '/uploads/product-10hp-8bar-1-1793802970199.png';
+                          e.currentTarget.src = '/placeholder.svg';
                         }}
                         className="object-contain mix-blend-multiply p-1" 
                       />

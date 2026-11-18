@@ -7,11 +7,8 @@ import { fetchWithCache } from '@/lib/memoryCache';
 export const dynamic = 'force-dynamic';
 
 function getFallbackBuffer() {
-  const primaryPath = path.join(process.cwd(), 'public', 'sj-screw-assemble.png');
-  return fs.readFile(primaryPath).catch(() => {
-    const fallbackPath = path.join(process.cwd(), 'public', 'Sarv Jagat_Logo_Red_11.png');
-    return fs.readFile(fallbackPath);
-  });
+  const fallbackPath = path.join(process.cwd(), 'public', 'Sarv Jagat_Logo_Red_11.png');
+  return fs.readFile(fallbackPath);
 }
 
 export async function GET(request, { params }) {

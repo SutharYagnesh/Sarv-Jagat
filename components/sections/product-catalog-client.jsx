@@ -59,11 +59,11 @@ export default function ProductCatalogClient({ categories }) {
                     <div className="relative aspect-square p-4 flex items-center justify-center bg-gray-50 border-b">
                       <Link href={`/products/${product.slug}`} className="w-full h-full flex items-center justify-center">
                         <img
-                          src={product.image || "/uploads/product-10hp-8bar-1-1793802970199.png"}
+                          src={product.image || "/placeholder.svg"}
                           alt={product.name}
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/uploads/product-10hp-8bar-1-1793802970199.png";
+                            e.currentTarget.src = "/placeholder.svg";
                           }}
                           className="max-h-full max-w-full object-contain mix-blend-multiply"
                         />

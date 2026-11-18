@@ -47,11 +47,11 @@ export default function BlogCatalogClient({ blogs }) {
                 <Card className="flex flex-col hover:shadow-lg transition-shadow duration-300 h-full">
                   <div className="relative aspect-square p-4 flex items-center justify-center bg-gray-50 border-b overflow-hidden group-hover:bg-gray-100 transition-colors">
                     <img
-                      src={blog.imageUrl || (blog.images && blog.images.length > 0 ? blog.images[0] : "/sj-screw-assemble.png")}
+                      src={blog.imageUrl || (blog.images && blog.images.length > 0 ? blog.images[0] : "/placeholder.svg")}
                       alt={blog.title}
                       onError={(e) => {
                         e.currentTarget.onerror = null;
-                        e.currentTarget.src = "/sj-screw-assemble.png";
+                        e.currentTarget.src = "/placeholder.svg";
                       }}
                       className="max-h-full object-contain w-full h-full"
                     />
