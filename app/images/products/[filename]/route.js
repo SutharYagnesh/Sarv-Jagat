@@ -1,7 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
+import mongoose from 'mongoose';
 import connectDB from '@/lib/db';
 import Product from '@/lib/models/Product';
+import { getGridFSBucket } from '@/lib/gridfs';
 import { fetchWithCache } from '@/lib/memoryCache';
 
 export const dynamic = 'force-dynamic';
@@ -61,7 +63,7 @@ export async function GET(request, { params }) {
       });
     }
 
-    // Case 1: Remote Vercel Blob or external HTTPS image URL
+    // Case 1: Remote external HTTPS image URL
     if (rawImageUrl.startsWith('http://') || rawImageUrl.startsWith('https://')) {
       const remoteRes = await fetch(rawImageUrl, { next: { revalidate: 86400 } });
       if (remoteRes.ok) {
@@ -77,7 +79,38 @@ export async function GET(request, { params }) {
       }
     }
 
-    // Case 2: Local relative image in public directory
+    // Case 2: MongoDB GridFS media
+    if (rawImageUrl.startsWith('/api/media/')) {
+      try {
+        const match = rawImageUrl.match(/\/api\/media\/([a-fA-F0-9]{24})/);
+        if (match) {
+          const fileId = new mongoose.Types.ObjectId(match[1]);
+          await connectDB();
+          const fileDoc = await mongoose.connection.db.collection('mediaFiles.files').findOne({ _id: fileId });
+          if (fileDoc) {
+            const bucket = await getGridFSBucket();
+            const downloadStream = bucket.openDownloadStream(fileId);
+            const chunks = [];
+            for await (const chunk of downloadStream) {
+              chunks.push(chunk);
+            }
+            const buffer = Buffer.concat(chunks);
+            const contentType = fileDoc.metadata?.contentType || 'image/png';
+            return new Response(buffer, {
+              headers: {
+                'Content-Type': contentType,
+                'Cache-Control': 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400',
+                'Content-Disposition': 'inline',
+              },
+            });
+          }
+        }
+      } catch (gridfsErr) {
+        console.error('GridFS stream error in product SEO image route:', gridfsErr);
+      }
+    }
+
+    // Case 3: Local relative image in public directory
     const cleanLocalPath = rawImageUrl.replace(/^\//, '');
     const localFilePath = path.join(process.cwd(), 'public', cleanLocalPath);
     try {
