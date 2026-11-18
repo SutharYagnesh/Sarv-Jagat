@@ -36,10 +36,13 @@ export function BlogEditor({ post, onSave, onCancel }) {
   const [preview, setPreview] = useState(false)
   const [uploadingMedia, setUploadingMedia] = useState(false)
 
-  const uploadMedia = async (file) => {
+  const uploadMedia = async (file, mediaType = 'image') => {
     try {
       const uploadData = new FormData();
       uploadData.append('file', file);
+      // Organize by department + blog slug for traceability
+      uploadData.append('department', 'blogs');
+      uploadData.append('subcategory', formData.slug || formData.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'misc');
       const res = await fetch('/api/admin/upload', {
         method: 'POST',
         body: uploadData,

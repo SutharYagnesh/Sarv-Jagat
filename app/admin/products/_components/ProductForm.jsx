@@ -70,18 +70,25 @@ export default function ProductForm({ initialData = null }) {
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
-    
+
+    // Use category slug as subcategory for organized folder storage
+    const categorySlug = formData.category
+      ? (categories.find(c => c._id === formData.category)?.slug || formData.category)
+      : 'misc';
+
     setUploadingImage(true);
     for (const file of files) {
       try {
         const uploadData = new FormData();
         uploadData.append('file', file);
-        
+        uploadData.append('department', 'products');
+        uploadData.append('subcategory', categorySlug);
+
         const res = await fetch('/api/admin/upload', {
           method: 'POST',
           body: uploadData,
         });
-        
+
         if (res.ok) {
           const data = await res.json();
           setFormData(prev => ({
@@ -100,7 +107,18 @@ export default function ProductForm({ initialData = null }) {
     setUploadingImage(false);
   };
 
-  const removeImage = (index) => {
+  const removeImage = async (index) => {
+    const imageUrl = formData.images[index];
+    // Delete from GridFS storage to free space
+    if (imageUrl && imageUrl.startsWith('/api/media/')) {
+      try {
+        await fetch(`/api/admin/upload?url=${encodeURIComponent(imageUrl)}`, {
+          method: 'DELETE',
+        });
+      } catch (err) {
+        console.error('Failed to delete image from storage:', err);
+      }
+    }
     setFormData(prev => ({
       ...prev,
       images: prev.images.filter((_, i) => i !== index)
