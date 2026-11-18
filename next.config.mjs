@@ -29,7 +29,17 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/home/:path*',
+        destination: '/',
+        permanent: true,
+      },
+      {
         source: '/Home',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/Home/:path*',
         destination: '/',
         permanent: true,
       },

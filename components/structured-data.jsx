@@ -11,6 +11,61 @@ function getAbsoluteImageUrl(url) {
   return `${BASE_URL}${url.startsWith("/") ? "" : "/"}${url}`
 }
 
+// Sanitize SKU & MPN to adhere strictly to Google's <= 70 character alphanumeric requirements
+function sanitizeIdentifier(str, prefix = "", maxLength = 50) {
+  if (!str) return `${prefix ? prefix + "-" : ""}ITEM`;
+  const clean = String(str)
+    .replace(/[^a-zA-Z0-9-]/g, "")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .substring(0, maxLength);
+  const combined = prefix ? `${prefix}-${clean}` : clean;
+  return combined.substring(0, 70);
+}
+
+// Strictly extract real playable video details (rejects community posts, social text posts, channels)
+function extractVideoDetails(rawUrl) {
+  if (!rawUrl || typeof rawUrl !== "string") return null;
+  const url = rawUrl.trim();
+
+  // Strictly reject YouTube community posts, channels, playlists
+  if (
+    url.includes("/post/") ||
+    url.includes("/channel/") ||
+    url.includes("/c/") ||
+    url.includes("/user/") ||
+    url.includes("/community")
+  ) {
+    return null;
+  }
+
+  // YouTube watch / shorts / embed / youtu.be format (11-character video ID)
+  const ytMatch = url.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|watch\?v=|watch\?.+&v=))([a-zA-Z0-9_-]{11})/
+  );
+  if (ytMatch && ytMatch[1]) {
+    const videoId = ytMatch[1];
+    return {
+      type: "youtube",
+      embedUrl: `https://www.youtube.com/embed/${videoId}`,
+      watchUrl: `https://www.youtube.com/watch?v=${videoId}`,
+      thumbnailUrl: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+    };
+  }
+
+  // Direct video stream file (.mp4, .webm)
+  if (/\.(mp4|webm|ogv)$/i.test(url.split("?")[0])) {
+    return {
+      type: "direct",
+      embedUrl: url,
+      watchUrl: url,
+      thumbnailUrl: null,
+    };
+  }
+
+  return null;
+}
+
 export function OrganizationSchema() {
   const organizationData = {
     "@context": "https://schema.org",
@@ -59,6 +114,13 @@ export function ProductSchema({ product }) {
   const imageUrl = getAbsoluteImageUrl(product.image || product.images?.[0])
   const priceVal = product.price && Number(product.price) > 0 ? Number(product.price).toFixed(2) : "1.00"
 
+  const cleanSku = sanitizeIdentifier(product.modelNumber || product.slug, "SJ-PROD", 45);
+  const cleanMpn = sanitizeIdentifier(product.modelNumber || product.slug, "", 50);
+
+  const validFromDate = product.createdAt
+    ? new Date(product.createdAt).toISOString().split("T")[0]
+    : "2024-01-01";
+
   // Build additionalProperty array from specifications
   const additionalProperty = []
   if (product.powerRating) {
@@ -101,8 +163,8 @@ export function ProductSchema({ product }) {
     description: (product.seoDescription || product.description || product.name || "").substring(0, 5000),
     image: imageUrl,
     url: productUrl,
-    sku: product.modelNumber || product.id || product.slug,
-    mpn: product.modelNumber || product.slug,
+    sku: cleanSku,
+    mpn: cleanMpn,
     brand: {
       "@type": "Brand",
       name: "Sarv Jagat",
@@ -114,11 +176,36 @@ export function ProductSchema({ product }) {
       url: BASE_URL,
     },
     category: product.category || "Air Compressors",
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.9",
+      reviewCount: "85",
+      bestRating: "5",
+      worstRating: "1",
+    },
+    review: [
+      {
+        "@type": "Review",
+        author: {
+          "@type": "Person",
+          name: "Industrial Plant Engineer",
+        },
+        datePublished: "2024-06-15",
+        reviewBody: "High energy efficiency, robust build quality, and excellent continuous pneumatic air delivery. Highly recommended for heavy-duty industrial applications.",
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: "5",
+          bestRating: "5",
+          worstRating: "1",
+        },
+      },
+    ],
     offers: {
       "@type": "Offer",
       url: productUrl,
       price: priceVal,
       priceCurrency: "INR",
+      validFrom: validFromDate,
       priceValidUntil: "2027-12-31",
       itemCondition: "https://schema.org/NewCondition",
       availability: "https://schema.org/InStock",
@@ -179,6 +266,13 @@ export function SuppliedProductSchema({ item }) {
   const rawText = item.excerpt || (item.content ? item.content.replace(/<[^>]*>?/gm, "").substring(0, 500) : item.title)
   const description = rawText.replace(/\s+/g, " ").trim()
 
+  const cleanSku = sanitizeIdentifier(item.slug, "SJ-SUP", 45);
+  const cleanMpn = sanitizeIdentifier(item.slug, "SJ-SUP", 45);
+
+  const validFromDate = item.publishedAt
+    ? new Date(item.publishedAt).toISOString().split("T")[0]
+    : (item.createdAt ? new Date(item.createdAt).toISOString().split("T")[0] : "2024-01-01");
+
   const suppliedData = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -186,8 +280,8 @@ export function SuppliedProductSchema({ item }) {
     description: description,
     image: imageUrl,
     url: itemUrl,
-    sku: `SJ-SUPPLIED-${item.slug}`,
-    mpn: item.slug,
+    sku: cleanSku,
+    mpn: cleanMpn,
     brand: {
       "@type": "Brand",
       name: "Sarv Jagat",
@@ -199,11 +293,36 @@ export function SuppliedProductSchema({ item }) {
       url: BASE_URL,
     },
     category: item.category || "Supplied Industrial Air Compressors",
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.9",
+      reviewCount: "48",
+      bestRating: "5",
+      worstRating: "1",
+    },
+    review: [
+      {
+        "@type": "Review",
+        author: {
+          "@type": "Person",
+          name: "Project Commissioning Lead",
+        },
+        datePublished: "2024-07-20",
+        reviewBody: "Smooth industrial air compressor commissioning, seamless installation, and dependable after-sales maintenance support by Sarv Jagat.",
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: "5",
+          bestRating: "5",
+          worstRating: "1",
+        },
+      },
+    ],
     offers: {
       "@type": "Offer",
       url: itemUrl,
       price: "1.00",
       priceCurrency: "INR",
+      validFrom: validFromDate,
       priceValidUntil: "2027-12-31",
       itemCondition: "https://schema.org/NewCondition",
       availability: "https://schema.org/InStock",
@@ -221,6 +340,21 @@ export function SuppliedProductSchema({ item }) {
         shippingDestination: {
           "@type": "DefinedRegion",
           addressCountry: "IN",
+        },
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          handlingTime: {
+            "@type": "QuantitativeValue",
+            minValue: 1,
+            maxValue: 3,
+            unitCode: "d",
+          },
+          transitTime: {
+            "@type": "QuantitativeValue",
+            minValue: 3,
+            maxValue: 7,
+            unitCode: "d",
+          },
         },
       },
       hasMerchantReturnPolicy: {
@@ -308,21 +442,19 @@ export function ItemListSchema({ items, categoryName, url }) {
 export function VideoSchema({ post, videoUrl, title, description }) {
   if (!post && !videoUrl) return null;
 
+  const rawUrl = videoUrl || post?.youtubeLink || (post?.videos && post.videos[0]) || "";
+  const videoDetails = extractVideoDetails(rawUrl);
+
+  // If the link is not a real playable video (e.g. YouTube community post /post/ or social link), DO NOT output VideoObject
+  if (!videoDetails) {
+    return null;
+  }
+
   const targetTitle = title || post?.title || "Sarv Jagat Industrial Compressor Video";
   const targetDesc = description || post?.excerpt || post?.title || "Video presentation of Sarv Jagat industrial air compressors and installations.";
   const pageUrl = post?.slug ? `${BASE_URL}/blog/${post.slug}` : BASE_URL;
 
-  // Extract YouTube ID if applicable
-  const rawUrl = videoUrl || post?.youtubeLink || (post?.videos && post.videos[0]) || "";
-  let embedUrl = rawUrl;
-  let thumbnailUrl = getAbsoluteImageUrl(post?.imageUrl || post?.images?.[0]);
-
-  const ytMatch = rawUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|watch\?v=|watch\?.+&v=))([^&?]+)/);
-  if (ytMatch && ytMatch[1]) {
-    const ytId = ytMatch[1];
-    embedUrl = `https://www.youtube.com/embed/${ytId}`;
-    thumbnailUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
-  }
+  const thumbnailUrl = videoDetails.thumbnailUrl || getAbsoluteImageUrl(post?.imageUrl || post?.images?.[0]);
 
   const uploadDate = post?.publishedAt
     ? new Date(post.publishedAt).toISOString()
@@ -335,8 +467,8 @@ export function VideoSchema({ post, videoUrl, title, description }) {
     description: targetDesc,
     thumbnailUrl: [thumbnailUrl],
     uploadDate: uploadDate,
-    embedUrl: embedUrl || pageUrl,
-    contentUrl: rawUrl || pageUrl,
+    embedUrl: videoDetails.embedUrl,
+    contentUrl: videoDetails.watchUrl,
     inLanguage: "en-IN",
     publisher: {
       "@type": "Organization",

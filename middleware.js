@@ -2,18 +2,32 @@ import { NextResponse } from 'next/server';
 import { verifyToken } from './lib/auth';
 
 export async function middleware(request) {
-  const host = (request.headers.get('x-forwarded-host') || request.headers.get('host') || '').toLowerCase();
+  const rawHost = (request.headers.get('x-forwarded-host') || request.headers.get('host') || '').toLowerCase();
+  const host = rawHost.split(':')[0];
+  const proto = request.headers.get('x-forwarded-proto');
   const path = request.nextUrl.pathname;
+  const lowerPath = path.toLowerCase();
 
-  // 1. Canonical redirect from apex sarvjagat.com to www.sarvjagat.com (fixes Google Search Console redirect issues)
-  if (host === 'sarvjagat.com') {
-    const canonicalUrl = new URL(request.url);
-    canonicalUrl.host = 'www.sarvjagat.com';
-    canonicalUrl.protocol = 'https:';
-    return NextResponse.redirect(canonicalUrl, 301);
+  // 1. Canonical redirect from apex sarvjagat.com or insecure http to https://www.sarvjagat.com
+  // Eliminates GSC "Redirect error" by ensuring clean 1-hop 301 redirect with no internal port leaking
+  if (host === 'sarvjagat.com' || (host === 'www.sarvjagat.com' && proto === 'http')) {
+    const canonicalUrl = new URL(request.nextUrl.pathname + request.nextUrl.search, 'https://www.sarvjagat.com');
+    canonicalUrl.port = '';
+    return NextResponse.redirect(canonicalUrl.toString(), 301);
   }
 
-  // 2. Admin RBAC protection
+  // 2. Prevent 404 for legacy/homepage aliases (/home, /Home, /index, /index.html)
+  if (
+    lowerPath === '/home' ||
+    lowerPath === '/home/' ||
+    lowerPath === '/index' ||
+    lowerPath === '/index/' ||
+    lowerPath === '/index.html'
+  ) {
+    return NextResponse.redirect(new URL('/', 'https://www.sarvjagat.com'), 301);
+  }
+
+  // 3. Admin RBAC protection
   if (path.startsWith('/admin') && !path.startsWith('/admin/login')) {
     const token = request.cookies.get('admin_token')?.value;
 

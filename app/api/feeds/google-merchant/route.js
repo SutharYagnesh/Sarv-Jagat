@@ -118,7 +118,7 @@ export async function GET() {
     const link = `${baseUrl}/products/${product.slug}`;
     const primaryImage = getAbsoluteImageUrl(product.images?.[0] || product.image, baseUrl);
     const category = product.category || "Air Compressors";
-    const mpn = product.modelNumber || product.slug;
+    const mpn = (product.modelNumber || product.slug || "SJ-PROD").substring(0, 70);
 
     // Additional Images
     let additionalImagesXml = "";
@@ -268,7 +268,7 @@ export async function GET() {
         <g:brand>Sarv Jagat</g:brand>
         <g:google_product_category>Hardware &gt; Tool Accessories &gt; Air Tool Accessories</g:google_product_category>
         <g:product_type>Industrial &gt; Air Compressors &gt; ${escapeXml(category)}</g:product_type>
-        <g:mpn>${escapeXml(blog.slug)}</g:mpn>
+        <g:mpn>${escapeXml((blog.slug || `SJ-BLOG-${blog._id}`).substring(0, 70))}</g:mpn>
         <g:identifier_exists>no</g:identifier_exists>${blogHighlightsXml}${blogDetailsXml}
         <g:custom_label_0>${isQuoteOnly ? "Ask for Quote" : "Direct Purchase"}</g:custom_label_0>
         <g:custom_label_1>Supplied Machinery</g:custom_label_1>
