@@ -5,7 +5,8 @@ import Category from "@/lib/models/Category"
 import Catalog from "@/lib/models/Catalog"
 import industries from "../data/industries.json"
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 function toAbsoluteUrl(url, baseUrl) {
   if (!url || typeof url !== 'string') return null;
