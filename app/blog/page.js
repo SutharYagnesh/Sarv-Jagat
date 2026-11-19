@@ -1,11 +1,11 @@
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import Link from 'next/link';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import connectDB from '@/lib/db';
 import Blog from '@/lib/models/Blog';
 import BlogCatalogClient from '@/components/sections/blog-catalog-client';
-import { fetchWithCache } from '@/lib/memoryCache';
 
 export const metadata = {
   title: "Industrial Compressed Air Blog & Case Studies | Sarv Jagat - SJ",
@@ -57,14 +57,12 @@ export const metadata = {
 };
 
 export default async function BlogPage() {
-  const blogs = await fetchWithCache('public_blog_page', async () => {
-    await connectDB();
-    const blogsRaw = await Blog.find({ status: { $regex: /^published$/i } })
-      .select('title slug excerpt imageUrl images publishedAt author category readTime tags status order')
-      .sort({ order: 1, publishedAt: -1 })
-      .lean();
-    return JSON.parse(JSON.stringify(blogsRaw));
-  }, 120);
+  await connectDB();
+  const blogsRaw = await Blog.find({ status: { $regex: /^published$/i } })
+    .select('title slug excerpt imageUrl images publishedAt author category readTime tags status order')
+    .sort({ order: 1, publishedAt: -1 })
+    .lean();
+  const blogs = JSON.parse(JSON.stringify(blogsRaw));
 
   return (
     <div className="min-h-screen bg-background">

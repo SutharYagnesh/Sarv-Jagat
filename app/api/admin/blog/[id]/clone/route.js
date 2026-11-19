@@ -52,9 +52,15 @@ export async function POST(request, { params }) {
     const mapped = { ...newPost.toObject(), id: newPost._id.toString() };
     delete mapped._id;
 
-    invalidateCache('blogs_');
-    invalidateCache('homepage');
-    invalidateCache('public_blog');
+    invalidateCache();
+    try {
+      const { revalidatePath } = await import('next/cache');
+      revalidatePath('/', 'layout');
+      revalidatePath('/blog');
+      if (newPost.slug) revalidatePath(`/blog/${newPost.slug}`);
+    } catch (e) {
+      console.error('Revalidation error:', e);
+    }
 
     return NextResponse.json(mapped, { status: 201 });
   } catch (error) {

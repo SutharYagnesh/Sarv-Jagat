@@ -37,6 +37,7 @@ export async function POST(request, { params }) {
       pressureRating: source.pressureRating || '0',
       airFlow: source.airFlow || '0',
       price: source.price || 0,
+      image: source.image || (Array.isArray(source.images) && source.images.length > 0 ? source.images[0] : null),
       images: Array.isArray(source.images) ? [...source.images] : [],
       videos: Array.isArray(source.videos) ? [...source.videos] : [],
       youtubeLink: source.youtubeLink || '',
@@ -53,9 +54,16 @@ export async function POST(request, { params }) {
 
     const newProduct = await Product.create(duplicateData);
 
-    invalidateCache('admin_products');
-    invalidateCache('homepage');
-    invalidateCache('public_products');
+    invalidateCache();
+    try {
+      const { revalidatePath } = await import('next/cache');
+      revalidatePath('/', 'layout');
+      revalidatePath('/products');
+      if (newProduct.slug) revalidatePath(`/products/${newProduct.slug}`);
+      revalidatePath('/products/category/[slug]', 'page');
+    } catch (e) {
+      console.error('Revalidation error:', e);
+    }
 
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {

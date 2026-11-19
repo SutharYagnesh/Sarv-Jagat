@@ -1,4 +1,6 @@
-export const revalidate = 120;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import { cache } from "react"
 import { notFound } from "next/navigation"
 import { ProductDetails } from "@/components/sections/product-details"
@@ -7,84 +9,74 @@ import { ProductSchema } from "@/components/structured-data"
 import connectDB from "@/lib/db"
 import Product from "@/lib/models/Product"
 import Category from "@/lib/models/Category"
-import { fetchWithCache } from "@/lib/memoryCache"
 
-// Cached in RAM: Zero database calls during page renders, sub-millisecond response
-const getAllPublishedCatalog = async () => {
-  return await fetchWithCache('all_published_products_catalog', async () => {
-    await connectDB();
-    const [rawProducts, rawCategories] = await Promise.all([
-      Product.find({ status: { $regex: /^published$/i } })
-        .select('title slug category images image price modelNumber powerRating pressureRating airFlow specifications description seoTitle seoDescription seoKeywords order createdAt')
-        .sort({ order: 1, createdAt: -1 })
-        .lean(),
-      Category.find({}).select('name slug').lean(),
-    ]);
-
-    const catMap = {};
-    (rawCategories || []).forEach(c => {
-      if (c.name && c.slug) catMap[c.name.trim().toLowerCase()] = c.slug;
+const formatProduct = (p, categorySlug = null) => {
+  const plain = JSON.parse(JSON.stringify(p));
+  const formattedSpecs = {};
+  if (plain.specifications && Array.isArray(plain.specifications)) {
+    plain.specifications.forEach(spec => {
+      if (spec.key && spec.value) formattedSpecs[spec.key] = spec.value;
     });
+  }
+  const allProdImages = Array.from(new Set([
+    ...(plain.images || []),
+    plain.image
+  ].filter(img => img && !img.includes('blob.vercel-storage'))));
+  const primaryImage = allProdImages[0] || "/placeholder.jpg";
 
-    return {
-      products: JSON.parse(JSON.stringify(rawProducts || [])),
-      categoryMap: catMap,
-    };
-  }, 300);
+  return {
+    ...plain,
+    id: plain._id,
+    name: plain.title,
+    description: plain.description,
+    image: primaryImage,
+    images: allProdImages,
+    features: [],
+    specifications: formattedSpecs,
+    categorySlug: categorySlug || (plain.category || 'uncategorized').toLowerCase().replace(/[^a-z0-9]+/g, '-')
+  };
 };
 
 const getProductData = cache(async (slug) => {
   try {
-    const { products, categoryMap } = await getAllPublishedCatalog();
-    const product = products.find((p) => p.slug === slug);
+    await connectDB();
+    const product = await Product.findOne({
+      slug,
+      status: { $regex: /^published$/i }
+    }).lean();
+
     if (!product) return { product: null, relatedProducts: [] };
 
-    const catSlug =
-      (product.category && categoryMap[product.category.trim().toLowerCase()]) ||
-      (product.category || 'uncategorized').toLowerCase().replace(/[^a-z0-9]+/g, '-');
-
-    // Instant in-memory related products selection (< 0.01 ms)
-    const sameCat = products.filter(
-      (p) =>
-        (p.category || '').trim().toLowerCase() === (product.category || '').trim().toLowerCase() &&
-        p.slug !== slug
-    );
-
-    let relatedRaw = sameCat.slice().sort(() => 0.5 - Math.random()).slice(0, 3);
-    if (relatedRaw.length < 3) {
-      const remainingCount = 3 - relatedRaw.length;
-      const excludeSlugs = new Set([slug, ...relatedRaw.map((r) => r.slug)]);
-      const otherPool = products.filter((p) => !excludeSlugs.has(p.slug));
-      const otherPicked = otherPool.slice().sort(() => 0.5 - Math.random()).slice(0, remainingCount);
-      relatedRaw = [...relatedRaw, ...otherPicked];
+    let catSlug = null;
+    if (product.category) {
+      const catDoc = await Category.findOne({
+        name: { $regex: new RegExp(`^\\s*${product.category.trim().replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}\\s*$`, 'i') }
+      }).select('slug').lean();
+      if (catDoc && catDoc.slug) catSlug = catDoc.slug;
     }
 
-    const formatProduct = (p, overrideCatSlug) => {
-      const plain = JSON.parse(JSON.stringify(p));
-      const formattedSpecs = {};
-      if (plain.specifications && Array.isArray(plain.specifications)) {
-        plain.specifications.forEach(spec => {
-          if (spec.key && spec.value) formattedSpecs[spec.key] = spec.value;
-        });
-      }
-      const allProdImages = Array.from(new Set([
-        ...(plain.images || []),
-        plain.image
-      ].filter(img => img && !img.includes('blob.vercel-storage'))));
-      const primaryImage = allProdImages[0] || "/placeholder.jpg";
+    const sameCat = await Product.find({
+      category: product.category,
+      slug: { $ne: slug },
+      status: { $regex: /^published$/i }
+    })
+      .select('title slug category images image price modelNumber powerRating pressureRating airFlow specifications description order')
+      .limit(3)
+      .lean();
 
-      return {
-        ...plain,
-        id: plain._id,
-        name: plain.title,
-        description: plain.description,
-        image: primaryImage,
-        images: allProdImages,
-        features: [],
-        specifications: formattedSpecs,
-        categorySlug: overrideCatSlug || (plain.category ? categoryMap[plain.category.trim().toLowerCase()] : null) || (plain.category || 'uncategorized').toLowerCase().replace(/[^a-z0-9]+/g, '-')
-      };
-    };
+    let relatedRaw = sameCat || [];
+    if (relatedRaw.length < 3) {
+      const remaining = 3 - relatedRaw.length;
+      const excludeSlugs = [slug, ...relatedRaw.map(r => r.slug)];
+      const others = await Product.find({
+        slug: { $nin: excludeSlugs },
+        status: { $regex: /^published$/i }
+      })
+        .select('title slug category images image price modelNumber powerRating pressureRating airFlow specifications description order')
+        .limit(remaining)
+        .lean();
+      relatedRaw = [...relatedRaw, ...(others || [])];
+    }
 
     return {
       product: formatProduct(product, catSlug),
@@ -213,21 +205,4 @@ export default async function ProductPage({ params }) {
       <RelatedProducts relatedProducts={relatedProducts} />
     </>
   )
-}
-
-export async function generateStaticParams() {
-  try {
-    await connectDB();
-    const products = await Product.find({ status: { $regex: /^published$/i } })
-      .select('slug')
-      .lean();
-    return products
-      .filter((p) => p.slug && typeof p.slug === 'string')
-      .map((p) => ({
-        slug: p.slug.trim().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/gi, '').toLowerCase(),
-      }));
-  } catch (err) {
-    console.error("Error generating static params for products:", err);
-    return [];
-  }
 }

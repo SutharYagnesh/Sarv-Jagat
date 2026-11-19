@@ -1,4 +1,5 @@
-export const revalidate = 120;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import { cache } from "react";
 import { notFound } from "next/navigation";
 import connectDB from "@/lib/db";
@@ -9,14 +10,11 @@ import { Calendar, User, Tag, Share2, Facebook, Twitter, Linkedin, Youtube, Inst
 import { ArticleSchema, SuppliedProductSchema, VideoSchema } from "@/components/structured-data";
 import { BlogGallery } from "@/components/ui/blog-gallery";
 import { LightboxImage } from "@/components/ui/lightbox-image";
-import { fetchWithCache } from "@/lib/memoryCache";
 
 const getBlogBySlug = cache(async (slug) => {
   try {
-    return await fetchWithCache(`blog_post_${slug}`, async () => {
-      await connectDB();
-      return await Blog.findOne({ slug }).lean();
-    }, 300);
+    await connectDB();
+    return await Blog.findOne({ slug }).lean();
   } catch (err) {
     console.error("Error fetching blog post:", err);
     return null;
@@ -252,21 +250,4 @@ function BadgeItem({ icon, text }) {
       {text}
     </div>
   )
-}
-
-export async function generateStaticParams() {
-  try {
-    await connectDB();
-    const blogs = await Blog.find({ status: { $regex: /^published$/i } })
-      .select('slug')
-      .lean();
-    return blogs
-      .filter((b) => b.slug && typeof b.slug === 'string')
-      .map((b) => ({
-        slug: b.slug.trim().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/gi, '').toLowerCase(),
-      }));
-  } catch (err) {
-    console.error("Error generating static params for blogs:", err);
-    return [];
-  }
 }

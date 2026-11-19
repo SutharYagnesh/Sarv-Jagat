@@ -55,7 +55,12 @@ export async function PUT(request, { params }) {
         updatedPostData.images = [updatedPostData.imageUrl];
     }
 
-    const post = await Blog.findByIdAndUpdate(postId, updatedPostData, { new: true }).lean();
+    const updatePayload = { ...updatedPostData };
+    delete updatePayload._id;
+    delete updatePayload.id;
+
+    const query = postId.match(/^[0-9a-fA-F]{24}$/) ? { _id: postId } : { slug: postId };
+    const post = await Blog.findOneAndUpdate(query, updatePayload, { new: true }).lean();
 
     if (!post) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
@@ -88,7 +93,8 @@ export async function DELETE(request, { params }) {
     await connectDB();
     const { postId } = await params;
 
-    const deletedPost = await Blog.findByIdAndDelete(postId).lean();
+    const query = postId.match(/^[0-9a-fA-F]{24}$/) ? { _id: postId } : { slug: postId };
+    const deletedPost = await Blog.findOneAndDelete(query).lean();
 
     if (!deletedPost) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });

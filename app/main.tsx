@@ -23,29 +23,25 @@ import Product from "@/lib/models/Product"
 import Category from "@/lib/models/Category"
 import Blog from "@/lib/models/Blog"
 import { BlogCard } from "@/components/blog-card"
-import { fetchWithCache } from "@/lib/memoryCache"
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 // Main homepage component for Sarv Jagat Air Compressor website
 export default async function HomePage() {
-  const data = await fetchWithCache('homepage_bundle', async () => {
-    await connectDB();
-    const [cRaw, catRaw, prodRaw, bRaw] = await Promise.all([
-      CompanyInfo.findOne().lean(),
-      Category.find({}).sort({ order: 1 }).select('name slug description').lean(),
-      Product.find({ status: { $regex: /^published$/i } }).select('title slug category images image status order').sort({ order: 1, createdAt: -1 }).lean(),
-      Blog.find({ status: { $regex: /^published$/i } }).sort({ order: 1, publishedAt: -1 }).limit(4).select('title slug excerpt imageUrl images publishedAt author category').lean(),
-    ]);
-    return {
-      companyInfo: cRaw ? JSON.parse(JSON.stringify(cRaw)) : null,
-      categories: JSON.parse(JSON.stringify(catRaw)),
-      allProducts: JSON.parse(JSON.stringify(prodRaw)),
-      recentBlogs: JSON.parse(JSON.stringify(bRaw)).map(p => ({...p, id: p._id})),
-    };
-  }, 120);
+  await connectDB();
+  const [cRaw, catRaw, prodRaw, bRaw] = await Promise.all([
+    CompanyInfo.findOne().lean(),
+    Category.find({}).sort({ order: 1 }).select('name slug description').lean(),
+    Product.find({ status: { $regex: /^published$/i } }).select('title slug category images image status order').sort({ order: 1, createdAt: -1 }).lean(),
+    Blog.find({ status: { $regex: /^published$/i } }).sort({ order: 1, publishedAt: -1 }).limit(4).select('title slug excerpt imageUrl images publishedAt author category').lean(),
+  ]);
 
-  const { companyInfo, categories, allProducts, recentBlogs } = data;
+  const companyInfo = cRaw ? JSON.parse(JSON.stringify(cRaw)) : null;
+  const categories = JSON.parse(JSON.stringify(catRaw));
+  const allProducts = JSON.parse(JSON.stringify(prodRaw));
+  const recentBlogs = JSON.parse(JSON.stringify(bRaw)).map((p: any) => ({...p, id: p._id}));
+
   return renderHomePage({ companyInfo, categories, allProducts, recentBlogs });
 }
 
@@ -63,7 +59,9 @@ function renderHomePage({ companyInfo, categories, allProducts, recentBlogs }: a
   // Featured product categories with one product per category
   let featuredProducts = categories.map((cat: any) => {
     const catNameLower = (cat.name || '').trim().toLowerCase();
-    const catProduct = allProducts.find((p: any) => (p.category || '').trim().toLowerCase() === catNameLower);
+    const hasImage = (p: any) => (p.image && !p.image.includes('blob.vercel-storage')) || (p.images && p.images.some((img: string) => img && !img.includes('blob.vercel-storage')));
+    const catProduct = allProducts.find((p: any) => (p.category || '').trim().toLowerCase() === catNameLower && hasImage(p))
+      || allProducts.find((p: any) => (p.category || '').trim().toLowerCase() === catNameLower);
     if (!catProduct) return null;
     const cleanImg = (catProduct.images && catProduct.images.length > 0 && !catProduct.images[0].includes('blob.vercel-storage'))
       ? catProduct.images[0]

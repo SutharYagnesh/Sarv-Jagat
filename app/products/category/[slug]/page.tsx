@@ -1,4 +1,5 @@
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import { cache } from "react"
 import { notFound } from "next/navigation"
 import connectDB from "@/lib/db"
@@ -7,13 +8,10 @@ import Category from "@/lib/models/Category"
 import Link from "next/link"
 import CategoryClient from "@/components/sections/category-client"
 import { ItemListSchema } from "@/components/structured-data"
-import { fetchWithCache } from "@/lib/memoryCache"
 
 const getCategoryBySlug = cache(async (slug: string) => {
-  return await fetchWithCache(`category_doc_${slug}`, async () => {
-    await connectDB();
-    return await Category.findOne({ slug }).lean();
-  }, 120);
+  await connectDB();
+  return await Category.findOne({ slug }).lean();
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -90,26 +88,24 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  const products = await fetchWithCache(`category_products_${slug}`, async () => {
-    await connectDB();
-    const catNameTrimmed = (category.name || '').trim();
-    const escapedName = catNameTrimmed.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const catSlug = (category.slug || '').trim();
-    const catId = category._id ? String(category._id) : '';
+  await connectDB();
+  const catNameTrimmed = (category.name || '').trim();
+  const escapedName = catNameTrimmed.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const catSlug = (category.slug || '').trim();
+  const catId = category._id ? String(category._id) : '';
 
-    const productsRaw = await Product.find({ 
-      $or: [
-        { category: { $regex: new RegExp(`^\\s*${escapedName}\\s*$`, 'i') } },
-        { category: catSlug },
-        ...(catId ? [{ category: catId }] : [])
-      ],
-      status: { $regex: /^published$/i } 
-    })
-      .select('title slug category images image order status price modelNumber powerRating pressureRating airFlow seoTitle seoDescription')
-      .sort({ order: 1, createdAt: -1 })
-      .lean();
-    return JSON.parse(JSON.stringify(productsRaw));
-  }, 120);
+  const productsRaw = await Product.find({ 
+    $or: [
+      { category: { $regex: new RegExp(`^\\s*${escapedName}\\s*$`, 'i') } },
+      { category: catSlug },
+      ...(catId ? [{ category: catId }] : [])
+    ],
+    status: { $regex: /^published$/i } 
+  })
+    .select('title slug category images image order status price modelNumber powerRating pressureRating airFlow seoTitle seoDescription')
+    .sort({ order: 1, createdAt: -1 })
+    .lean();
+  const products = JSON.parse(JSON.stringify(productsRaw));
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sarvjagat.com";
   const categoryUrl = `${siteUrl}/products/category/${slug}`;
@@ -170,15 +166,4 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       </div>
     </div>
   )
-}
-
-export async function generateStaticParams() {
-  try {
-    await connectDB();
-    const categories = await Category.find({}).select('slug').lean();
-    return categories.map((c: any) => ({ slug: c.slug }));
-  } catch (err) {
-    console.error("Error generating static params for categories:", err);
-    return [];
-  }
 }

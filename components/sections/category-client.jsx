@@ -139,13 +139,15 @@ export default function CategoryClient({ products = [], categoryName = "Products
           </div>
 
           {hasMore && (
-            <div className="text-center pt-6 px-2">
+            <div className="flex justify-center pt-6 px-2 w-full">
               <Button
                 variant="outline"
-                className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700 font-medium px-4 sm:px-8 py-2.5 h-auto whitespace-normal max-w-full text-xs sm:text-sm text-center leading-relaxed"
+                className="w-full max-w-sm text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700 font-medium px-4 py-2.5 h-auto !whitespace-normal break-words text-xs sm:text-sm text-center leading-relaxed shadow-sm"
                 onClick={() => setVisibleCount((prev) => prev + 12)}
               >
-                Load More {categoryName} ({filteredProducts.length - visibleCount} remaining)
+                <span className="w-full text-center break-words">
+                  Load More {categoryName} ({filteredProducts.length - visibleCount} remaining)
+                </span>
               </Button>
             </div>
           )}
