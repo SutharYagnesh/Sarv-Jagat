@@ -44,9 +44,15 @@ export async function PUT(request, { params }) {
        updatedPostData.author = { name: updatedPostData.authorName };
     }
 
-    // Map coverImage to imageUrl
+    // Map coverImage and images
     if (updatedPostData.coverImage && !updatedPostData.imageUrl) {
         updatedPostData.imageUrl = updatedPostData.coverImage;
+    }
+    if (!updatedPostData.imageUrl && updatedPostData.images && updatedPostData.images.length > 0) {
+        updatedPostData.imageUrl = updatedPostData.images[0];
+    }
+    if (updatedPostData.imageUrl && (!updatedPostData.images || updatedPostData.images.length === 0)) {
+        updatedPostData.images = [updatedPostData.imageUrl];
     }
 
     const post = await Blog.findByIdAndUpdate(postId, updatedPostData, { new: true }).lean();
@@ -58,9 +64,16 @@ export async function PUT(request, { params }) {
     post.id = post._id.toString();
     delete post._id;
 
-    invalidateCache('blogs_');
-    invalidateCache('homepage');
-    invalidateCache('public_blog');
+    invalidateCache(); // Clear all memory caches
+
+    try {
+      const { revalidatePath } = await import('next/cache');
+      revalidatePath('/', 'layout');
+      revalidatePath('/blog');
+      if (post.slug) revalidatePath(`/blog/${post.slug}`);
+    } catch (revalErr) {
+      console.error('Revalidation error:', revalErr);
+    }
 
     return NextResponse.json({ success: true, post });
   } catch (error) {
@@ -84,9 +97,16 @@ export async function DELETE(request, { params }) {
     deletedPost.id = deletedPost._id.toString();
     delete deletedPost._id;
 
-    invalidateCache('blogs_');
-    invalidateCache('homepage');
-    invalidateCache('public_blog');
+    invalidateCache(); // Clear all memory caches
+
+    try {
+      const { revalidatePath } = await import('next/cache');
+      revalidatePath('/', 'layout');
+      revalidatePath('/blog');
+      if (deletedPost.slug) revalidatePath(`/blog/${deletedPost.slug}`);
+    } catch (revalErr) {
+      console.error('Revalidation error:', revalErr);
+    }
 
     return NextResponse.json({ success: true, deletedPost });
   } catch (error) {

@@ -15,7 +15,11 @@ export function ProductDetails({ product }) {
   const [showEnquiryForm, setShowEnquiryForm] = useState(false)
   const [lightboxOpen, setLightboxOpen] = useState(false)
 
-  const images = product.images?.length > 0 ? product.images : ["/placeholder.svg"];
+  const allImages = Array.from(new Set([
+    ...(product.images || []),
+    product.image
+  ].filter(img => img && !img.includes('blob.vercel-storage'))));
+  const images = allImages.length > 0 ? allImages : ["/placeholder.svg"];
 
   // Helper to extract YouTube ID
   const getYouTubeId = (url) => {
@@ -64,6 +68,8 @@ export function ProductDetails({ product }) {
                   src={images[selectedImage]}
                   alt={product.name}
                   fill
+                  unoptimized
+                  priority
                   sizes="(max-width: 768px) 100vw, 33vw"
                   onError={(e) => {
                     e.currentTarget.srcset = '';
@@ -92,6 +98,7 @@ export function ProductDetails({ product }) {
                         src={img} 
                         alt={`Thumbnail ${idx+1}`} 
                         fill
+                        unoptimized
                         sizes="80px"
                         onError={(e) => {
                           e.currentTarget.srcset = '';

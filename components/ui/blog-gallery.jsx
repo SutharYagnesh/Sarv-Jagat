@@ -24,7 +24,9 @@ export function BlogGallery({ images, instagramLink, youtubeLink, videos, hideHe
     return match ? `https://www.instagram.com/p/${match[1]}/embed/` : null;
   }
 
-  if (!images?.length && !instagramLink && !youtubeLink && !videos?.length) {
+  const cleanImages = (images || []).filter(img => img && !img.includes('blob.vercel-storage'));
+
+  if (!cleanImages?.length && !instagramLink && !youtubeLink && !videos?.length) {
     return null;
   }
 
@@ -32,11 +34,11 @@ export function BlogGallery({ images, instagramLink, youtubeLink, videos, hideHe
     <div className={hideHeader ? "" : "mt-10 pt-8 border-t border-gray-200"}>
       {!hideHeader && <h3 className="text-xl font-serif text-gray-800 mb-6">Gallery &amp; Media</h3>}
       <div className="space-y-8">
-        {images && images.length > 0 && (
+        {cleanImages && cleanImages.length > 0 && (
           <div>
             {!hideHeader && <h4 className="text-lg font-serif text-gray-700 mb-4">Project Gallery</h4>}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {images.map((img, idx) => (
+              {cleanImages.map((img, idx) => (
                 <div 
                   key={idx} 
                   className="aspect-[4/3] rounded-lg overflow-hidden border shadow-sm cursor-zoom-in relative"
@@ -50,6 +52,8 @@ export function BlogGallery({ images, instagramLink, youtubeLink, videos, hideHe
                     alt={title ? `${title} - Industrial Equipment Installation Image ${idx+1}` : `Sarv Jagat Air Compressor Installation - Photo ${idx+1}`} 
                     title={title ? `${title} - Industrial Equipment Image ${idx+1}` : `Sarv Jagat Air Compressor - Photo ${idx+1}`}
                     fill
+                    unoptimized
+                    priority={idx < 3}
                     sizes="(max-width: 768px) 50vw, 33vw"
                     onError={(e) => {
                       e.currentTarget.srcset = '';

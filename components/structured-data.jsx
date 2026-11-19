@@ -129,7 +129,10 @@ export function ProductSchema({ product }) {
   if (!product) return null
 
   const productUrl = `${BASE_URL}/products/${product.slug}`
-  const imageUrl = product.slug ? `${BASE_URL}/images/products/${product.slug}.png` : getAbsoluteImageUrl(product.image || product.images?.[0])
+  const rawProductImg = (product.images && product.images.length > 0 && !product.images[0].includes('blob.vercel-storage'))
+    ? product.images[0]
+    : (product.image && !product.image.includes('blob.vercel-storage') ? product.image : null);
+  const imageUrl = rawProductImg ? getAbsoluteImageUrl(rawProductImg) : DEFAULT_LOGO;
   const priceVal = product.price && Number(product.price) > 0 ? Number(product.price).toFixed(2) : "1.00"
 
   const cleanSku = generateShortSku("SJ", product._id || product.id || product.slug, product.modelNumber);
@@ -334,7 +337,10 @@ export function SuppliedProductSchema({ item }) {
   if (!item) return null
 
   const itemUrl = `${BASE_URL}/blog/${item.slug}`
-  const imageUrl = item.slug ? `${BASE_URL}/images/blog/${item.slug}.jpg` : getAbsoluteImageUrl(item.imageUrl || item.images?.[0])
+  const rawBlogImg = (item.imageUrl && !item.imageUrl.includes('blob.vercel-storage'))
+    ? item.imageUrl
+    : (item.images && item.images.length > 0 && !item.images[0].includes('blob.vercel-storage') ? item.images[0] : null);
+  const imageUrl = rawBlogImg ? getAbsoluteImageUrl(rawBlogImg) : DEFAULT_LOGO;
 
   // Extract clean text from HTML content or excerpt
   const rawText = item.excerpt || (item.content ? item.content.replace(/<[^>]*>?/gm, "").substring(0, 500) : item.title)
@@ -542,7 +548,7 @@ export function ItemListSchema({ items, categoryName, url }) {
           image: itemImage,
           brand: {
             "@type": "Brand",
-            name: "Sarv Jagat",
+            name: "Sarv Jagat - SJ",
           },
         },
       }

@@ -22,13 +22,28 @@ export async function PUT(request, { params }) {
     const { id } = await params;
     const data = await request.json();
     await connectDB();
+
+    if (!data.image && data.images && data.images.length > 0) {
+      data.image = data.images[0];
+    }
+    if (data.image && (!data.images || data.images.length === 0)) {
+      data.images = [data.image];
+    }
+
     const product = await Product.findByIdAndUpdate(id, data, { new: true });
     if (!product) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
-    invalidateCache('admin_products');
-    invalidateCache('homepage');
-    invalidateCache('public_products');
-    invalidateCache('catalog');
+    invalidateCache();
+
+    try {
+      const { revalidatePath } = await import('next/cache');
+      revalidatePath('/', 'layout');
+      revalidatePath('/products');
+      if (product.slug) revalidatePath(`/products/${product.slug}`);
+      revalidatePath('/products/category/[slug]', 'page');
+    } catch (revalErr) {
+      console.error('Revalidation error:', revalErr);
+    }
 
     return NextResponse.json(product);
   } catch (error) {
@@ -43,10 +58,17 @@ export async function DELETE(request, { params }) {
     const product = await Product.findByIdAndDelete(id);
     if (!product) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
-    invalidateCache('admin_products');
-    invalidateCache('homepage');
-    invalidateCache('public_products');
-    invalidateCache('catalog');
+    invalidateCache();
+
+    try {
+      const { revalidatePath } = await import('next/cache');
+      revalidatePath('/', 'layout');
+      revalidatePath('/products');
+      if (product.slug) revalidatePath(`/products/${product.slug}`);
+      revalidatePath('/products/category/[slug]', 'page');
+    } catch (revalErr) {
+      console.error('Revalidation error:', revalErr);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

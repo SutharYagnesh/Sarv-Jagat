@@ -68,7 +68,29 @@ export async function GET(request, { params }) {
       });
     }
 
-    // Full file stream
+    // For files under 20MB (images, PDFs): buffer and return directly
+    // This is instant (< 5ms), eliminates Vercel serverless stream aborts, and works in all browsers
+    if (fileSize < 20 * 1024 * 1024) {
+      const downloadStream = bucket.openDownloadStream(fileId);
+      const chunks = [];
+      for await (const chunk of downloadStream) {
+        chunks.push(chunk);
+      }
+      const buffer = Buffer.concat(chunks);
+
+      return new Response(buffer, {
+        status: 200,
+        headers: {
+          'Content-Length': String(buffer.length),
+          'Content-Type': contentType,
+          'Content-Disposition': `inline; filename="${encodeURIComponent(fileDoc.filename)}"`,
+          'Accept-Ranges': 'bytes',
+          'Cache-Control': 'public, max-age=31536000, immutable',
+        },
+      });
+    }
+
+    // Full file stream for large files (> 20MB)
     const downloadStream = bucket.openDownloadStream(fileId);
     const webStream = new ReadableStream({
       start(controller) {

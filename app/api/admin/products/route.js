@@ -39,11 +39,27 @@ export async function POST(request) {
   try {
     const data = await request.json();
     await connectDB();
+
+    if (!data.image && data.images && data.images.length > 0) {
+      data.image = data.images[0];
+    }
+    if (data.image && (!data.images || data.images.length === 0)) {
+      data.images = [data.image];
+    }
+
     const product = await Product.create(data);
-    invalidateCache('admin_products');
-    invalidateCache('homepage');
-    invalidateCache('public_products');
-    invalidateCache('catalog');
+    invalidateCache();
+
+    try {
+      const { revalidatePath } = await import('next/cache');
+      revalidatePath('/', 'layout');
+      revalidatePath('/products');
+      if (product.slug) revalidatePath(`/products/${product.slug}`);
+      revalidatePath('/products/category/[slug]', 'page');
+    } catch (revalErr) {
+      console.error('Revalidation error:', revalErr);
+    }
+
     return NextResponse.json(product, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

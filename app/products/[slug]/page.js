@@ -15,7 +15,7 @@ const getAllPublishedCatalog = async () => {
     await connectDB();
     const [rawProducts, rawCategories] = await Promise.all([
       Product.find({ status: { $regex: /^published$/i } })
-        .select('title slug category images price modelNumber powerRating pressureRating airFlow specifications description seoTitle seoDescription seoKeywords order createdAt')
+        .select('title slug category images image price modelNumber powerRating pressureRating airFlow specifications description seoTitle seoDescription seoKeywords order createdAt')
         .sort({ order: 1, createdAt: -1 })
         .lean(),
       Category.find({}).select('name slug').lean(),
@@ -67,13 +67,19 @@ const getProductData = cache(async (slug) => {
           if (spec.key && spec.value) formattedSpecs[spec.key] = spec.value;
         });
       }
+      const allProdImages = Array.from(new Set([
+        ...(plain.images || []),
+        plain.image
+      ].filter(img => img && !img.includes('blob.vercel-storage'))));
+      const primaryImage = allProdImages[0] || "/placeholder.jpg";
+
       return {
         ...plain,
         id: plain._id,
         name: plain.title,
         description: plain.description,
-        image: plain.images && plain.images.length > 0 ? plain.images[0] : "/placeholder.jpg",
-        images: plain.images,
+        image: primaryImage,
+        images: allProdImages,
         features: [],
         specifications: formattedSpecs,
         categorySlug: overrideCatSlug || (plain.category ? categoryMap[plain.category.trim().toLowerCase()] : null) || (plain.category || 'uncategorized').toLowerCase().replace(/[^a-z0-9]+/g, '-')

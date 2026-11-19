@@ -25,7 +25,7 @@ export default async function ProductsPage() {
     await connectDB();
     const categoriesRaw = await Category.find({}).sort({ order: 1, createdAt: 1 }).select('name slug order').lean();
     const allProductsRaw = await Product.find({ status: { $regex: /^published$/i } })
-      .select('title slug category images order status')
+      .select('title slug category images image order status')
       .sort({ order: 1, createdAt: -1 })
       .lean();
 
@@ -42,12 +42,17 @@ export default async function ProductsPage() {
       return {
         title: cat.name,
         slug: cat.slug,
-        products: catProducts.map((p: any) => ({
-          id: p._id,
-          name: p.title,
-          slug: p.slug,
-          image: p.images?.[0] || "/placeholder.svg",
-        })),
+        products: catProducts.map((p: any) => {
+          const cleanImages = (p.images || []).filter((img: string) => img && !img.includes('blob.vercel-storage'));
+          const cleanImg = (cleanImages.length > 0) ? cleanImages[0] : (p.image && !p.image.includes('blob.vercel-storage') ? p.image : "/placeholder.svg");
+          return {
+            id: p._id,
+            name: p.title,
+            slug: p.slug,
+            image: cleanImg,
+            images: cleanImages.length > 0 ? cleanImages : (cleanImg !== "/placeholder.svg" ? [cleanImg] : []),
+          };
+        }),
       };
     }).filter((cat: any) => cat.products.length > 0);
   }, 120);

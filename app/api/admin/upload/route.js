@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getGridFSBucket, deleteGridFSFile } from '@/lib/gridfs';
+import { invalidateCache } from '@/lib/memoryCache';
 import { Readable } from 'stream';
 
 export const dynamic = 'force-dynamic';
@@ -78,6 +79,8 @@ export async function POST(request) {
     const fileUrl = `/api/media/${uploadStream.id}/${encodeURIComponent(filename)}`;
     const sizeMb = (buffer.length / (1024 * 1024)).toFixed(2);
 
+    invalidateCache();
+
     return NextResponse.json({
       url: fileUrl,
       filename,
@@ -110,6 +113,7 @@ export async function DELETE(request) {
 
     const deleted = await deleteGridFSFile(target);
     if (deleted) {
+      invalidateCache();
       return NextResponse.json({ success: true, message: 'File deleted from storage' });
     } else {
       return NextResponse.json({ error: 'File not found or already deleted' }, { status: 404 });

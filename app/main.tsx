@@ -34,8 +34,8 @@ export default async function HomePage() {
     const [cRaw, catRaw, prodRaw, bRaw] = await Promise.all([
       CompanyInfo.findOne().lean(),
       Category.find({}).sort({ order: 1 }).select('name slug description').lean(),
-      Product.find({ status: { $regex: /^published$/i } }).select('title slug category images status').lean(),
-      Blog.find({ status: { $regex: /^published$/i } }).sort({ publishedAt: -1 }).limit(4).select('title slug excerpt imageUrl images publishedAt author category').lean(),
+      Product.find({ status: { $regex: /^published$/i } }).select('title slug category images image status order').sort({ order: 1, createdAt: -1 }).lean(),
+      Blog.find({ status: { $regex: /^published$/i } }).sort({ order: 1, publishedAt: -1 }).limit(4).select('title slug excerpt imageUrl images publishedAt author category').lean(),
     ]);
     return {
       companyInfo: cRaw ? JSON.parse(JSON.stringify(cRaw)) : null,
@@ -61,14 +61,18 @@ function renderHomePage({ companyInfo, categories, allProducts, recentBlogs }: a
   ]
 
   // Featured product categories with one product per category
-  let featuredProducts = categories.map(cat => {
-    const catProduct = allProducts.find(p => p.category === cat.name);
+  let featuredProducts = categories.map((cat: any) => {
+    const catNameLower = (cat.name || '').trim().toLowerCase();
+    const catProduct = allProducts.find((p: any) => (p.category || '').trim().toLowerCase() === catNameLower);
     if (!catProduct) return null;
+    const cleanImg = (catProduct.images && catProduct.images.length > 0 && !catProduct.images[0].includes('blob.vercel-storage'))
+      ? catProduct.images[0]
+      : (catProduct.image && !catProduct.image.includes('blob.vercel-storage') ? catProduct.image : "/placeholder.svg");
     return {
       title: cat.name,
       productName: catProduct.title,
       description: `Explore our range of ${cat.name}. Featured: ${catProduct.title}`,
-      image: catProduct.images?.[0] || "/placeholder.svg",
+      image: cleanImg,
       category: cat.name,
       href: `/products/category/${cat.slug}`,
     }

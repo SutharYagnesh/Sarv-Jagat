@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -46,6 +48,10 @@ export function ProductCard({ product }) {
             alt={product.name}
             loading="lazy"
             decoding="async"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = "/placeholder.svg";
+            }}
             className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
           />
           <div className="absolute top-4 left-4">

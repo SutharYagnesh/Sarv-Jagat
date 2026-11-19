@@ -86,9 +86,15 @@ export async function POST(request) {
         blogData.slug = blogData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     }
 
-    // Map coverImage to imageUrl
+    // Map coverImage and images
     if (blogData.coverImage && !blogData.imageUrl) {
         blogData.imageUrl = blogData.coverImage;
+    }
+    if (!blogData.imageUrl && blogData.images && blogData.images.length > 0) {
+        blogData.imageUrl = blogData.images[0];
+    }
+    if (blogData.imageUrl && (!blogData.images || blogData.images.length === 0)) {
+        blogData.images = [blogData.imageUrl];
     }
 
     // Always place new blog post at the very top (smallest order number)
@@ -101,9 +107,16 @@ export async function POST(request) {
 
     const newPost = await Blog.create(blogData);
 
-    invalidateCache('blogs_');
-    invalidateCache('homepage');
-    invalidateCache('public_blog');
+    invalidateCache(); // Clear all memory caches
+
+    try {
+      const { revalidatePath } = await import('next/cache');
+      revalidatePath('/', 'layout');
+      revalidatePath('/blog');
+      if (newPost.slug) revalidatePath(`/blog/${newPost.slug}`);
+    } catch (revalErr) {
+      console.error('Revalidation error:', revalErr);
+    }
 
     return NextResponse.json({ success: true, post: newPost });
   } catch (error) {

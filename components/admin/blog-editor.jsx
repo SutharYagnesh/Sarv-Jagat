@@ -193,8 +193,15 @@ export function BlogEditor({ post, onSave, onCancel }) {
 
   const handleSave = () => {
     const now = new Date().toISOString()
+    const cleanImages = (formData.images || []).filter(img => img && !img.includes('blob.vercel-storage'));
+    const cleanCover = (formData.coverImage && !formData.coverImage.includes('blob.vercel-storage'))
+      ? formData.coverImage
+      : (cleanImages[0] || null);
     const postData = {
       ...formData,
+      images: cleanImages,
+      coverImage: cleanCover,
+      imageUrl: cleanCover,
       id: post?.id || formData.slug,
       updatedAt: now,
       publishedAt: post?.publishedAt || now,

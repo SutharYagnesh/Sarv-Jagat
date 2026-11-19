@@ -34,7 +34,11 @@ export async function generateMetadata({ params }) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sarvjagat.com";
   const canonicalUrl = `${siteUrl}/blog/${slug}`;
   const brand = "Sarv Jagat - SJ";
-  const ogImageUrl = blog.imageUrl || `${siteUrl}/Sarv%20Jagat_Logo_Red_11.png`;
+  const allMetaImages = Array.from(new Set([
+    blog.imageUrl,
+    ...(blog.images || [])
+  ].filter(img => img && !img.includes('blob.vercel-storage'))));
+  const ogImageUrl = allMetaImages[0] || `${siteUrl}/Sarv%20Jagat_Logo_Red_11.png`;
 
   return {
     title: `${blog.title} | ${brand}`,
@@ -91,6 +95,12 @@ export default async function BlogDetailPage({ params }) {
   
   const blog = JSON.parse(JSON.stringify(blogRaw));
 
+  const allBlogImages = Array.from(new Set([
+    blog.imageUrl,
+    ...(blog.images || [])
+  ].filter(img => img && !img.includes('blob.vercel-storage'))));
+  const primaryHeroImage = allBlogImages[0] || blog.imageUrl || "/placeholder.svg";
+
   return (
     <section className="py-8 bg-gray-50 min-h-screen">
       <ArticleSchema post={blog} />
@@ -114,7 +124,7 @@ export default async function BlogDetailPage({ params }) {
             {/* Left: Image (4 cols) */}
             <div className="lg:col-span-4 space-y-4">
               <LightboxImage
-                src={blog.imageUrl || "/placeholder.svg"}
+                src={primaryHeroImage}
                 alt={blog.title}
                 containerClassName="border rounded-sm p-4 flex items-center justify-center bg-white aspect-[4/3] relative hover:border-gray-300 transition-colors overflow-hidden"
                 className="w-full h-full object-contain"
@@ -194,7 +204,7 @@ export default async function BlogDetailPage({ params }) {
         </div>
 
         {/* Gallery & Media / Project Gallery Section (Placed ABOVE Blog Content as requested) */}
-        {(blog.images?.length > 0 || blog.youtubeLink || blog.instagramLink || blog.videos?.length > 0) && (
+        {(allBlogImages.length > 0 || blog.youtubeLink || blog.instagramLink || blog.videos?.length > 0) && (
           <div className="bg-white p-8 rounded-sm shadow-sm border border-gray-200 mb-8">
             <h2 className="text-xl font-serif text-gray-800 border-b border-gray-200 pb-4 mb-6 flex flex-wrap items-center justify-between gap-2">
               <span>Project Gallery &amp; Media</span>
@@ -203,7 +213,7 @@ export default async function BlogDetailPage({ params }) {
               </span>
             </h2>
             <BlogGallery 
-              images={blog.images} 
+              images={allBlogImages} 
               instagramLink={blog.instagramLink} 
               youtubeLink={blog.youtubeLink} 
               videos={blog.videos} 

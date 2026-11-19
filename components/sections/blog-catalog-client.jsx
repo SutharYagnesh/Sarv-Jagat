@@ -42,12 +42,17 @@ export default function BlogCatalogClient({ blogs }) {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredBlogs.map((blog, idx) => (
+            {filteredBlogs.map((blog, idx) => {
+              const blogImg = (blog.imageUrl && !blog.imageUrl.includes('blob.vercel-storage'))
+                ? blog.imageUrl
+                : (blog.images && blog.images.length > 0 && !blog.images[0].includes('blob.vercel-storage') ? blog.images[0] : "/placeholder.svg");
+
+              return (
               <Link key={idx} href={`/blog/${blog.slug}`} className="block group">
                 <Card className="flex flex-col hover:shadow-lg transition-shadow duration-300 h-full">
                   <div className="relative aspect-square p-4 flex items-center justify-center bg-gray-50 border-b overflow-hidden group-hover:bg-gray-100 transition-colors">
                     <img
-                      src={blog.imageUrl || (blog.images && blog.images.length > 0 ? blog.images[0] : "/placeholder.svg")}
+                      src={blogImg}
                       alt={blog.title}
                       loading="lazy"
                       decoding="async"
@@ -73,7 +78,8 @@ export default function BlogCatalogClient({ blogs }) {
                   </CardContent>
                 </Card>
               </Link>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>

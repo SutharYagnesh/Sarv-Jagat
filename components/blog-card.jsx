@@ -14,13 +14,17 @@ export function BlogCard({ post }) {
     })
   }
 
+  const blogCardImg = (post.imageUrl && !post.imageUrl.includes('blob.vercel-storage'))
+    ? post.imageUrl
+    : (post.images && post.images.length > 0 && !post.images[0].includes('blob.vercel-storage') ? post.images[0] : "/Sarv Jagat_Logo_Red_11.png");
+
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md overflow-hidden">
       <CardContent className="p-0">
         <Link href={`/blog/${post.slug}`}>
           <div className="relative overflow-hidden bg-gray-50">
             <img
-              src={post.imageUrl || (post.images && post.images.length > 0 ? post.images[0] : "/Sarv Jagat_Logo_Red_11.png")}
+              src={blogCardImg}
               alt={post.title}
               loading="lazy"
               decoding="async"

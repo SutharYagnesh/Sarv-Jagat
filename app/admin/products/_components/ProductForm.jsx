@@ -154,8 +154,11 @@ export default function ProductForm({ initialData = null }) {
     setLoading(true);
     
     try {
+      const cleanImages = (formData.images || []).filter(img => img && !img.includes('blob.vercel-storage'));
       const payload = {
         ...formData,
+        images: cleanImages,
+        image: cleanImages[0] || null,
         seoKeywords: typeof formData.seoKeywords === 'string' ? formData.seoKeywords.split(',').map(k => k.trim()).filter(Boolean) : formData.seoKeywords,
         price: formData.price ? Number(formData.price) : undefined
       };
